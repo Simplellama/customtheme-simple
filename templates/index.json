@@ -11,60 +11,13 @@
   "sections": {
     "hero_TCAaex": {
       "type": "hero",
-      "blocks": {
-        "button_cDnTc9": {
-          "type": "Button",
-          "settings": {
-            "button": "Opsættes på 5 min",
-            "button_link": ""
-          }
-        },
-        "button_Mew934": {
-          "type": "Button",
-          "settings": {
-            "button": "Temprature over 100 grader",
-            "button_link": ""
-          }
-        },
-        "button_FWKn4c": {
-          "type": "Button",
-          "settings": {
-            "button": "Kræver ikke byggetilladelse",
-            "button_link": ""
-          }
-        },
-        "button_KDV4Y8": {
-          "type": "Button",
-          "settings": {
-            "button": "Brændefyret ovn",
-            "button_link": ""
-          }
-        },
-        "button_DYFwLM": {
-          "type": "Button",
-          "settings": {
-            "button": "Transportabel og let",
-            "button_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "button_cDnTc9",
-        "button_Mew934",
-        "button_FWKn4c",
-        "button_KDV4Y8",
-        "button_DYFwLM"
-      ],
       "settings": {
-        "title": "Saunatelte, skabt til din hverdag",
-        "subtitle": "Din tid, dit sted, din velvære",
-        "text": "Vores saunatelt giver dig den klassiske varme og ro, uanset om du er i haven, ved sommerhuset eller på eventyr.",
-        "button_link": "shopify://collections/saunatelte",
-        "button": "Shop her",
-        "video_laptop": "",
-        "mobile-background": "shopify://shop_images/elda-ocn-baenk-span-inde.jpg",
-        "video_mobile": "",
-        "height": "75"
+        "title": "",
+        "subtitle": "",
+        "text": "",
+        "button_link": "",
+        "button": "",
+        "height": ""
       }
     },
     "hero_annocument_banner_CEUMiY": {
@@ -73,33 +26,29 @@
         "feature_RFzXB3": {
           "type": "feature",
           "settings": {
-            "title": "1-4 Dages leveringstid",
-            "richtext": "<p>Hjemmelevering med GLS</p>",
-            "icon": "shopify://shop_images/truck-sharp-light.svg"
+            "title": "See your gut biodiversity",
+            "richtext": ""
           }
         },
         "feature_wBcYnb": {
           "type": "feature",
-          "settings": { 
-            "title": "30 dages returret",
-            "richtext": "<p>Fortryder du, intet problem</p>",
-            "icon": "shopify://shop_images/rotate-left-sharp-light.svg"
+          "settings": {
+            "title": "Analysis of your gut bacteria",
+            "richtext": ""
           }
         },
         "feature_ezqqLN": {
           "type": "feature",
           "settings": {
-            "title": "Del dine betalinger op",
-            "richtext": "<p>4. Måneder gratis <em>(ÅOP 0%)</em></p>",
-            "icon": "shopify://shop_images/credit-card-sharp-light.svg"
+            "title": "Insight in beneficial and non-beneficial bacteria",
+            "richtext": ""
           }
         },
         "feature_zeeTpf": {
           "type": "feature",
           "settings": {
-            "title": "Gratis fragt",
-            "richtext": "<p>Altid gratis fragt ved køb af sauna</p>",
-            "icon": "shopify://shop_images/fire-sharp-light.svg"
+            "title": "Personal recommendations",
+            "richtext": ""
           }
         }
       },
@@ -137,7 +86,6 @@
         "tab_dmGNHc": {
           "type": "tab",
           "settings": {
-            "image": "shopify://shop_images/tent-no-bg.png",
             "title": "Sauna startpakker",
             "link": ""
           }
@@ -145,7 +93,6 @@
         "tab_CrCg3G": {
           "type": "tab",
           "settings": {
-            "image": "shopify://shop_images/tent-no-bg.png",
             "title": "Sauna",
             "link": ""
           }
@@ -153,7 +100,6 @@
         "tab_ydDLqt": {
           "type": "tab",
           "settings": {
-            "image": "shopify://shop_images/sauna-hat_1.png",
             "title": "Alle produkter",
             "link": ""
           }
@@ -161,7 +107,6 @@
         "tab_JBWC9P": {
           "type": "tab",
           "settings": {
-            "image": "shopify://shop_images/brandtaeppe_3ac56b24-0329-481b-b3af-4126ea4c09a2.png",
             "title": "Isbade",
             "link": ""
           }
@@ -169,7 +114,6 @@
         "tab_mNfG8p": {
           "type": "tab",
           "settings": {
-            "image": "shopify://shop_images/termometer_aba36f4a-bfad-4b32-a188-2b9dac47e3e8.png",
             "title": "Tilbehør",
             "link": ""
           }
@@ -177,7 +121,6 @@
         "tab_MLjkYX": {
           "type": "tab",
           "settings": {
-            "image": "shopify://shop_images/stenkurv-no-bg.png",
             "title": "Lej en sauna",
             "link": ""
           }
@@ -185,7 +128,6 @@
         "tab_B68tUJ": {
           "type": "tab",
           "settings": {
-            "image": "shopify://shop_images/plokkerogline.png",
             "title": "Hvad er et saunatelt?",
             "link": ""
           }
@@ -286,7 +228,6 @@
           "settings": {
             "title": "Kube",
             "link": "shopify://collections/kube-pakkeloesninger",
-            "image": "shopify://shop_images/tent-no-bg.webp",
             "subtitle": "8-10 Personer",
             "btn_text": "Fra 8.000,-     Spar 2.495,-",
             "label": "Udsalg"
@@ -297,7 +238,6 @@
           "settings": {
             "title": "Glöd",
             "link": "shopify://collections/glod-pakke-loesninger",
-            "image": "shopify://shop_images/glod-telt.png",
             "subtitle": "4-6 Personer",
             "btn_text": "Fra 13.495,-",
             "label": ""
@@ -308,7 +248,6 @@
           "settings": {
             "title": "Elda",
             "link": "shopify://collections/elda-pakkeloesninger",
-            "image": "shopify://shop_images/elda-telt-fritlagt.png",
             "subtitle": "8-10 Personer",
             "btn_text": "Forudbestil - Fra 15.795,-",
             "label": "Afsendes start august"
@@ -351,9 +290,7 @@
         },
         "image_Mg6VTQ": {
           "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/ts-underskrift.svg"
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -396,9 +333,7 @@
         "title": "Vi har retænkt saunaen",
         "subtitle": "Introduktions video",
         "text": "Vi gør det nemt og attraktivt at prioritere din mentale og fysiske sundhed med unikke sauna telte, der skaber ro, fornyelse og velvære – lige dér, hvor du er.",
-        "link": "",
-        "background": "shopify://shop_images/DSC00184.jpg",
-        "video_laptop": ""
+        "link": ""
       }
     },
     "image_with_text_BgpcnY": {
@@ -408,9 +343,6 @@
         "subtitle": "Hvad er et saunatelt?",
         "content": "<p>Når kroppen udsættes for intens varme i et saunatelt, udvider blodkarrene sig, blodcirkulationen øges, og affaldsstoffer udskilles gennem sveden. Varmen lindrer muskelspændinger, fremmer afslapning og øger restitutionen efter fysisk aktivitet. </p><p>Den høje temperatur stimulerer frigivelsen af endorfiner, hvilket kan forbedre humøret, søvnen og den mentale klarhed. Regelmæssige saunature styrker immunforsvaret og øger kroppens tolerance over for både fysisk og psykisk stress.</p><p><br/>Forskning viser, at blot <strong>57 minutter om ugen</strong> i sauna, <strong>fordelt over 2-3 sessioner</strong>, kan reducere risikoen for hjerte-kar-sygdomme, mindske inflammation og forbedre den generelle livskvalitet.</p><p><br/><a href=\"https://longevity.stanford.edu/lifestyle/2023/03/27/sauna-use-as-a-lifestyle-practice/\" title=\"https://longevity.stanford.edu/lifestyle/2023/03/27/sauna-use-as-a-lifestyle-practice/\"><em><strong>se forskning her</strong></em></a></p><p></p>",
         "bg_textbox": true,
-        "image": "shopify://shop_images/elda-ovn.jpg",
-        "mobile-background": "shopify://shop_images/elda-ovn.jpg",
-        "video_laptop": "",
         "button": "Køb startpakke her",
         "button_link": "shopify://collections/saunatelte",
         "layout": "image-left"
@@ -491,32 +423,28 @@
           "type": "feature",
           "settings": {
             "title": "Effektiv ovn",
-            "richtext": "<p>Brændefyret ovn der kan blive over 100 grader.</p>",
-            "icon": "shopify://shop_images/fire-sharp-light.svg"
+            "richtext": "<p>Brændefyret ovn der kan blive over 100 grader.</p>"
           }
         },
         "feature_whjqgG": {
           "type": "feature",
           "settings": {
             "title": "Bedre mental & fysisk sundhed",
-            "richtext": "<p>Booster din menatale og fyskiske sundhed med sauna</p>",
-            "icon": "shopify://shop_images/heart-sharp-light.svg"
+            "richtext": "<p>Booster din menatale og fyskiske sundhed med sauna</p>"
           }
         },
         "feature_nBchwJ": {
           "type": "feature",
           "settings": {
             "title": "Ingen byggetilladelse",
-            "richtext": "<p>Slip for besvær med byggetilladelse.</p>",
-            "icon": "shopify://shop_images/user-helmet-safety-sharp-light.svg"
+            "richtext": "<p>Slip for besvær med byggetilladelse.</p>"
           }
         },
         "feature_YW3WxP": {
           "type": "feature",
           "settings": {
             "title": "Opsæt på 5 minutter",
-            "richtext": "<p>Tag din sauna med dig og osptil den på ingen tid.</p>",
-            "icon": "shopify://shop_images/stopwatch-sharp-light.svg"
+            "richtext": "<p>Tag din sauna med dig og osptil den på ingen tid.</p>"
           }
         }
       },
@@ -538,7 +466,6 @@
         "subtitle": "Let og kompakt saunatelt",
         "content": "<p>Oplev friheden ved selv at vælge tid og sted for dit saunagus.<br/>Vores saunatelt giver dig den klassiske varme og ro, uanset om du er i haven, ved sommerhuset eller på eventyr.</p><p>Med dig i centrum bliver den traditionelle saunaoplevelse til en fleksibel luksus i din hverdag.</p>",
         "bg_textbox": true,
-        "image": "shopify://shop_images/accesories-in-glodlight.jpg",
         "button": "",
         "button_link": "",
         "layout": "image-left"
@@ -551,8 +478,6 @@
         "subtitle": "Hurtig opvarmning og højtempratur",
         "content": "<p>Med vores saunatelte får du en effektiv og behagelig saunaoplevelse på rekordtid. På kun 30 minutter kan temperaturen nå op på 80-100°C – perfekt til at give kroppen maksimal varme og afslapning.<br/>Den hurtige opvarmning gør det nemt at tage en varm og stille stund i selv den travleste hverdag, uanset hvor du befinder dig.<br/><br/>Det er komfort, velvære og effektivitet samlet i én løsning.</p>",
         "bg_textbox": true,
-        "mobile-background": "shopify://shop_images/glod-front-lukket-top.jpg",
-        "video_laptop": "",
         "button": "",
         "button_link": "",
         "layout": "image-right"
@@ -564,7 +489,6 @@
         "social_image_BmP6Rb": {
           "type": "social_image",
           "settings": {
-            "social_image": "shopify://shop_images/social-10_1.jpg",
             "name": "name",
             "link": ""
           }
@@ -572,7 +496,6 @@
         "social_image_8mPbVT": {
           "type": "social_image",
           "settings": {
-            "social_image": "shopify://shop_images/social-11_1.jpg",
             "name": "name",
             "link": ""
           }
@@ -580,7 +503,6 @@
         "social_image_JFMtbA": {
           "type": "social_image",
           "settings": {
-            "social_image": "shopify://shop_images/social--4.jpg",
             "name": "",
             "link": ""
           }
@@ -588,7 +510,6 @@
         "social_image_kKhNXr": {
           "type": "social_image",
           "settings": {
-            "social_image": "shopify://shop_images/social-12_1.jpg",
             "name": "name",
             "link": ""
           }
@@ -596,7 +517,6 @@
         "social_image_9BHynw": {
           "type": "social_image",
           "settings": {
-            "social_image": "shopify://shop_images/social-6.jpg",
             "name": "",
             "link": ""
           }
@@ -604,7 +524,6 @@
         "social_image_F8PxGp": {
           "type": "social_image",
           "settings": {
-            "social_image": "shopify://shop_images/social-7.jpg",
             "name": "",
             "link": ""
           }
@@ -612,7 +531,6 @@
         "social_image_n678Jh": {
           "type": "social_image",
           "settings": {
-            "social_image": "shopify://shop_images/social-1.jpg",
             "name": "",
             "link": ""
           }
@@ -620,7 +538,6 @@
         "social_image_qHPfHG": {
           "type": "social_image",
           "settings": {
-            "social_image": "shopify://shop_images/social-5.jpg",
             "name": "",
             "link": ""
           }
@@ -764,7 +681,6 @@
         "subtitle": "En investering i dit helbred",
         "content": "<p>Forskning fra Finland viser, at regelmæssige saunature kan gøre en stor forskel for dit helbred. De, der gik i sauna to til tre gange om ugen, reducerede risikoen for <strong>hjertekarsygdomme med 27%</strong>, mens fire til fem ugentlige ture sænkede risikoen med hele <strong>50%</strong>.</p><p><br/></p><p></p><p>Varigheden spiller også en vigtig rolle – et ophold på over </p><p><strong>19 minutter</strong> gav markant bedre resultater end kortere tid i saunaen.</p><p>Med en sauna skaber du ikke bare ro og velvære, men gør samtidig noget godt for dit hjerte og din generelle sundhed.</p>",
         "bg_textbox": true,
-        "image": "shopify://shop_images/elda-skorsten-bagside.jpg",
         "button": "Læs Stanford artiklen her",
         "button_link": "https://longevity.stanford.edu/lifestyle/2023/03/27/sauna-use-as-a-lifestyle-practice/",
         "layout": "image-right"
@@ -810,8 +726,7 @@
         "title": "Har du nogle spørgsmål?",
         "subtitle": "Kundeservice & information",
         "url": "shopify://pages/faq-ofte-stillede-sporgsmal",
-        "link_text": "Ofte stillede spørgsmål",
-        "background": "shopify://shop_images/dorinel-panaite-g_5q3-ktg1s-unsplash.jpg"
+        "link_text": "Ofte stillede spørgsmål"
       }
     }
   },
