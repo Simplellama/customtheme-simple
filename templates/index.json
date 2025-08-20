@@ -1,1 +1,840 @@
-{"sections":{"hero_TCAaex":{"type":"hero","blocks":{"button_cDnTc9":{"type":"Button","settings":{"button":"Opsættes på 5 min","button_link":""}},"button_Mew934":{"type":"Button","settings":{"button":"Temprature over 100 grader","button_link":""}},"button_FWKn4c":{"type":"Button","settings":{"button":"Kræver ikke byggetilladelse","button_link":""}},"button_KDV4Y8":{"type":"Button","settings":{"button":"Brændefyret ovn","button_link":""}},"button_DYFwLM":{"type":"Button","settings":{"button":"Transportabel og let","button_link":""}}},"block_order":["button_cDnTc9","button_Mew934","button_FWKn4c","button_KDV4Y8","button_DYFwLM"],"settings":{"title":"Saunatelte, skabt til din hverdag","subtitle":"Din tid, dit sted, din velvære","text":"Vores saunatelt giver dig den klassiske varme og ro, uanset om du er i haven, ved sommerhuset eller på eventyr.","button_link":"shopify:\/\/collections\/saunatelte","button":"Shop her","video_laptop":"shopify:\/\/files\/videos\/C0193_3.mp4","mobile-background":"shopify:\/\/shop_images\/elda-ocn-baenk-span-inde.jpg","video_mobile":"shopify:\/\/files\/videos\/copy_1CDA0B13-BA0A-42E1-B74B-6BAD4B0B0C5B (1).mov","height":"75"}},"hero_annocument_banner_CEUMiY":{"type":"hero-annocument-banner","blocks":{"feature_RFzXB3":{"type":"feature","settings":{"title":"1-4 Dages leveringstid","richtext":"<p>Hjemmelevering med GLS<\/p>","icon":"shopify:\/\/shop_images\/truck-sharp-light.svg"}},"feature_wBcYnb":{"type":"feature","settings":{"title":"30 dages returret","richtext":"<p>Fortryder du, intet problem<\/p>","icon":"shopify:\/\/shop_images\/rotate-left-sharp-light.svg"}},"feature_ezqqLN":{"type":"feature","settings":{"title":"Del dine betalinger op","richtext":"<p>4. Måneder gratis <em>(ÅOP 0%)<\/em><\/p>","icon":"shopify:\/\/shop_images\/credit-card-sharp-light.svg"}},"feature_zeeTpf":{"type":"feature","settings":{"title":"Gratis fragt","richtext":"<p>Altid gratis fragt ved køb af sauna<\/p>","icon":"shopify:\/\/shop_images\/fire-sharp-light.svg"}}},"block_order":["feature_RFzXB3","feature_wBcYnb","feature_ezqqLN","feature_zeeTpf"],"settings":{}},"testimonials_grid_d4GcCf":{"type":"testimonials-grid","blocks":{"tab_6Yk9Bp":{"type":"tab","settings":{"title":"","link":""}}},"block_order":["tab_6Yk9Bp"],"disabled":true,"settings":{"title":"","subtitle":""}},"collection_nav_section_zGPadX":{"type":"collection-nav-section","blocks":{"tab_dmGNHc":{"type":"tab","settings":{"image":"shopify:\/\/shop_images\/tent-no-bg.png","title":"Sauna startpakker","link":""}},"tab_CrCg3G":{"type":"tab","settings":{"image":"shopify:\/\/shop_images\/tent-no-bg.png","title":"Sauna","link":""}},"tab_ydDLqt":{"type":"tab","settings":{"image":"shopify:\/\/shop_images\/sauna-hat_1.png","title":"Alle produkter","link":""}},"tab_JBWC9P":{"type":"tab","settings":{"image":"shopify:\/\/shop_images\/brandtaeppe_3ac56b24-0329-481b-b3af-4126ea4c09a2.png","title":"Isbade","link":""}},"tab_mNfG8p":{"type":"tab","settings":{"image":"shopify:\/\/shop_images\/termometer_aba36f4a-bfad-4b32-a188-2b9dac47e3e8.png","title":"Tilbehør","link":""}},"tab_MLjkYX":{"type":"tab","settings":{"image":"shopify:\/\/shop_images\/stenkurv-no-bg.png","title":"Lej en sauna","link":""}},"tab_B68tUJ":{"type":"tab","settings":{"image":"shopify:\/\/shop_images\/plokkerogline.png","title":"Hvad er et saunatelt?","link":""}}},"block_order":["tab_dmGNHc","tab_CrCg3G","tab_ydDLqt","tab_JBWC9P","tab_mNfG8p","tab_MLjkYX","tab_B68tUJ"],"disabled":true,"settings":{"title":"","subtitle":""}},"featured_collection_zya3Jx":{"type":"featured-collection","settings":{"title":"Sauna startpakker","subtitle":"Vi har gjort det nemt","tab1_title":"Kube - Udsalg","tab1_subtitle":"8-10 Pers.","collection1":"","product_list1":["kube-basic","kube-premium-pakke","kube-deluxe-pakke"],"tab2_title":"Glöd","tab2_subtitle":"4-6 Pers.","collection2":"","product_list2":["glod-basis","glod-premium-pakke","glod-deluxe-pakke"],"tab3_title":"Elda","tab3_subtitle":"8-10 Pers.","collection3":"","product_list3":["elda-basic-pakke","elda-premium-pakke","elda-deluxe-pakke"],"button_text":"","button_link":"","limit":"4"}},"text_slider_waeeLT":{"type":"text-slider","blocks":{"slide_y7UezU":{"type":"slide","settings":{"content":"Kraftfuld Brændeovn"}},"slide_BhUfAX":{"type":"slide","settings":{"content":"Transportabel"}},"slide_CxFdHh":{"type":"slide","settings":{"content":"Kræver ikke byggetilladelse"}},"slide_QpJ3nJ":{"type":"slide","settings":{"content":"Opsætning på 5 min"}}},"block_order":["slide_y7UezU","slide_BhUfAX","slide_CxFdHh","slide_QpJ3nJ"],"settings":{"link":""}},"collection_cols_ftpLqr":{"type":"collection-cols","blocks":{"item_N3Kp4q":{"type":"item","settings":{"title":"Kube","link":"shopify:\/\/collections\/kube-pakkeloesninger","image":"shopify:\/\/shop_images\/tent-no-bg.webp","subtitle":"8-10 Personer","btn_text":"Fra 8.000,-     Spar 2.495,-","label":"Udsalg"}},"item_znQbUf":{"type":"item","settings":{"title":"Glöd","link":"shopify:\/\/collections\/glod-pakke-loesninger","image":"shopify:\/\/shop_images\/glod-telt.png","subtitle":"4-6 Personer","btn_text":"Fra 13.495,-","label":""}},"item_VFXXG3":{"type":"item","settings":{"title":"Elda","link":"shopify:\/\/collections\/elda-pakkeloesninger","image":"shopify:\/\/shop_images\/elda-telt-fritlagt.png","subtitle":"8-10 Personer","btn_text":"Forudbestil - Fra 15.795,-","label":"Afsendes start august"}}},"block_order":["item_N3Kp4q","item_znQbUf","item_VFXXG3"],"settings":{"title":"Find din favorit","subtitle":"Vores saunatelte","subtitle_link":""}},"richtext_KQHcCz":{"type":"richtext","blocks":{"title_4UEPdY":{"type":"title","settings":{"title":"Smelt's mission","subtitle":true}},"title_pYW7Yw":{"type":"title","settings":{"title":"Varmen, der skaber ro","subtitle":false}},"text_fBjzdy":{"type":"text","settings":{"richtext":"<p><\/p><p>Missionen med Smelt Sauna er at gøre sauna tilgængelig for alle – uanset livssituation, økonomi eller hvor man bor.<\/p><p>Smelt er født ud af min egen personlige rejse. Midt i en periode med ADHD-diagnose, fødselsdepression og store livsforandringer fandt jeg ro i saunaens varme. Det blev mit frirum, et sted hvor jeg kunne trække vejret, mærke mig selv og genfinde balancen – både fysisk og mentalt.<\/p><p>Den oplevelse har jeg ønsket at gøre tilgængelig for andre. Jeg tror på, at sauna ikke bare er luksus, men et værktøj til velvære, nærvær og mental sundhed. Med Smelt vil jeg inspirere flere til at skabe deres egne øjeblikke af ro – hvad enten det er i baghaven, ved havet eller ude i naturen.<\/p><p><\/p><p><\/p><p><\/p><p><br\/><\/p><p><\/p><p><strong>Smelt handler ikke kun om varme – men om ro, nærvær og at finde tilbage til sig selv.<\/strong><\/p>"}},"image_Mg6VTQ":{"type":"image","settings":{"image":"shopify:\/\/shop_images\/ts-underskrift.svg"}}},"block_order":["title_4UEPdY","title_pYW7Yw","text_fBjzdy","image_Mg6VTQ"],"settings":{"section_width":"container","text_align":"left","background_color":"#f3f3ed","text_color":"rgba(0,0,0,0)"}},"video_image_section_Dwhbik":{"type":"video-image-section","blocks":{"button_f4drLe":{"type":"Button","settings":{"button":"Se alle produkter","button_link":"#"}},"button_Rt7jgL":{"type":"Button","settings":{"button":"Se fuld video","button_link":"#"}}},"block_order":["button_f4drLe","button_Rt7jgL"],"disabled":true,"settings":{"title":"Vi har retænkt saunaen","subtitle":"Introduktions video","text":"Vi gør det nemt og attraktivt at prioritere din mentale og fysiske sundhed med unikke sauna telte, der skaber ro, fornyelse og velvære – lige dér, hvor du er.","link":"","background":"shopify:\/\/shop_images\/DSC00184.jpg","video_laptop":"shopify:\/\/files\/videos\/C0114_4.mp4"}},"image_with_text_BgpcnY":{"type":"image-with-text","settings":{"title":"Hvordan virker det?","subtitle":"Hvad er et saunatelt?","content":"<p>Når kroppen udsættes for intens varme i et saunatelt, udvider blodkarrene sig, blodcirkulationen øges, og affaldsstoffer udskilles gennem sveden. Varmen lindrer muskelspændinger, fremmer afslapning og øger restitutionen efter fysisk aktivitet. <\/p><p>Den høje temperatur stimulerer frigivelsen af endorfiner, hvilket kan forbedre humøret, søvnen og den mentale klarhed. Regelmæssige saunature styrker immunforsvaret og øger kroppens tolerance over for både fysisk og psykisk stress.<\/p><p><br\/>Forskning viser, at blot <strong>57 minutter om ugen<\/strong> i sauna, <strong>fordelt over 2-3 sessioner<\/strong>, kan reducere risikoen for hjerte-kar-sygdomme, mindske inflammation og forbedre den generelle livskvalitet.<\/p><p><br\/><a href=\"https:\/\/longevity.stanford.edu\/lifestyle\/2023\/03\/27\/sauna-use-as-a-lifestyle-practice\/\" title=\"https:\/\/longevity.stanford.edu\/lifestyle\/2023\/03\/27\/sauna-use-as-a-lifestyle-practice\/\"><em><strong>se forskning her<\/strong><\/em><\/a><\/p><p><\/p>","bg_textbox":true,"image":"shopify:\/\/shop_images\/elda-ovn.jpg","mobile-background":"shopify:\/\/shop_images\/elda-ovn.jpg","video_laptop":"shopify:\/\/files\/videos\/DJI_20250216160931_0033_D_3_ee09d25c-821c-46bc-9a51-f7e622019947.mp4","button":"Køb startpakke her","button_link":"shopify:\/\/collections\/saunatelte","layout":"image-left"}},"image_block_panel_section_LwVRMh":{"type":"image-block-panel-section","blocks":{"feature_XMUKVf":{"type":"feature","settings":{"title":"Sauna teltet","richtext":"<p>Vi tilbyder gratis fragt ved køb af en sauna<\/p>","button_text":"Læs mere","link":""}},"feature_gjbNtr":{"type":"feature","settings":{"title":"Sauna teltet","richtext":"<p>Vi tilbyder gratis fragt ved køb af en sauna<\/p>","button_text":"Læs mere","link":""}},"feature_w3Xwhr":{"type":"feature","settings":{"title":"Sauna teltet","richtext":"<p>Vi tilbyder gratis fragt ved køb af en sauna<\/p>","button_text":"Læs mere","link":""}},"feature_7bhd3T":{"type":"feature","settings":{"title":"Sauna teltet","richtext":"<p>Vi tilbyder gratis fragt ved køb af en sauna<\/p>","button_text":"Læs mere","link":""}},"feature_kwEwXd":{"type":"feature","settings":{"title":"Sauna teltet","richtext":"<p>Vi tilbyder gratis fragt ved køb af en sauna <\/p>","button_text":"Læs mere","link":""}}},"block_order":["feature_XMUKVf","feature_gjbNtr","feature_w3Xwhr","feature_7bhd3T","feature_kwEwXd"],"disabled":true,"settings":{"title":"Bliv klogere på vores produkter","subtitle":"Produkt information"}},"info_panel_section_JmHtmi":{"type":"info-panel-section","settings":{"metaobj":"sauna"}},"usp_list_section_yeLFNQ":{"type":"usp-list-section","blocks":{"feature_48i66E":{"type":"feature","settings":{"title":"Effektiv ovn","richtext":"<p>Brændefyret ovn der kan blive over 100 grader.<\/p>","icon":"shopify:\/\/shop_images\/fire-sharp-light.svg"}},"feature_whjqgG":{"type":"feature","settings":{"title":"Bedre mental & fysisk sundhed","richtext":"<p>Booster din menatale og fyskiske sundhed med sauna<\/p>","icon":"shopify:\/\/shop_images\/heart-sharp-light.svg"}},"feature_nBchwJ":{"type":"feature","settings":{"title":"Ingen byggetilladelse","richtext":"<p>Slip for besvær med byggetilladelse.<\/p>","icon":"shopify:\/\/shop_images\/user-helmet-safety-sharp-light.svg"}},"feature_YW3WxP":{"type":"feature","settings":{"title":"Opsæt på 5 minutter","richtext":"<p>Tag din sauna med dig og osptil den på ingen tid.<\/p>","icon":"shopify:\/\/shop_images\/stopwatch-sharp-light.svg"}}},"block_order":["feature_48i66E","feature_whjqgG","feature_nBchwJ","feature_YW3WxP"],"settings":{"title":"Fire gode grunde","subtitle":"Hvorfor Smelt sauna?"}},"image_with_text_jV7KKx":{"type":"image-with-text","settings":{"title":"Hvor du vil og når du vil","subtitle":"Let og kompakt saunatelt","content":"<p>Oplev friheden ved selv at vælge tid og sted for dit saunagus.<br\/>Vores saunatelt giver dig den klassiske varme og ro, uanset om du er i haven, ved sommerhuset eller på eventyr.<\/p><p>Med dig i centrum bliver den traditionelle saunaoplevelse til en fleksibel luksus i din hverdag.<\/p>","bg_textbox":true,"image":"shopify:\/\/shop_images\/accesories-in-glodlight.jpg","button":"","button_link":"","layout":"image-left"}},"image_with_text_G3iAkP":{"type":"image-with-text","settings":{"title":"Opvarmes til 80-100° på kun 30 min.","subtitle":"Hurtig opvarmning og højtempratur","content":"<p>Med vores saunatelte får du en effektiv og behagelig saunaoplevelse på rekordtid. På kun 30 minutter kan temperaturen nå op på 80-100°C – perfekt til at give kroppen maksimal varme og afslapning.<br\/>Den hurtige opvarmning gør det nemt at tage en varm og stille stund i selv den travleste hverdag, uanset hvor du befinder dig.<br\/><br\/>Det er komfort, velvære og effektivitet samlet i én løsning.<\/p>","bg_textbox":true,"mobile-background":"shopify:\/\/shop_images\/glod-front-lukket-top.jpg","video_laptop":"shopify:\/\/files\/videos\/C0114_5 (3).mp4","button":"","button_link":"","layout":"image-right"}},"our_customers_TQJAAR":{"type":"our-customers","blocks":{"social_image_BmP6Rb":{"type":"social_image","settings":{"social_image":"shopify:\/\/shop_images\/social-10_1.jpg","name":"name","link":""}},"social_image_8mPbVT":{"type":"social_image","settings":{"social_image":"shopify:\/\/shop_images\/social-11_1.jpg","name":"name","link":""}},"social_image_JFMtbA":{"type":"social_image","settings":{"social_image":"shopify:\/\/shop_images\/social--4.jpg","name":"","link":""}},"social_image_kKhNXr":{"type":"social_image","settings":{"social_image":"shopify:\/\/shop_images\/social-12_1.jpg","name":"name","link":""}},"social_image_9BHynw":{"type":"social_image","settings":{"social_image":"shopify:\/\/shop_images\/social-6.jpg","name":"","link":""}},"social_image_F8PxGp":{"type":"social_image","settings":{"social_image":"shopify:\/\/shop_images\/social-7.jpg","name":"","link":""}},"social_image_n678Jh":{"type":"social_image","settings":{"social_image":"shopify:\/\/shop_images\/social-1.jpg","name":"","link":""}},"social_image_qHPfHG":{"type":"social_image","settings":{"social_image":"shopify:\/\/shop_images\/social-5.jpg","name":"","link":""}}},"block_order":["social_image_BmP6Rb","social_image_8mPbVT","social_image_JFMtbA","social_image_kKhNXr","social_image_9BHynw","social_image_F8PxGp","social_image_n678Jh","social_image_qHPfHG"],"settings":{"staggered":false,"title":"I smelter vores hjerter","subtitle":"Jeres sauna oplevelser"}},"faq_nmbMhb":{"type":"faq","blocks":{"title_NzzTpb":{"type":"title","settings":{"title":"Bliver saunateltet lige så varmt som en almindelig sauna?","subtitle":""}},"faq_d8wwhk":{"type":"faq","settings":{"item-title":"","item-text":"","faq_link":"","custom_btn":""}},"title_UwMYqe":{"type":"title","settings":{"title":"Kan saunateltet stå ude hele året?","subtitle":""}},"faq_VyMB8r":{"type":"faq","settings":{"item-title":"","item-text":"","faq_link":"","custom_btn":""}},"title_9663TJ":{"type":"title","settings":{"title":"Kræver det en byggetilladelse?","subtitle":""}},"faq_jcdHJq":{"type":"faq","settings":{"item-title":"","item-text":"","faq_link":"","custom_btn":""}},"title_HLFyLk":{"type":"title","settings":{"title":"Kan saunateltet bruges om vinteren?","subtitle":""}},"faq_wwEBU3":{"type":"faq","settings":{"item-title":"","item-text":"","faq_link":"","custom_btn":""}},"title_nW7B8Q":{"type":"title","settings":{"title":"Kan jeg leje et saunatelt?","subtitle":""}},"faq_nwmMB3":{"type":"faq","settings":{"item-title":"","item-text":"","faq_link":"","custom_btn":""}}},"block_order":["title_NzzTpb","faq_d8wwhk","title_UwMYqe","faq_VyMB8r","title_9663TJ","faq_jcdHJq","title_HLFyLk","faq_wwEBU3","title_nW7B8Q","faq_nwmMB3"],"disabled":true,"settings":{"title":"Ofte stillede spørgsmål","subtitle":"Har du spørgsmål?","link":"shopify:\/\/pages\/faq-ofte-stillede-sporgsmal","link-text":"Se alle ofte stillede spørgsmål","background":true,"margin":true}},"newsletter_section_8jAKPn":{"type":"newsletter-section","disabled":true,"settings":{"title":"Vind et Opsalsøen isbad","subtitle":"Vind isbad til en værdi af 3.499,-","text":"Tilmeld dig vores nyhedsbrev, du modtager  løbende tips og tricks til bedre sauna oplevelser, hvordan du kan forbedre din sundhed og opnå mere ro og velvære i din hverdag med sauna og meget mere."}},"image_with_text_pxJyDJ":{"type":"image-with-text","settings":{"title":"Saunaens gavnlige effekt på din sundhed","subtitle":"En investering i dit helbred","content":"<p>Forskning fra Finland viser, at regelmæssige saunature kan gøre en stor forskel for dit helbred. De, der gik i sauna to til tre gange om ugen, reducerede risikoen for <strong>hjertekarsygdomme med 27%<\/strong>, mens fire til fem ugentlige ture sænkede risikoen med hele <strong>50%<\/strong>.<\/p><p><br\/><\/p><p><\/p><p>Varigheden spiller også en vigtig rolle – et ophold på over <\/p><p><strong>19 minutter<\/strong> gav markant bedre resultater end kortere tid i saunaen.<\/p><p>Med en sauna skaber du ikke bare ro og velvære, men gør samtidig noget godt for dit hjerte og din generelle sundhed.<\/p>","bg_textbox":true,"image":"shopify:\/\/shop_images\/elda-skorsten-bagside.jpg","button":"Læs Stanford artiklen her","button_link":"https:\/\/longevity.stanford.edu\/lifestyle\/2023\/03\/27\/sauna-use-as-a-lifestyle-practice\/","layout":"image-right"}},"information_section_hXpVYR":{"type":"information-section","blocks":{"feature_9MhKzF":{"type":"feature","settings":{"title":"Chat med os","richtext":"","button_text":"Åben chat","link":"#"}},"feature_VQhkbk":{"type":"feature","settings":{"title":"Skriv til os","richtext":"","button_text":"info@smeltsauna.dk","link":"mailto:info@smeltsauna.dk"}},"feature_3WPwc9":{"type":"feature","settings":{"title":"Ring til os","richtext":"","button_text":"+45 71 90 58 36","link":"tel:+4571905836"}}},"block_order":["feature_9MhKzF","feature_VQhkbk","feature_3WPwc9"],"settings":{"title":"Har du nogle spørgsmål?","subtitle":"Kundeservice & information","url":"shopify:\/\/pages\/faq-ofte-stillede-sporgsmal","link_text":"Ofte stillede spørgsmål","background":"shopify:\/\/shop_images\/dorinel-panaite-g_5q3-ktg1s-unsplash.jpg"}}},"order":["hero_TCAaex","hero_annocument_banner_CEUMiY","testimonials_grid_d4GcCf","collection_nav_section_zGPadX","featured_collection_zya3Jx","text_slider_waeeLT","collection_cols_ftpLqr","richtext_KQHcCz","video_image_section_Dwhbik","image_with_text_BgpcnY","image_block_panel_section_LwVRMh","info_panel_section_JmHtmi","usp_list_section_yeLFNQ","image_with_text_jV7KKx","image_with_text_G3iAkP","our_customers_TQJAAR","faq_nmbMhb","newsletter_section_8jAKPn","image_with_text_pxJyDJ","information_section_hXpVYR"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero_TCAaex": {
+      "type": "hero",
+      "blocks": {
+        "button_cDnTc9": {
+          "type": "Button",
+          "settings": {
+            "button": "Opsættes på 5 min",
+            "button_link": ""
+          }
+        },
+        "button_Mew934": {
+          "type": "Button",
+          "settings": {
+            "button": "Temprature over 100 grader",
+            "button_link": ""
+          }
+        },
+        "button_FWKn4c": {
+          "type": "Button",
+          "settings": {
+            "button": "Kræver ikke byggetilladelse",
+            "button_link": ""
+          }
+        },
+        "button_KDV4Y8": {
+          "type": "Button",
+          "settings": {
+            "button": "Brændefyret ovn",
+            "button_link": ""
+          }
+        },
+        "button_DYFwLM": {
+          "type": "Button",
+          "settings": {
+            "button": "Transportabel og let",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "button_cDnTc9",
+        "button_Mew934",
+        "button_FWKn4c",
+        "button_KDV4Y8",
+        "button_DYFwLM"
+      ],
+      "settings": {
+        "title": "Saunatelte, skabt til din hverdag",
+        "subtitle": "Din tid, dit sted, din velvære",
+        "text": "Vores saunatelt giver dig den klassiske varme og ro, uanset om du er i haven, ved sommerhuset eller på eventyr.",
+        "button_link": "shopify://collections/saunatelte",
+        "button": "Shop her",
+        "video_laptop": "",
+        "mobile-background": "shopify://shop_images/elda-ocn-baenk-span-inde.jpg",
+        "video_mobile": "",
+        "height": "75"
+      }
+    },
+    "hero_annocument_banner_CEUMiY": {
+      "type": "hero-annocument-banner",
+      "blocks": {
+        "feature_RFzXB3": {
+          "type": "feature",
+          "settings": {
+            "title": "1-4 Dages leveringstid",
+            "richtext": "<p>Hjemmelevering med GLS</p>",
+            "icon": "shopify://shop_images/truck-sharp-light.svg"
+          }
+        },
+        "feature_wBcYnb": {
+          "type": "feature",
+          "settings": { 
+            "title": "30 dages returret",
+            "richtext": "<p>Fortryder du, intet problem</p>",
+            "icon": "shopify://shop_images/rotate-left-sharp-light.svg"
+          }
+        },
+        "feature_ezqqLN": {
+          "type": "feature",
+          "settings": {
+            "title": "Del dine betalinger op",
+            "richtext": "<p>4. Måneder gratis <em>(ÅOP 0%)</em></p>",
+            "icon": "shopify://shop_images/credit-card-sharp-light.svg"
+          }
+        },
+        "feature_zeeTpf": {
+          "type": "feature",
+          "settings": {
+            "title": "Gratis fragt",
+            "richtext": "<p>Altid gratis fragt ved køb af sauna</p>",
+            "icon": "shopify://shop_images/fire-sharp-light.svg"
+          }
+        }
+      },
+      "block_order": [
+        "feature_RFzXB3",
+        "feature_wBcYnb",
+        "feature_ezqqLN",
+        "feature_zeeTpf"
+      ],
+      "settings": {}
+    },
+    "testimonials_grid_d4GcCf": {
+      "type": "testimonials-grid",
+      "blocks": {
+        "tab_6Yk9Bp": {
+          "type": "tab",
+          "settings": {
+            "title": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_6Yk9Bp"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "",
+        "subtitle": ""
+      }
+    },
+    "collection_nav_section_zGPadX": {
+      "type": "collection-nav-section",
+      "blocks": {
+        "tab_dmGNHc": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/tent-no-bg.png",
+            "title": "Sauna startpakker",
+            "link": ""
+          }
+        },
+        "tab_CrCg3G": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/tent-no-bg.png",
+            "title": "Sauna",
+            "link": ""
+          }
+        },
+        "tab_ydDLqt": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/sauna-hat_1.png",
+            "title": "Alle produkter",
+            "link": ""
+          }
+        },
+        "tab_JBWC9P": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/brandtaeppe_3ac56b24-0329-481b-b3af-4126ea4c09a2.png",
+            "title": "Isbade",
+            "link": ""
+          }
+        },
+        "tab_mNfG8p": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/termometer_aba36f4a-bfad-4b32-a188-2b9dac47e3e8.png",
+            "title": "Tilbehør",
+            "link": ""
+          }
+        },
+        "tab_MLjkYX": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/stenkurv-no-bg.png",
+            "title": "Lej en sauna",
+            "link": ""
+          }
+        },
+        "tab_B68tUJ": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/plokkerogline.png",
+            "title": "Hvad er et saunatelt?",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_dmGNHc",
+        "tab_CrCg3G",
+        "tab_ydDLqt",
+        "tab_JBWC9P",
+        "tab_mNfG8p",
+        "tab_MLjkYX",
+        "tab_B68tUJ"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "",
+        "subtitle": ""
+      }
+    },
+    "featured_collection_zya3Jx": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Sauna startpakker",
+        "subtitle": "Vi har gjort det nemt",
+        "tab1_title": "Kube - Udsalg",
+        "tab1_subtitle": "8-10 Pers.",
+        "collection1": "",
+        "product_list1": [
+          "kube-basic",
+          "kube-premium-pakke",
+          "kube-deluxe-pakke"
+        ],
+        "tab2_title": "Glöd",
+        "tab2_subtitle": "4-6 Pers.",
+        "collection2": "",
+        "product_list2": [
+          "glod-basis",
+          "glod-premium-pakke",
+          "glod-deluxe-pakke"
+        ],
+        "tab3_title": "Elda",
+        "tab3_subtitle": "8-10 Pers.",
+        "collection3": "",
+        "product_list3": [
+          "elda-basic-pakke",
+          "elda-premium-pakke",
+          "elda-deluxe-pakke"
+        ],
+        "button_text": "",
+        "button_link": "",
+        "limit": "4"
+      }
+    },
+    "text_slider_waeeLT": {
+      "type": "text-slider",
+      "blocks": {
+        "slide_y7UezU": {
+          "type": "slide",
+          "settings": {
+            "content": "Kraftfuld Brændeovn"
+          }
+        },
+        "slide_BhUfAX": {
+          "type": "slide",
+          "settings": {
+            "content": "Transportabel"
+          }
+        },
+        "slide_CxFdHh": {
+          "type": "slide",
+          "settings": {
+            "content": "Kræver ikke byggetilladelse"
+          }
+        },
+        "slide_QpJ3nJ": {
+          "type": "slide",
+          "settings": {
+            "content": "Opsætning på 5 min"
+          }
+        }
+      },
+      "block_order": [
+        "slide_y7UezU",
+        "slide_BhUfAX",
+        "slide_CxFdHh",
+        "slide_QpJ3nJ"
+      ],
+      "settings": {
+        "link": ""
+      }
+    },
+    "collection_cols_ftpLqr": {
+      "type": "collection-cols",
+      "blocks": {
+        "item_N3Kp4q": {
+          "type": "item",
+          "settings": {
+            "title": "Kube",
+            "link": "shopify://collections/kube-pakkeloesninger",
+            "image": "shopify://shop_images/tent-no-bg.webp",
+            "subtitle": "8-10 Personer",
+            "btn_text": "Fra 8.000,-     Spar 2.495,-",
+            "label": "Udsalg"
+          }
+        },
+        "item_znQbUf": {
+          "type": "item",
+          "settings": {
+            "title": "Glöd",
+            "link": "shopify://collections/glod-pakke-loesninger",
+            "image": "shopify://shop_images/glod-telt.png",
+            "subtitle": "4-6 Personer",
+            "btn_text": "Fra 13.495,-",
+            "label": ""
+          }
+        },
+        "item_VFXXG3": {
+          "type": "item",
+          "settings": {
+            "title": "Elda",
+            "link": "shopify://collections/elda-pakkeloesninger",
+            "image": "shopify://shop_images/elda-telt-fritlagt.png",
+            "subtitle": "8-10 Personer",
+            "btn_text": "Forudbestil - Fra 15.795,-",
+            "label": "Afsendes start august"
+          }
+        }
+      },
+      "block_order": [
+        "item_N3Kp4q",
+        "item_znQbUf",
+        "item_VFXXG3"
+      ],
+      "settings": {
+        "title": "Find din favorit",
+        "subtitle": "Vores saunatelte",
+        "subtitle_link": ""
+      }
+    },
+    "richtext_KQHcCz": {
+      "type": "richtext",
+      "blocks": {
+        "title_4UEPdY": {
+          "type": "title",
+          "settings": {
+            "title": "Smelt's mission",
+            "subtitle": true
+          }
+        },
+        "title_pYW7Yw": {
+          "type": "title",
+          "settings": {
+            "title": "Varmen, der skaber ro",
+            "subtitle": false
+          }
+        },
+        "text_fBjzdy": {
+          "type": "text",
+          "settings": {
+            "richtext": "<p></p><p>Missionen med Smelt Sauna er at gøre sauna tilgængelig for alle – uanset livssituation, økonomi eller hvor man bor.</p><p>Smelt er født ud af min egen personlige rejse. Midt i en periode med ADHD-diagnose, fødselsdepression og store livsforandringer fandt jeg ro i saunaens varme. Det blev mit frirum, et sted hvor jeg kunne trække vejret, mærke mig selv og genfinde balancen – både fysisk og mentalt.</p><p>Den oplevelse har jeg ønsket at gøre tilgængelig for andre. Jeg tror på, at sauna ikke bare er luksus, men et værktøj til velvære, nærvær og mental sundhed. Med Smelt vil jeg inspirere flere til at skabe deres egne øjeblikke af ro – hvad enten det er i baghaven, ved havet eller ude i naturen.</p><p></p><p></p><p></p><p><br/></p><p></p><p><strong>Smelt handler ikke kun om varme – men om ro, nærvær og at finde tilbage til sig selv.</strong></p>"
+          }
+        },
+        "image_Mg6VTQ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/ts-underskrift.svg"
+          }
+        }
+      },
+      "block_order": [
+        "title_4UEPdY",
+        "title_pYW7Yw",
+        "text_fBjzdy",
+        "image_Mg6VTQ"
+      ],
+      "settings": {
+        "section_width": "container",
+        "text_align": "left",
+        "background_color": "#f3f3ed",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "video_image_section_Dwhbik": {
+      "type": "video-image-section",
+      "blocks": {
+        "button_f4drLe": {
+          "type": "Button",
+          "settings": {
+            "button": "Se alle produkter",
+            "button_link": "#"
+          }
+        },
+        "button_Rt7jgL": {
+          "type": "Button",
+          "settings": {
+            "button": "Se fuld video",
+            "button_link": "#"
+          }
+        }
+      },
+      "block_order": [
+        "button_f4drLe",
+        "button_Rt7jgL"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "Vi har retænkt saunaen",
+        "subtitle": "Introduktions video",
+        "text": "Vi gør det nemt og attraktivt at prioritere din mentale og fysiske sundhed med unikke sauna telte, der skaber ro, fornyelse og velvære – lige dér, hvor du er.",
+        "link": "",
+        "background": "shopify://shop_images/DSC00184.jpg",
+        "video_laptop": ""
+      }
+    },
+    "image_with_text_BgpcnY": {
+      "type": "image-with-text",
+      "settings": {
+        "title": "Hvordan virker det?",
+        "subtitle": "Hvad er et saunatelt?",
+        "content": "<p>Når kroppen udsættes for intens varme i et saunatelt, udvider blodkarrene sig, blodcirkulationen øges, og affaldsstoffer udskilles gennem sveden. Varmen lindrer muskelspændinger, fremmer afslapning og øger restitutionen efter fysisk aktivitet. </p><p>Den høje temperatur stimulerer frigivelsen af endorfiner, hvilket kan forbedre humøret, søvnen og den mentale klarhed. Regelmæssige saunature styrker immunforsvaret og øger kroppens tolerance over for både fysisk og psykisk stress.</p><p><br/>Forskning viser, at blot <strong>57 minutter om ugen</strong> i sauna, <strong>fordelt over 2-3 sessioner</strong>, kan reducere risikoen for hjerte-kar-sygdomme, mindske inflammation og forbedre den generelle livskvalitet.</p><p><br/><a href=\"https://longevity.stanford.edu/lifestyle/2023/03/27/sauna-use-as-a-lifestyle-practice/\" title=\"https://longevity.stanford.edu/lifestyle/2023/03/27/sauna-use-as-a-lifestyle-practice/\"><em><strong>se forskning her</strong></em></a></p><p></p>",
+        "bg_textbox": true,
+        "image": "shopify://shop_images/elda-ovn.jpg",
+        "mobile-background": "shopify://shop_images/elda-ovn.jpg",
+        "video_laptop": "",
+        "button": "Køb startpakke her",
+        "button_link": "shopify://collections/saunatelte",
+        "layout": "image-left"
+      }
+    },
+    "image_block_panel_section_LwVRMh": {
+      "type": "image-block-panel-section",
+      "blocks": {
+        "feature_XMUKVf": {
+          "type": "feature",
+          "settings": {
+            "title": "Sauna teltet",
+            "richtext": "<p>Vi tilbyder gratis fragt ved køb af en sauna</p>",
+            "button_text": "Læs mere",
+            "link": ""
+          }
+        },
+        "feature_gjbNtr": {
+          "type": "feature",
+          "settings": {
+            "title": "Sauna teltet",
+            "richtext": "<p>Vi tilbyder gratis fragt ved køb af en sauna</p>",
+            "button_text": "Læs mere",
+            "link": ""
+          }
+        },
+        "feature_w3Xwhr": {
+          "type": "feature",
+          "settings": {
+            "title": "Sauna teltet",
+            "richtext": "<p>Vi tilbyder gratis fragt ved køb af en sauna</p>",
+            "button_text": "Læs mere",
+            "link": ""
+          }
+        },
+        "feature_7bhd3T": {
+          "type": "feature",
+          "settings": {
+            "title": "Sauna teltet",
+            "richtext": "<p>Vi tilbyder gratis fragt ved køb af en sauna</p>",
+            "button_text": "Læs mere",
+            "link": ""
+          }
+        },
+        "feature_kwEwXd": {
+          "type": "feature",
+          "settings": {
+            "title": "Sauna teltet",
+            "richtext": "<p>Vi tilbyder gratis fragt ved køb af en sauna </p>",
+            "button_text": "Læs mere",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "feature_XMUKVf",
+        "feature_gjbNtr",
+        "feature_w3Xwhr",
+        "feature_7bhd3T",
+        "feature_kwEwXd"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "Bliv klogere på vores produkter",
+        "subtitle": "Produkt information"
+      }
+    },
+    "info_panel_section_JmHtmi": {
+      "type": "info-panel-section",
+      "settings": {
+        "metaobj": "sauna"
+      }
+    },
+    "usp_list_section_yeLFNQ": {
+      "type": "usp-list-section",
+      "blocks": {
+        "feature_48i66E": {
+          "type": "feature",
+          "settings": {
+            "title": "Effektiv ovn",
+            "richtext": "<p>Brændefyret ovn der kan blive over 100 grader.</p>",
+            "icon": "shopify://shop_images/fire-sharp-light.svg"
+          }
+        },
+        "feature_whjqgG": {
+          "type": "feature",
+          "settings": {
+            "title": "Bedre mental & fysisk sundhed",
+            "richtext": "<p>Booster din menatale og fyskiske sundhed med sauna</p>",
+            "icon": "shopify://shop_images/heart-sharp-light.svg"
+          }
+        },
+        "feature_nBchwJ": {
+          "type": "feature",
+          "settings": {
+            "title": "Ingen byggetilladelse",
+            "richtext": "<p>Slip for besvær med byggetilladelse.</p>",
+            "icon": "shopify://shop_images/user-helmet-safety-sharp-light.svg"
+          }
+        },
+        "feature_YW3WxP": {
+          "type": "feature",
+          "settings": {
+            "title": "Opsæt på 5 minutter",
+            "richtext": "<p>Tag din sauna med dig og osptil den på ingen tid.</p>",
+            "icon": "shopify://shop_images/stopwatch-sharp-light.svg"
+          }
+        }
+      },
+      "block_order": [
+        "feature_48i66E",
+        "feature_whjqgG",
+        "feature_nBchwJ",
+        "feature_YW3WxP"
+      ],
+      "settings": {
+        "title": "Fire gode grunde",
+        "subtitle": "Hvorfor Smelt sauna?"
+      }
+    },
+    "image_with_text_jV7KKx": {
+      "type": "image-with-text",
+      "settings": {
+        "title": "Hvor du vil og når du vil",
+        "subtitle": "Let og kompakt saunatelt",
+        "content": "<p>Oplev friheden ved selv at vælge tid og sted for dit saunagus.<br/>Vores saunatelt giver dig den klassiske varme og ro, uanset om du er i haven, ved sommerhuset eller på eventyr.</p><p>Med dig i centrum bliver den traditionelle saunaoplevelse til en fleksibel luksus i din hverdag.</p>",
+        "bg_textbox": true,
+        "image": "shopify://shop_images/accesories-in-glodlight.jpg",
+        "button": "",
+        "button_link": "",
+        "layout": "image-left"
+      }
+    },
+    "image_with_text_G3iAkP": {
+      "type": "image-with-text",
+      "settings": {
+        "title": "Opvarmes til 80-100° på kun 30 min.",
+        "subtitle": "Hurtig opvarmning og højtempratur",
+        "content": "<p>Med vores saunatelte får du en effektiv og behagelig saunaoplevelse på rekordtid. På kun 30 minutter kan temperaturen nå op på 80-100°C – perfekt til at give kroppen maksimal varme og afslapning.<br/>Den hurtige opvarmning gør det nemt at tage en varm og stille stund i selv den travleste hverdag, uanset hvor du befinder dig.<br/><br/>Det er komfort, velvære og effektivitet samlet i én løsning.</p>",
+        "bg_textbox": true,
+        "mobile-background": "shopify://shop_images/glod-front-lukket-top.jpg",
+        "video_laptop": "",
+        "button": "",
+        "button_link": "",
+        "layout": "image-right"
+      }
+    },
+    "our_customers_TQJAAR": {
+      "type": "our-customers",
+      "blocks": {
+        "social_image_BmP6Rb": {
+          "type": "social_image",
+          "settings": {
+            "social_image": "shopify://shop_images/social-10_1.jpg",
+            "name": "name",
+            "link": ""
+          }
+        },
+        "social_image_8mPbVT": {
+          "type": "social_image",
+          "settings": {
+            "social_image": "shopify://shop_images/social-11_1.jpg",
+            "name": "name",
+            "link": ""
+          }
+        },
+        "social_image_JFMtbA": {
+          "type": "social_image",
+          "settings": {
+            "social_image": "shopify://shop_images/social--4.jpg",
+            "name": "",
+            "link": ""
+          }
+        },
+        "social_image_kKhNXr": {
+          "type": "social_image",
+          "settings": {
+            "social_image": "shopify://shop_images/social-12_1.jpg",
+            "name": "name",
+            "link": ""
+          }
+        },
+        "social_image_9BHynw": {
+          "type": "social_image",
+          "settings": {
+            "social_image": "shopify://shop_images/social-6.jpg",
+            "name": "",
+            "link": ""
+          }
+        },
+        "social_image_F8PxGp": {
+          "type": "social_image",
+          "settings": {
+            "social_image": "shopify://shop_images/social-7.jpg",
+            "name": "",
+            "link": ""
+          }
+        },
+        "social_image_n678Jh": {
+          "type": "social_image",
+          "settings": {
+            "social_image": "shopify://shop_images/social-1.jpg",
+            "name": "",
+            "link": ""
+          }
+        },
+        "social_image_qHPfHG": {
+          "type": "social_image",
+          "settings": {
+            "social_image": "shopify://shop_images/social-5.jpg",
+            "name": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "social_image_BmP6Rb",
+        "social_image_8mPbVT",
+        "social_image_JFMtbA",
+        "social_image_kKhNXr",
+        "social_image_9BHynw",
+        "social_image_F8PxGp",
+        "social_image_n678Jh",
+        "social_image_qHPfHG"
+      ],
+      "settings": {
+        "staggered": false,
+        "title": "I smelter vores hjerter",
+        "subtitle": "Jeres sauna oplevelser"
+      }
+    },
+    "faq_nmbMhb": {
+      "type": "faq",
+      "blocks": {
+        "title_NzzTpb": {
+          "type": "title",
+          "settings": {
+            "title": "Bliver saunateltet lige så varmt som en almindelig sauna?",
+            "subtitle": ""
+          }
+        },
+        "faq_d8wwhk": {
+          "type": "faq",
+          "settings": {
+            "item-title": "",
+            "item-text": "",
+            "faq_link": "",
+            "custom_btn": ""
+          }
+        },
+        "title_UwMYqe": {
+          "type": "title",
+          "settings": {
+            "title": "Kan saunateltet stå ude hele året?",
+            "subtitle": ""
+          }
+        },
+        "faq_VyMB8r": {
+          "type": "faq",
+          "settings": {
+            "item-title": "",
+            "item-text": "",
+            "faq_link": "",
+            "custom_btn": ""
+          }
+        },
+        "title_9663TJ": {
+          "type": "title",
+          "settings": {
+            "title": "Kræver det en byggetilladelse?",
+            "subtitle": ""
+          }
+        },
+        "faq_jcdHJq": {
+          "type": "faq",
+          "settings": {
+            "item-title": "",
+            "item-text": "",
+            "faq_link": "",
+            "custom_btn": ""
+          }
+        },
+        "title_HLFyLk": {
+          "type": "title",
+          "settings": {
+            "title": "Kan saunateltet bruges om vinteren?",
+            "subtitle": ""
+          }
+        },
+        "faq_wwEBU3": {
+          "type": "faq",
+          "settings": {
+            "item-title": "",
+            "item-text": "",
+            "faq_link": "",
+            "custom_btn": ""
+          }
+        },
+        "title_nW7B8Q": {
+          "type": "title",
+          "settings": {
+            "title": "Kan jeg leje et saunatelt?",
+            "subtitle": ""
+          }
+        },
+        "faq_nwmMB3": {
+          "type": "faq",
+          "settings": {
+            "item-title": "",
+            "item-text": "",
+            "faq_link": "",
+            "custom_btn": ""
+          }
+        }
+      },
+      "block_order": [
+        "title_NzzTpb",
+        "faq_d8wwhk",
+        "title_UwMYqe",
+        "faq_VyMB8r",
+        "title_9663TJ",
+        "faq_jcdHJq",
+        "title_HLFyLk",
+        "faq_wwEBU3",
+        "title_nW7B8Q",
+        "faq_nwmMB3"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "Ofte stillede spørgsmål",
+        "subtitle": "Har du spørgsmål?",
+        "link": "shopify://pages/faq-ofte-stillede-sporgsmal",
+        "link-text": "Se alle ofte stillede spørgsmål",
+        "background": true,
+        "margin": true
+      }
+    },
+    "newsletter_section_8jAKPn": {
+      "type": "newsletter-section",
+      "disabled": true,
+      "settings": {
+        "title": "Vind et Opsalsøen isbad",
+        "subtitle": "Vind isbad til en værdi af 3.499,-",
+        "text": "Tilmeld dig vores nyhedsbrev, du modtager  løbende tips og tricks til bedre sauna oplevelser, hvordan du kan forbedre din sundhed og opnå mere ro og velvære i din hverdag med sauna og meget mere."
+      }
+    },
+    "image_with_text_pxJyDJ": {
+      "type": "image-with-text",
+      "settings": {
+        "title": "Saunaens gavnlige effekt på din sundhed",
+        "subtitle": "En investering i dit helbred",
+        "content": "<p>Forskning fra Finland viser, at regelmæssige saunature kan gøre en stor forskel for dit helbred. De, der gik i sauna to til tre gange om ugen, reducerede risikoen for <strong>hjertekarsygdomme med 27%</strong>, mens fire til fem ugentlige ture sænkede risikoen med hele <strong>50%</strong>.</p><p><br/></p><p></p><p>Varigheden spiller også en vigtig rolle – et ophold på over </p><p><strong>19 minutter</strong> gav markant bedre resultater end kortere tid i saunaen.</p><p>Med en sauna skaber du ikke bare ro og velvære, men gør samtidig noget godt for dit hjerte og din generelle sundhed.</p>",
+        "bg_textbox": true,
+        "image": "shopify://shop_images/elda-skorsten-bagside.jpg",
+        "button": "Læs Stanford artiklen her",
+        "button_link": "https://longevity.stanford.edu/lifestyle/2023/03/27/sauna-use-as-a-lifestyle-practice/",
+        "layout": "image-right"
+      }
+    },
+    "information_section_hXpVYR": {
+      "type": "information-section",
+      "blocks": {
+        "feature_9MhKzF": {
+          "type": "feature",
+          "settings": {
+            "title": "Chat med os",
+            "richtext": "",
+            "button_text": "Åben chat",
+            "link": "#"
+          }
+        },
+        "feature_VQhkbk": {
+          "type": "feature",
+          "settings": {
+            "title": "Skriv til os",
+            "richtext": "",
+            "button_text": "info@smeltsauna.dk",
+            "link": "mailto:info@smeltsauna.dk"
+          }
+        },
+        "feature_3WPwc9": {
+          "type": "feature",
+          "settings": {
+            "title": "Ring til os",
+            "richtext": "",
+            "button_text": "+45 71 90 58 36",
+            "link": "tel:+4571905836"
+          }
+        }
+      },
+      "block_order": [
+        "feature_9MhKzF",
+        "feature_VQhkbk",
+        "feature_3WPwc9"
+      ],
+      "settings": {
+        "title": "Har du nogle spørgsmål?",
+        "subtitle": "Kundeservice & information",
+        "url": "shopify://pages/faq-ofte-stillede-sporgsmal",
+        "link_text": "Ofte stillede spørgsmål",
+        "background": "shopify://shop_images/dorinel-panaite-g_5q3-ktg1s-unsplash.jpg"
+      }
+    }
+  },
+  "order": [
+    "hero_TCAaex",
+    "hero_annocument_banner_CEUMiY",
+    "testimonials_grid_d4GcCf",
+    "collection_nav_section_zGPadX",
+    "featured_collection_zya3Jx",
+    "text_slider_waeeLT",
+    "collection_cols_ftpLqr",
+    "richtext_KQHcCz",
+    "video_image_section_Dwhbik",
+    "image_with_text_BgpcnY",
+    "image_block_panel_section_LwVRMh",
+    "info_panel_section_JmHtmi",
+    "usp_list_section_yeLFNQ",
+    "image_with_text_jV7KKx",
+    "image_with_text_G3iAkP",
+    "our_customers_TQJAAR",
+    "faq_nmbMhb",
+    "newsletter_section_8jAKPn",
+    "image_with_text_pxJyDJ",
+    "information_section_hXpVYR"
+  ]
+}
