@@ -1,0 +1,23 @@
+{% assign usp_items = product.metafields.custom.usp_items.value %}
+
+<section class="mt-4 mb-8">
+    <div class="flex justify-start">
+        <ul class="flex flex-col gap-y-2">
+            {% for usp_item in usp_items limit: 3 %}
+                <li class="flex items-center gap-x-3 w-fit max-w-[130px] sm:max-w-none">
+                    <img class="w-[16px]" src="{{ usp_item.icon | image_url: width: 60  }}">
+                    <span class="text-sm sm:text-base">{{ usp_item.title }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="h-auto w-1 border-r border-border mx-3 sm:mx-6 "></div>
+        <ul class="flex flex-col gap-y-2 w-fit">
+            {% for usp_item in usp_items offset: 3 limit: 3 %}
+                <li class="flex items-center gap-x-3">
+                    <img class="w-[16px]" src="{{ usp_item.icon | image_url: width: 60  }}">
+                    <span class="text-sm sm:text-base">{{ usp_item.title }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>

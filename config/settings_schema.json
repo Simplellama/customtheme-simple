@@ -1,0 +1,279 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Simple theme ",
+    "theme_version": "1.0.0",
+    "theme_author": "Simple Llama",
+    "theme_documentation_url": "https:\/\/simplellama.dk",
+    "theme_support_url": "https:\/\/simplellama.dk"
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo_image",
+        "label": "Logo image",
+        "info": "Will be scaled down to 200 x 200px"
+      }
+    ]
+  },
+  {
+    "name": "payments",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Payment options"
+      },
+      {
+        "type": "checkbox",
+        "id": "paypal",
+        "label": "Enable PayPal",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "shoppay",
+        "label": "Shoppay",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "klarna",
+        "label": "Klarna",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "apple_pay",
+        "label": "Apple Pay",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "gpay",
+        "label": "Google Pay",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "mobilepay",
+        "label": "Mobilepay",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "viabill",
+        "label": "Viabill",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "dankort",
+        "label": "Dankort",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "visa",
+        "label": "Visa",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "mastercard",
+        "label": "Mastercard",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "amex",
+        "label": "American Express",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "maestro",
+        "label": "Maestro",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "anyday",
+        "label": "Anyday",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "select",
+        "id": "type_base_size",
+        "label": "Base size",
+        "default": "16px",
+        "options": [
+          {
+            "value": "14px",
+            "label": "14px"
+          },
+          {
+            "value": "15px",
+            "label": "15px"
+          },
+          {
+            "value": "16px",
+            "label": "16px"
+          },
+          {
+            "value": "17px",
+            "label": "17px"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "General colors"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary color",
+        "default": "#000",
+        "info": "Used for text links, and primary buttons"
+      },
+      {
+        "type": "color",
+        "id": "color_body_text",
+        "label": "Text color",
+        "default": "#000",
+        "info": "Color used for content and paragraph text"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "cart_notes_enable",
+        "label": "Enable cart notes",
+        "default": true
+      },
+      {
+        "type": "product",
+        "id": "giftwrap_product",
+        "label": "Select gift wrap product"
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "Will be scaled down to 32 x 32px"
+      }
+    ]
+  },
+  {
+    "name": "t:settings_schema.social-media.name",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:settings_schema.social-media.settings.header.content"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "t:settings_schema.social-media.settings.social_facebook_link.label",
+        "placeholder": "t:settings_schema.social-media.settings.social_facebook_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "t:settings_schema.social-media.settings.social_instagram_link.label",
+        "placeholder": "t:settings_schema.social-media.settings.social_instagram_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "t:settings_schema.social-media.settings.social_youtube_link.label",
+        "placeholder": "t:settings_schema.social-media.settings.social_youtube_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok_link",
+        "label": "t:settings_schema.social-media.settings.social_tiktok_link.label",
+        "placeholder": "t:settings_schema.social-media.settings.social_tiktok_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "t:settings_schema.social-media.settings.social_twitter_link.label",
+        "placeholder": "t:settings_schema.social-media.settings.social_twitter_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat_link",
+        "label": "t:settings_schema.social-media.settings.social_snapchat_link.label",
+        "placeholder": "t:settings_schema.social-media.settings.social_snapchat_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "t:settings_schema.social-media.settings.social_pinterest_link.label",
+        "placeholder": "t:settings_schema.social-media.settings.social_pinterest_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_tumblr_link",
+        "label": "t:settings_schema.social-media.settings.social_tumblr_link.label",
+        "placeholder": "t:settings_schema.social-media.settings.social_tumblr_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_vimeo_link",
+        "label": "t:settings_schema.social-media.settings.social_vimeo_link.label",
+        "placeholder": "t:settings_schema.social-media.settings.social_vimeo_link.info"
+      }
+    ]
+  },
+  {
+    "name": "t:settings_schema.search_input.name",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:settings_schema.search_input.settings.header.content"
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_enabled",
+        "default": true,
+        "label": "t:settings_schema.search_input.settings.predictive_search_enabled.label"
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_vendor",
+        "default": false,
+        "label": "t:settings_schema.search_input.settings.predictive_search_show_vendor.label",
+        "info": "t:settings_schema.search_input.settings.predictive_search_show_vendor.info"
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_price",
+        "default": false,
+        "label": "t:settings_schema.search_input.settings.predictive_search_show_price.label",
+        "info": "t:settings_schema.search_input.settings.predictive_search_show_price.info"
+      }
+    ]
+  }
+]

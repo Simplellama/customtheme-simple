@@ -1,0 +1,81 @@
+<div class="{{ section.settings.class }} py-8">
+  <div class="{% if section.settings.include_padding == true %}py-10 md:py-20 lg:py-24{% endif %}">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when '@app' %}
+          <div class="{% if section.settings.container == true %} rounded-md overflow-hidden container{% endif %}">{% render block %}</div>
+        {% when 'textslider' %}
+          {% render 'text-slider', blockid:  block.id , content_one: block.settings.content_one, content_two: block.settings.content_two, symbol: section.settings.symbol, blocklink: section.settings.link %}
+      {% endcase %}
+    {% endfor %} 
+  </div>
+</div>
+  
+{% schema %}
+  { 
+    "name": "App wrapper",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "include_padding",
+        "default": true,
+        "label": "Make section padding the same as theme (top and bottom)"
+      },
+      {
+        "type": "checkbox",
+        "id": "container",
+        "default": true,
+        "label": "use container to inser max-width"
+      },
+      {
+        "type": "text",
+        "id": "class",
+        "label": "CSS Class"
+      },
+      {
+        "type": "image_picker",
+        "id": "symbol",
+        "label": "Symbol",
+        "info": "Select a symbol to display between each slide"
+      },
+      {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Enter a link to apply to all slides"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "@app"
+      },
+      {
+        "type": "textslider",
+        "name": "Text Slider",
+        "settings": [
+          {
+            "type": "text",
+            "id": "content_one",
+            "label": "Slide Content",
+            "default": "Enter your text here"
+          },
+          {
+            "type": "text",
+            "id": "content_two",
+            "label": "Slide Content",
+            "default": "Enter your text here"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "App wrapper"
+      },
+      {
+        "name": "Text Slider"
+      }
+    ]
+  }
+{% endschema %}
+  

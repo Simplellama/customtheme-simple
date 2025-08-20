@@ -1,0 +1,107 @@
+<div id="sticky-add-to-cart" class="z-[999] bg-white w-fit flex gap-x-4 rounded-md items-center justify-center fixed bottom-2 left-0 right-0 mx-auto px-4 py-4">
+
+    <button id="stick-scroll-btn" class="{% unless product.selected_or_first_available_variant.available %}hidden{% endunless %} flex items-center text-center justify-center gap-x-2 rounded-full  px-5 min-h-[45px] text-base font-semibold text-white w-full shadow bg-primary-black hover:bg-medium-green">
+      {{ 'products.product.add_to_cart' | t }} {% render 'icon', icon: 'cart', size: 18, stroke: '#fff' %}
+    </button>
+
+    <a id="notifyButtonSticky" class="Back_in_stock_button flex group klaviyo-bis-trigger Button Button_secondary w-full relative sm:mx-auto md:mx-0  py-3 {% if product.selected_or_first_available_variant.available %}!hidden{% endif %}" href="#">{{ 'products.product.out_of_stock_notify_me' | t }} {% render 'icon', icon: 'bell', size: 18, stroke: '#000', class: 'group-hover:[&>*]:!stroke-white group-hover:animate-[rotateAnimation_0.5s_ease_infinite]' %}</a> 
+    
+    <div class="flex flex-col gap-x-2 gap-y-1 items-center justify-center w-fit">
+        {% if product.selected_or_first_available_variant.inventory_quantity >= 1 %}
+          
+          <div class="flex items-center gap-x-2 w-full">
+            <div class="bg-[#64ad53] rounded-full w-2 h-2 block"></div>
+            <span class="whitespace-nowrap font-semibold text-base">På lager</span>
+          </div>
+          <span class="text-sm font-light whitespace-nowrap">Leveringstid 1-4 Hverdage</span>
+            
+        {% else %}
+            <div class="flex items-center justify-center w-fit gap-x-2">
+                <div class="bg-red-500 rounded-full w-2 h-2 block"></div>
+                <span class="whitespace-nowrap">Ikke på lager</span>
+            </div>
+        {% endif %}
+    </div>
+ 
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const stickyBar = document.querySelector('#sticky-add-to-cart');
+        const addToCartContainer = document.querySelector('#add_to_cart_container');
+        const scrollButton = document.querySelector('#stick-scroll-btn');
+        const addToCartButton = document.getElementById('stick-scroll-btn');
+        const notifyButton = document.getElementById('notifyButtonSticky');
+      
+        function handleScroll() {
+          const rect = addToCartContainer.getBoundingClientRect();
+          if (rect.top <= window.innerHeight - 40 && rect.bottom >= 40) {
+            stickyBar.classList.add('animate-down-out');
+            stickyBar.classList.remove('animate-up-in');
+          } else {
+            stickyBar.classList.add('animate-up-in');
+            stickyBar.classList.remove('animate-down-out');
+          }
+        }
+      
+        scrollButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            const offsetTop = addToCartContainer.getBoundingClientRect().top + window.pageYOffset; // Get the absolute position of the container
+            window.scrollTo({
+              top: offsetTop - 400, // Stop 50px before the top of the container
+              behavior: 'smooth'
+            });
+          });
+          
+        window.addEventListener('scroll', handleScroll);
+        handleScroll(); // Initial check
+
+        // Function to update the button based on the selected size option
+        function updateButtonBasedOnSizeOption() {
+          const sizeOptions = document.querySelectorAll('.size-option');
+          
+          if (sizeOptions && addToCartButton) {
+            sizeOptions.forEach((sizeOption) => {
+              sizeOption.addEventListener('click', function (e) {
+                const isDisabled = sizeOption.hasAttribute('data-disabled');
+                
+                if (isDisabled) {
+                  // Size option is disabled, show the "Notify Me When Available" button
+                  addToCartButton.classList.add('hidden');
+                  notifyButton.classList.remove('!hidden');
+                  notifyButton.classList.add('!flex');
+                } else {
+                  // Size option is not disabled, show the "Add to Cart" button
+                  addToCartButton.classList.remove('hidden');
+                  notifyButton.classList.add('!hidden');
+                  notifyButton.classList.remove('!flex');
+                }
+              });
+            });
+          }
+        }
+
+        updateButtonBasedOnSizeOption();
+      });
+      
+</script>
+
+<style>
+  @keyframes downOut {
+    from { transform: translateY(0); }
+    to { transform: translateY(100%); }
+  }
+
+  @keyframes upIn {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .animate-down-out {
+    animation: downOut 0.5s forwards;
+  }
+
+  .animate-up-in {
+    animation: upIn 0.5s forwards;
+  }
+</style>

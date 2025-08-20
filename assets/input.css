@@ -1,0 +1,236 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components { 
+
+    html {
+        line-height: 1.3rem;
+    }
+    
+    /* Fonts */
+
+    h1, .Heading {
+        font-family: 'Sharp_Sans', sans-serif;
+    }
+
+    p, span, a, li, label, input, textarea, select, button, input::placeholder {
+        font-family: 'Sharp_Sans', sans-serif;
+    }
+
+    .main-header a {
+        font-family: 'Sharp_Sans', sans-serif;
+    }  
+
+    .heading_bold { 
+        font-family: 'Sharp_Sans', sans-serif;
+    }
+  
+ 
+    .font-regular {
+        font-family: 'Sharp_Sans', sans-serif;
+    }
+
+
+    .Button { 
+        position: relative;
+        overflow: hidden;
+        display: block;
+        width: fit-content;
+        padding: 1rem 40px;
+        font-weight: 400;
+        min-width: fit-content;
+        height: fit-content;
+        align-items: center; 
+        gap: 0.7rem;
+        font-size: 1.2rem;
+        cursor: pointer; 
+        text-align: center;
+        justify-content: center;
+        font-family: 'Sharp_Sans', sans-serif;
+    }
+
+    .Button_primary {
+        background: linear-gradient(to top right, var(--primary-orange), var(--primary-red));
+        color: #fff;
+        border: solid 1px var(--primary-button);
+        border-radius: 5px;
+        background-size: 200% 200%;
+        background-position: 0% 0%;
+        transition: all 0.5s ease;
+      }
+      
+      .Button_primary:hover svg {
+        transform: scale(1.1);
+        transform-origin: center;
+      }
+      
+
+    .Button_disabled {
+        background: #E5E4E2;
+        color: #BABBB2;
+        border: solid 1px transparent;
+        pointer-events: none;
+    }
+
+    .Button_secondary {
+        background: var(--primary-bg);
+        color: var(--secondary-button);
+        border: solid 1px var(--secondary-button);
+        border-radius: 5px;
+        transition: transform 0.2s ease;
+    }
+
+
+    .Button_secondary svg {
+        transition: transform 0.2s ease;
+    }
+
+    .Button_secondary:hover {
+        background:var(--secondary-button);
+        color: var(--primary-bg);
+    } 
+
+    .Button_secondary:hover svg {
+        transform: scale(1.3);
+        transform-origin: center;
+    } 
+
+    .Button_secondary:hover svg path{
+        fill: var(--primary-bg);
+    } 
+
+
+    .Button_tertiary {
+        color: var(--primary-bg);
+        background: var(--tertiary-button);
+        border: solid 1px var(--tertiary-button);
+        border-radius: 5px; 
+    }
+
+    .Button_tertiary:hover {
+        background:var(--primary-bg);
+        color: var(--tertiary-button);
+    } 
+
+    .Button_tertiary:hover svg {
+        transform: scale(1.3);
+        transform-origin: center;
+    } 
+
+    .Button_tertiary:hover svg path{
+        fill: var(--tertiary-button);
+    } 
+
+
+
+    
+
+
+    .flash-blur .pricing {
+        filter: blur(8px);
+        pointer-events: none;
+    }
+
+    .flash-blur .Product-item {
+        filter: blur(1px);
+        pointer-events: none;
+    }
+
+
+    .flash-blur .label_container, .flash-blur .color_list {
+        display: none;
+    }
+
+    .grid-cols-4 { 
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-cols-auto-fit-minmax {
+        grid-template-columns: repeat(auto-fit, minmax(min(45vw, 100%), 1fr));
+    }
+
+    .container {
+        padding: 0 1rem;
+        margin: 0 auto;
+        max-width: unset;
+    }
+
+      
+    @media screen and (max-width: 768px) {
+        .Button { 
+            position: relative;
+            overflow: hidden;
+            display: block;
+            width: fit-content;
+            padding: 8px 10px;
+            min-width: fit-content;
+            height: fit-content;
+            align-items: center;
+            gap: 0.7rem;
+            cursor: pointer; 
+            text-align: center;
+            justify-content: center;
+            
+            font-size: 0.9rem;
+        }
+
+        .splide__arrow--prev {
+            display: none;
+        }
+        
+    }
+
+    .Product-info  .splide__pagination {
+        bottom: -1rem;
+        width: 100%;
+        left: 0;
+        right: 0;  
+        max-width: 100%;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        padding: 0px 0;
+        overflow: hidden;
+        border-radius: 5px;
+      }
+    
+    
+      .Product-info .splide__pagination li {
+        width: 100%;
+      }
+     
+      .Product-info .splide__pagination .splide__pagination__page {
+        width: 100%;
+        background: #d9d9d9;
+        height: 5px;
+      }
+    
+      .Product-info .splide__pagination__page.is-active {
+        background: var(--primary-orange);
+      }
+    
+      .bundle-card-slider .splide__arrows {
+        position: absolute;
+        height: fit-content;
+        width: fit-content;
+        left: 2px;
+        right: unset;
+      
+        gap: 0.3rem;
+      }
+    
+      .bundle-card-slider .splide__arrows .splide__arrow {
+        height: 30px;
+        width: 30px;
+      }
+      
+    
+} 

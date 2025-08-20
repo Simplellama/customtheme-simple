@@ -1,0 +1,112 @@
+<div class="">
+    <div class="pt-10 pb-24 xl:mx-auto max-w-screen-pageMaxWidth">
+        <div class="Section_header">
+            <div class="flex flex-col gap-y-2 pb-6 w-full text-center">
+                <p class="text-lg/7 font-bold uppercase text-primary-orange">{{ section.settings.subtitle }}</p>
+                <h3 class="Heading tracking-tight text-5xl/tight sm:text-7xl/tight font-bold text-primary-text">{{ section.settings.title }}</h3>
+            </div>
+        </div>
+  
+        <div class="mt-4 flow-root">
+            <div class="">
+                <div class="relative box-content py-2 xl:overflow-visible w-full">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-{{ section.blocks.size }} gap-4 px-4 sm:px-6 lg:px-8 xl:px-0">
+                        {% for block in section.blocks %}
+                        <a href="{{ block.settings.link }}" class="relative flex flex-col item overflow-hidden bg-secondary-bg-400 hover:opacity-75">
+                            {% if block.settings.label != blank %}<span class="ProductItem__Label absolute right-4 top-4 inline-flex items-center rounded-full {% if block.settings.label contains 'Udsalg' %} bg-primary-red {% else %} bg-medium-green {% endif %} px-3 py-2 w-fit text-sm font-semibold text-white">{{ block.settings.label }}</span>{% endif %}
+                            <span aria-hidden="true" class="relative flex items-center h-full min-h-[300px] md:min-h-[470px]">
+                                <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}" class="size-full object-cover">
+                            </span>
+                            <div class="flex flex-col justify-center items-center py-6 bg-secondary-bg">
+                                <span class="relative mt-auto text-center text-xl font-bold text-primary-text">{{ block.settings.title }}</span>
+                                <span class="relative py-1 mt-auto text-center text-sm">{{ block.settings.subtitle }}</span>
+                                <div class="w-full flex justify-center items-center">
+                                    <div class="flex px-4 py-2 gap-x-2">
+                                        <div class="flex items-center mt-1 mb-4 text-center justify-center gap-x-2 rounded-full px-4 min-h-[35px] text-base font-semibold text-white w-fit min-w-[150px] bg-primary-black hover:bg-medium-green">
+                                            {{ block.settings.btn_text }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+{% schema %}
+{
+  "name": "Collection cols",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading"
+    },
+    {
+      "type": "url",
+      "id": "subtitle_link",
+      "label": "Subheading Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle"
+        },
+        {
+          "type": "text",
+          "id": "btn_text",
+          "label": "Button Text"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection cols",
+      "category": "section",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {}
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

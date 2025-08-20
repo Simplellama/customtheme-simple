@@ -1,0 +1,43 @@
+{% comment %} {% assign bundle_items = product.metafields.custom.product_specs%}
+
+<div class="{{ class }} absolute">
+    <ul class="flex flex-wrap gap-x-1 gap-y-2 w-full justify-start  overflow-hidden" id="bundle-list">
+
+        {% if bundle_items.value.Persons != blank %}
+            <li class="inline-flex items-center rounded-full bg-primary-bg px-3 py-1 text-sm font-medium text-primary-text ring-1 ring-600/20 ring-border hover:bg-primary-black hover:text-white group ring-inset">
+                <button class="panel-item-trigger-{{ forloop.index }} flex w-full justify-between items-center">
+                        <div class="flex items-center gap-x-1 [&>*]group-hover:fill-white "> 
+                        {% comment %} {% render 'icon', icon: 'solid-circle', size: '10px', fill: 'var(--primary-text)' %} {% endcomment %}
+                        <p class="text-sm/5">{{ bundle_items.value.Persons }} Pers.</p> 
+                        {% comment %} {% render 'icon', icon: 'check', size: '14px', class: 'fill-light-green' %} {% endcomment %}
+                        </div>
+
+                    </button>  
+                </li>
+        {% endif %}
+        {% if bundle_items.value.Persons != blank %}
+            <li class="inline-flex items-center rounded-full bg-primary-bg px-3 py-1 text-sm font-medium text-primary-text ring-1 ring-600/20 ring-border hover:bg-primary-black hover:text-white group ring-inset">
+                <button class="panel-item-trigger-{{ forloop.index }} flex w-full justify-between items-center">
+                        <div class="flex items-center gap-x-1 [&>*]group-hover:fill-white "> 
+                        {% comment %} {% render 'icon', icon: 'solid-circle', size: '10px', fill: 'var(--primary-text)' %} {% endcomment %}
+                        <p class="text-sm/5">Ovn: 20kg</p> 
+                        {% comment %} {% render 'icon', icon: 'check', size: '14px', class: 'fill-light-green' %} {% endcomment %}
+                        </div>
+
+                    </button>  
+                </li>
+        {% endif %}
+        {% if bundle_items.value.Persons != blank %}
+            <li class="inline-flex items-center rounded-full bg-primary-bg px-3 py-1 text-sm font-medium text-primary-text ring-1 ring-600/20 ring-border hover:bg-primary-black hover:text-white group ring-inset">
+                <button class="panel-item-trigger-{{ forloop.index }} flex w-full justify-between items-center">
+                        <div class="flex items-center gap-x-1 [&>*]group-hover:fill-white "> 
+                        {% comment %} {% render 'icon', icon: 'solid-circle', size: '10px', fill: 'var(--primary-text)' %} {% endcomment %}
+                        <p class="text-sm/5">Telt: 20kg</p> 
+                        {% comment %} {% render 'icon', icon: 'check', size: '14px', class: 'fill-light-green' %} {% endcomment %}
+                        </div>
+
+                    </button>  
+                </li>
+        {% endif %}
+    </ul>
+</div> {% endcomment %}

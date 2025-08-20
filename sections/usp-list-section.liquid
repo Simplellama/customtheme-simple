@@ -1,0 +1,71 @@
+<section class="w-full pt-24 pb-24 lg:pb-56">
+    <div class="container flex flex-col gap-y-8">
+        <div class="flex flex-col text-center gap-y-2 pb-2 sm:pb-8 w-full">
+            <p class="text-lg/7 font-bold uppercase text-primary-orange">{{ section.settings.subtitle }}</p>
+            <h3 class="Heading tracking-tight text-7xl font-bold text-primary-text">{{ section.settings.title }}</h3>
+        </div>
+        <div class=" grid grid-cols-12 gap-4 justify-between">
+            {% for block in section.blocks %}
+                {% if block.settings.icon != blank %}
+                    <div class="bg-secondary-bg col-span-12 sm:col-span-6 lg:col-span-3 flex flex-col gap-y-4 py-16 px-6 items-center text-center border-primary-bg">
+                        <img class="h-10 w-10" src="{{ block.settings.icon | image_url: width: 60 }}" alt="{{ block.settings.title }}">
+                        <div class="flex flex-col gap-y-2 pt-1">
+                            <h3 class="Heading tracking-tight text-2xl/7 font-bold text-primary-text">{{ block.settings.title }}</h3>
+                            <div class="max-w-[85%] sm:max-w-[70%] mx-auto font-light text-base/5 text-primary-text pt-2">{{ block.settings.richtext }}</div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div> 
+    </div> 
+</section>
+
+{% schema %}
+{
+    "name": "USP panel section",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Subtitle"
+        }
+    ],
+    "blocks": [
+        {
+            "name": "Info panel",
+            "type": "feature",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title"
+                },
+                {
+                    "type": "richtext",
+                    "id": "richtext",
+                    "label": "Richtext"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "icon",
+                    "label": "Icon or image"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "USP panel section",
+            "category": "section",
+            "blocks": [
+            
+            ]
+        }
+    ]
+}
+{% endschema %}

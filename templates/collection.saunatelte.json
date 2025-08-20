@@ -1,0 +1,65 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs_zb6zbe": {
+      "type": "breadcrumbs",
+      "settings": {}
+    },
+    "featured_collection_jqaQxf": {
+     "type": "featured-collection",
+      "settings": {
+        "title": "Sauna startpakker",
+        "subtitle": "Vi har gjort det nemt",
+        "tab1_title": "Kube",
+        "collection1": "",
+        "product_list1": [
+          "kube-basic",
+          "kube-premium-pakke",
+          "kube-deluxe-pakke"
+        ],
+        "tab2_title": "Glöd",
+        "collection2": "",
+        "product_list2": [
+          "glod-basis",
+          "glod-premium-pakke",
+          "glod-deluxe-pakke"
+        ],
+        "tab3_title": "Elda",
+        "collection3": "",
+        "product_list3": [
+          "elda-basic-pakke",
+          "elda-premium-pakke",
+          "elda-deluxe-pakke"
+        ],
+        "button_text": "",
+        "button_link": "",
+        "limit": "4"
+      }
+    },
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "enable_bundle_quick_add": false,
+        "rows_per_page": "3"
+      }
+    },
+    "collection_bottom_YEnLL4": {
+      "type": "collection-bottom",
+      "settings": {}
+    }
+  },
+  "order": [
+    "breadcrumbs_zb6zbe",
+    "featured_collection_jqaQxf",
+    "main",
+    "collection_bottom_YEnLL4"
+  ]
+}

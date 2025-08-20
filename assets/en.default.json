@@ -1,0 +1,14 @@
+{
+  "byb": {
+    "add_bundle_to_cart": "Add bundle to cart",
+    "your_price": "Your price",
+    "before_price": "Before price",
+    "saving": "Saving"
+  },
+  "products": {
+    "product": {
+      "sold_out": "Sold out",
+      "add_to_bundle": "Add to bundle"
+    }
+  }
+}

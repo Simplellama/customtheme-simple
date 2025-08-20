@@ -1,0 +1,845 @@
+{% assign basic_items = shop.metaobjects.bundle_basic.values %}
+
+<!-- JSON Template holding the basic items data -->
+<script defer type="text/template" data-basic-products-json>
+{
+  "items": [
+    {% for item in basic_items %}
+      {% for prod_item in item.bundle_basic.value %}
+        {
+          "title": "{{ prod_item.title }}",
+          "img": "{{ prod_item.img | img_url: '200x' }}"
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    {% endfor %}
+  ]
+}
+</script>
+
+<!-- Parse JSON data from the template and set it on a global variable -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var basicProductsScript = document.querySelector('script[data-basic-products-json]');
+    if (basicProductsScript) {
+      try {
+        // Make the data available globally
+        window.basicProductsData = JSON.parse(basicProductsScript.textContent);
+        console.log("Parsed basicProductsData:", window.basicProductsData);
+      } catch (e) {
+        console.error("Error parsing basic products JSON:", e);
+      }
+    } else {
+      console.error("No basic products JSON script found.");
+    }
+  });
+</script>
+
+{% if section.settings.collection1.products.size > 0 or section.settings.product_list1 != blank or section.settings.collection2.products.size > 0 or section.settings.product_list2 != blank or section.settings.collection3.products.size > 0 or section.settings.product_list3 != blank %}
+  <section class="Featured_collection {% if template.name == 'collection' %}mt-0{% else %}mt-12{% endif %} mb-40 mx-4 px-4 sm:px-6 lg:px-12 mx-auto max-w-7xl"> 
+    <div class="">
+      <div class="Section_header">
+        <div class="flex flex-col gap-y-2 pb-6 w-full text-center">
+          <p class="text-lg/7 font-bold uppercase text-primary-orange">{{ section.settings.subtitle }}</p>
+          <h3 class="Heading tracking-tight text-5xl/tight sm:text-7xl/tight font-bold text-primary-text">{{ section.settings.title }}</h3>
+        </div>  
+      </div>
+      
+      <!-- Tab Buttons -->
+      <div class="featured-tabs flex justify-center gap-1 sm:gap-4 mb-10">
+        <button class="tab-button flex flex-col items-center" data-tab="tab1-{{ section.id }}" data-tab-button="true" data-target-tab="tab-content1-{{ section.id }}">
+          <p class="text-sm sm:text-base">{{ section.settings.tab1_title | default: "Tab 1" }}</p>
+          <p class="tab-subtitle text-xs text-gray-500">{{ section.settings.tab1_subtitle }}</p>
+        </button>
+        <button class="tab-button flex flex-col items-center active" data-tab="tab2-{{ section.id }}" data-tab-button="true" data-target-tab="tab-content2-{{ section.id }}">
+          <p class="text-sm sm:text-base">{{ section.settings.tab2_title | default: "Tab 2" }}</p>
+          <p class="tab-subtitle text-xs text-gray-500">{{ section.settings.tab2_subtitle }}</p>
+        </button>
+        <button class="tab-button flex flex-col items-center" data-tab="tab3-{{ section.id }}" data-tab-button="true" data-target-tab="tab-content3-{{ section.id }}">
+          <p class="text-sm sm:text-base">{{ section.settings.tab3_title | default: "Tab 3" }}</p>
+          <p class="tab-subtitle text-xs text-gray-500">{{ section.settings.tab3_subtitle }}</p>
+        </button>
+      </div>
+      
+      <!-- Tab Contents -->
+      <div class="tab-contents">
+        <!-- Tab 1 Content -->
+        <div id="tab-content1-{{ section.id }}" class="tab-content">
+    
+          <div class="featured-collection-slider relative mx-auto"> 
+            <!-- Progress bar container -->
+            <div class="featured-collection-progress-container splide-progress-container">
+              <div class="featured-collection-progress-bar splide-progress-bar" id="featured-progress1-{{ section.id }}"></div>
+            </div>
+
+            <div class="splide" id="splide1-{{ section.id }}">
+              <div class="splide__track">
+                <ul class="splide__list flex flex-row gap-2">
+                  {% assign list1 =  %}
+                  {% if section.settings.product_list1 != blank %}
+                    {% assign list1 = section.settings.product_list1 %}
+                  {% else %}
+                    {% assign list1 = section.settings.collection1.products %}
+                  {% endif %}
+     
+                  {% for product in list1 %}    
+
+                      <li class="splide__slide w-full max-w-[380px] relative "> 
+                        {%- if forloop.index <= 4 -%}
+                          {% render 'card-product', product: product, lazy_load: 'eager', height: 'small', col_count: section.settings.limit, product_nr: 'tab1-' | append: forloop.index %}
+                        {% else %}
+                          {% render 'card-product', product: product, lazy_load: 'lazy', height: 'small', col_count: section.settings.limit, product_nr: 'tab1-' | append: forloop.index %}
+                        {% endif %}
+                      </li>
+
+                  {% endfor %}
+                </ul>
+              </div>
+       
+            </div>
+          </div>
+        </div>
+        
+        <!-- Tab 2 Content -->
+        <div id="tab-content2-{{ section.id }}" class="tab-content active">
+      
+          <div class="featured-collection-slider relative mx-auto"> 
+            <div class="splide" id="splide2-{{ section.id }}">
+              <!-- Progress bar container -->
+              <div class="featured-collection-progress-container splide-progress-container">
+                <div class="featured-collection-progress-bar splide-progress-bar" id="featured-progress2-{{ section.id }}"></div>
+              </div>
+
+              <div class="splide__track">
+                <ul class="splide__list flex flex-row gap-2">
+                  {% assign list2 =  %}
+                  {% if section.settings.product_list2 != blank %}
+                    {% assign list2 = section.settings.product_list2 %}
+                  {% else %}
+                    {% assign list2 = section.settings.collection2.products %}
+                  {% endif %}
+     
+                  {% for product in list2 %}    
+              
+                      <li class="splide__slide w-full relative max-w-[380px]"> 
+                        {%- if  forloop.index <= 4 -%}
+                          {% render 'card-product', product: product, lazy_load: 'lazy', height: 'small', col_count: section.settings.limit, product_nr: 'tab2-' | append: forloop.index %}
+                        {% else %}
+                          {% render 'card-product', product: product, lazy_load: 'lazy', height: 'small', col_count: section.settings.limit, product_nr: 'tab2-' | append: forloop.index %}
+                        {% endif %}
+                      </li>
+        
+                  {% endfor %}
+                </ul>
+              </div>
+       
+            </div>
+          </div>
+        </div>
+        
+        <!-- Tab 3 Content -->
+        <div id="tab-content3-{{ section.id }}" class="tab-content">
+          <div class="featured-collection-slider relative mx-auto"> 
+            <!-- Progress bar container -->
+            <div class="featured-collection-progress-container splide-progress-container">
+              <div class="featured-collection-progress-bar splide-progress-bar" id="featured-progress3-{{ section.id }}"></div>
+            </div>
+            <div class="splide" id="splide3-{{ section.id }}">
+              <div class="splide__track">
+                <ul class="splide__list flex flex-row gap-2">
+                  {% assign list3 =  %}
+                  {% if section.settings.product_list3 != blank %}
+                    {% assign list3 = section.settings.product_list3 %}
+                  {% else %}
+                    {% assign list3 = section.settings.collection3.products %}
+                  {% endif %}
+     
+                  {% for product in list3 %}    
+                  
+                      <li class="splide__slide w-full relative max-w-[380px]"> 
+                        {%- if forloop.index <= 4 -%}
+                          {% render 'card-product', product: product, lazy_load: 'lazy', height: 'small', col_count: section.settings.limit, product_nr: 'tab3-' | append: forloop.index %}
+                        {% else %}
+                          {% render 'card-product', product: product, lazy_load: 'lazy', height: 'small', col_count: section.settings.limit, product_nr: 'tab3-' | append: forloop.index %}
+                        {% endif %}
+                      </li>
+         
+                  {% endfor %}
+                </ul>
+              </div>
+      
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {% if section.settings.button_text != blank and section.settings.button_link != blank  %}
+        <a href="{{ section.settings.button_link }}" class="flex-none w-fit text-center mx-auto block rounded-full bg-light-green px-8 py-2.5 text-base font-semibold text-dark-green hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white mt-6">
+          {{ section.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+  </section>
+{% endif %}
+
+
+<style>
+  /* Tab Styles */
+  .featured-tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .tab-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    background-color: #f3f4f6;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-width: 160px;
+    border: 1px solid transparent;
+  }
+  @media (max-width: 640px) {
+    .tab-button {
+      min-width: 100px;
+      padding: 0.75rem 1rem;
+    }
+  }
+
+  .tab-button.active {
+    background-color: #ea6b41;
+    color: white;
+    border-color: #ea6b41;
+  }
+
+  .tab-button.active .tab-subtitle {
+    color: white;
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+  
+  /* Style to create peek effect without changing padding dynamically */
+  {% for i in (1..3) %}
+  #splide{{ i }}-{{ section.id }} .splide__slide:last-child {
+    margin-right: 80px; /* Default peek */
+  }
+  
+  /* Remove the peek effect when at the end */
+  #splide{{ i }}-{{ section.id }}.at-end .splide__slide:last-child {
+    margin-right: 0; /* Remove margin when at end */
+  }
+  {% endfor %}
+  
+  /* Progress bar styles - with more specific selectors */
+  .featured-collection-progress-container {
+    position: relative;
+    width: 100%;
+    height: 10px;
+    background-color: #e2e2e2;
+    overflow: hidden;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+  }
+  
+  .featured-collection-progress-bar {
+    height: 100%;
+    width: 0;
+    background-color: #ea6b41;
+    transition: width 0.3s ease;
+    min-width: 5%;
+  }
+  
+  /* Hide progress bars on laptop screens with !important to override any JS */
+  @media (min-width: 1024px) {
+    .featured-collection-progress-container {
+      display: none !important;
+    }
+  }
+  
+  /* Create enough space for arrows to be visible on smaller screens */
+  @media (max-width: 640px) {
+    .Featured_collection .splide__arrow {
+      transform: translateY(-50%) !important;
+    }
+  }
+</style>
+
+<script defer>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Store all featured sliders in a single object to access them when tabs change
+    window.featuredSliders = window.featuredSliders || {};
+    
+    // Function to check if we're on a laptop/desktop
+    const isLaptopOrDesktop = function() {
+      return window.innerWidth >= 1024;
+    };
+    
+    // Function to check if slider needs scrolling (has more content than can fit)
+    const checkSliderNeedsScrolling = function(sliderId) {
+      const slider = document.getElementById(sliderId);
+      if (!slider) return true;
+      
+      // On laptop/desktop, don't bother with calculation - always hide progress bar
+      if (isLaptopOrDesktop()) {
+        const progressContainer = slider.querySelector('.featured-collection-progress-container');
+        if (progressContainer) {
+          progressContainer.style.display = 'none';
+        }
+        return false;
+      }
+      
+      // Rest of the existing function for mobile devices
+      const splideInstance = window.featuredSliders[sliderId];
+      if (!splideInstance || !splideInstance.Components) return true;
+      
+      const Components = splideInstance.Components;
+      const list = Components.Elements.list;
+      const track = Components.Elements.track;
+      
+      if (!list || !track) return true;
+      
+      // Get all slides
+      const slides = slider.querySelectorAll('.splide__slide');
+      if (!slides.length) return true;
+      
+      // Calculate total width of all slides including gaps
+      const slideWidth = slides[0].offsetWidth;
+      const gap = 15; // Must match the gap value in sliderConfig
+      const totalSlidesWidth = (slideWidth * slides.length) + (gap * (slides.length - 1));
+      
+      // Calculate visible container width
+      const containerWidth = slider.clientWidth;
+      
+      // If total content width is less than or equal to container width, no scrolling needed
+      // Add small margin for rounding errors
+      const needsScrolling = totalSlidesWidth > (containerWidth + 10);
+      
+      console.log(`Slider ${sliderId}: Total slides width: ${totalSlidesWidth}px, Container width: ${containerWidth}px, Needs scrolling: ${needsScrolling}`);
+      
+      // Get the progress container with more specific selector
+      const progressContainer = slider.querySelector('.featured-collection-progress-container');
+      if (progressContainer && !isLaptopOrDesktop()) { // Only show on mobile
+        progressContainer.style.display = needsScrolling ? 'block' : 'none';
+      }
+      
+      return needsScrolling;
+    };
+    
+    // Create a helper function to initialize a slider
+    const initializeTabSlider = function(tabId, sliderId) {
+      const featuredSlider = document.getElementById(sliderId);
+      if (!featuredSlider) return null;
+      
+      // Skip if already initialized
+      if (featuredSlider.dataset.initialized === 'true') {
+        return window.featuredSliders[sliderId];
+      }
+      
+      console.log(`Initializing slider ${sliderId}`);
+      
+      // Namespace all selectors with the specific ID to avoid conflicts
+      const slideItems = featuredSlider.querySelectorAll('.splide__slide');
+      const progressBar = document.getElementById(`featured-progress${tabId}-{{ section.id }}`);
+      
+      // Base configuration for the slider
+      const sliderConfig = {
+        type: 'slide',
+        omitEnd: true,
+        pagination: false,
+        drag: true,
+        gap: 15,
+        arrows: false, 
+        perPage: 3,
+        perMove: 1,
+        focus: 0,
+        trimSpace: 'move',
+        breakpoints: {
+          1200: {
+            perPage: 2,
+            focus: 0,
+            trimSpace: 'move' 
+          },
+          640: {  
+            perPage: 1,
+            trimSpace: 'move'
+          },
+        }
+      };
+      
+      // Create a dedicated variable name to avoid conflicts
+      const collectionSlider = new Splide(featuredSlider, sliderConfig);
+      
+      // Function to update progress bar - scoped to this slider only
+      const updateProgress = function() {
+        if (!progressBar) return;
+        
+        // Skip progress updates on laptop/desktop
+        if (isLaptopOrDesktop()) return;
+        
+        // Get slider dimensions and elements
+        const Components = collectionSlider.Components;
+        if (!Components) return;
+        
+        const track = Components.Elements.track;
+        const list = Components.Elements.list;
+        
+        // Try to get the actual track position for smoother updates during drag
+        if (track && track.style.transform) {
+          const transformValue = track.style.transform.match(/translateX\(([^)]+)\)/);
+          if (transformValue && transformValue[1]) {
+            const currentPos = parseFloat(transformValue[1]); 
+            const totalWidth = list.scrollWidth - featuredSlider.offsetWidth;
+            
+            // If we're at the maximum scroll position (end of content)
+            if (Math.abs(currentPos) >= totalWidth - 30) {
+              progressBar.style.width = '100%';
+              return;
+            }
+            
+            let percentage = Math.min(Math.abs(currentPos) / totalWidth * 100, 100);
+            progressBar.style.width = Math.max(5, percentage) + '%';
+            return;
+          }
+        }
+        
+        // Fallback to index-based calculation
+        if (Components.Controller) {
+          const end = Components.Controller.getEnd() + 1;
+          const currentIndex = collectionSlider.index;
+          const percentage = Math.min(((currentIndex + 1) / end) * 100, 100);
+          progressBar.style.width = Math.max(5, percentage) + '%';
+        }
+      };
+      
+      // Add position tracking without altering other sliders
+      collectionSlider.on('moved', function() {
+        const currentIndex = collectionSlider.index;
+        const Components = collectionSlider.Components;
+        if (!Components || !Components.Controller) return;
+        
+        const lastIndex = Components.Controller.getEnd();
+        
+        // Use class operations directly on this slider element only
+        if (currentIndex >= lastIndex) {
+          featuredSlider.classList.add('at-end');
+        } else {
+          featuredSlider.classList.remove('at-end');
+        }
+        
+        if (currentIndex === 0) {
+          featuredSlider.classList.add('at-start');
+        } else {
+          featuredSlider.classList.remove('at-start');
+        }
+        
+        updateProgress();
+      });
+      
+      // Bind events to this specific slider only
+      ['move', 'drag', 'dragged', 'scroll', 'scrolled', 'shifted', 'resize', 'resized'].forEach(event => {
+        collectionSlider.on(event, updateProgress);
+      });
+      
+      // Mount the slider
+      collectionSlider.mount();
+      
+      // Add unique IDs to the splide arrows for targeting
+      setTimeout(() => {
+        const prevArrow = featuredSlider.querySelector('.splide__arrow--prev');
+        const nextArrow = featuredSlider.querySelector('.splide__arrow--next');
+        if (prevArrow) prevArrow.id = `featured-prev-arrow-${tabId}-{{ section.id }}`;
+        if (nextArrow) nextArrow.id = `featured-next-arrow-${tabId}-{{ section.id }}`;
+      }, 10);
+      
+      // Initial progress update
+      setTimeout(updateProgress, 100);
+      
+      // Check multiple times to ensure we get accurate measurements as content loads
+      const checkProgressBarVisibility = () => checkSliderNeedsScrolling(sliderId);
+      
+      // First check - after initial mount
+      setTimeout(checkProgressBarVisibility, 100);
+      
+      // Second check - after most images might have started loading
+      setTimeout(checkProgressBarVisibility, 500);
+      
+      // Final check - after all images likely loaded
+      setTimeout(checkProgressBarVisibility, 1500);
+      
+      // Mark as initialized
+      featuredSlider.dataset.initialized = 'true';
+      
+      // Store the slider instance
+      window.featuredSliders[sliderId] = collectionSlider;
+      
+      return collectionSlider;
+    };
+    
+    // Function to initialize bundle sliders in the active tab
+    const initializeBundleSlidersInTab = function(tabContentId) {
+      const tabContent = document.getElementById(tabContentId);
+      if (!tabContent) return;
+      
+      // Find all bundle sliders in this tab
+      const bundleSliders = tabContent.querySelectorAll('.bundle-card-slider');
+      bundleSliders.forEach(slider => {
+        // Make sure each slider has a unique identifier
+        const productNr = slider.dataset.productNr || 'unknown';
+        const uniqueId = `bundle-slider-${tabContentId}-${productNr}`;
+        
+        // Set unique identifiers for the progress bar
+        const progressBar = slider.querySelector('.splide-progress-bar');
+        if (progressBar) {
+          progressBar.id = `bundle-progress-${uniqueId}`;
+          // Explicitly reset progress bar to initial state when loading a new tab
+          progressBar.style.width = '5%';
+        }
+        
+        // Add unique identifier to the slider
+        slider.dataset.sliderId = uniqueId;
+        
+        // Initialize if not already initialized
+        if (slider.dataset.initialized !== 'true') {
+          // Check for bundleSliderFunctions, but if not available, use the local initialization
+          if (window.bundleSliderFunctions) {
+            window.bundleSliderFunctions.initialize(slider);
+          } else if (typeof initializeSplide === 'function') {
+            initializeSplide(slider, false);
+          } else if (slider.sliderInstance === undefined && typeof Splide !== 'undefined') {
+            // Fallback to direct initialization if nothing else works
+            const instance = new Splide(slider, {
+              type: 'slide',
+              autoWidth: true,
+              pagination: false,
+              arrows: true,
+              padding: { right: '15px', left: '15px' },
+              gap: '3px',
+              drag: 'free',
+              snap: false,
+              omitEnd: true,
+              speed: 400
+            }).mount();
+            slider.sliderInstance = instance;
+          }
+          
+          slider.dataset.initialized = 'true';
+        } else {
+          // For already initialized sliders, just make sure progress is reset
+          resetBundleSliderProgress(slider);
+        }
+      });
+    };
+    
+    // Function to reset a bundle slider's progress bar
+    const resetBundleSliderProgress = function(slider) {
+      const progressBar = slider.querySelector('.splide-progress-bar');
+      if (progressBar) {
+        progressBar.style.width = '5%';
+      }
+      
+      // If the slider has a splide instance, try to update its position
+      if (slider.sliderInstance && typeof slider.sliderInstance.go === 'function') {
+        slider.sliderInstance.go(0);
+      }
+    };
+    
+    // Function to handle bundle slider interaction with the active featured slider
+    const setupBundleSliderInteraction = function(bundleSlider) {
+      // Find the active featured slider
+      const activeTab = document.querySelector('.tab-content.active');
+      if (!activeTab) return;
+      
+      const activeTabId = activeTab.id.replace('tab-content', '').split('-')[0];
+      const sliderId = `splide${activeTabId}-{{ section.id }}`;
+      
+      const featuredSlider = window.featuredSliders[sliderId];
+      if (!featuredSlider) return;
+      
+      // Feature Collection interaction with Bundle sliders
+      const handleBundleInteraction = function(isEntering) {
+        if (featuredSlider && 
+            featuredSlider.Components && 
+            featuredSlider.Components.Drag) {
+          featuredSlider.Components.Drag.disable(isEntering);
+        }
+      };
+      
+      // Use separate event listeners for mouseenter/mouseleave
+      const mouseEnterHandler = function() { 
+        handleBundleInteraction(true);
+        // Reset this bundle slider when mouse enters
+        if (window.bundleSliderFunctions && bundleSlider.dataset.sliderId) {
+          window.bundleSliderFunctions.reset(bundleSlider.dataset.sliderId);
+        }
+      };
+      
+      const mouseLeaveHandler = function() { handleBundleInteraction(false); };
+      
+      // Clear any existing event listeners first to prevent duplication
+      bundleSlider.removeEventListener('mouseenter', mouseEnterHandler);
+      bundleSlider.removeEventListener('mouseleave', mouseLeaveHandler);
+      
+      // Add fresh event listeners
+      bundleSlider.addEventListener('mouseenter', mouseEnterHandler);
+      bundleSlider.addEventListener('mouseleave', mouseLeaveHandler);
+      
+      // Handle touch events with specific handlers
+      const touchStartHandler = function(e) {
+        handleBundleInteraction(true);
+      };
+      
+      // Clean up and re-add touch handlers
+      bundleSlider.removeEventListener('touchstart', touchStartHandler);
+      bundleSlider.addEventListener('touchstart', touchStartHandler, { passive: true });
+    };
+    
+    // One global touchend handler for bundle slider interactions
+    const touchEndHandler = function() {
+      const activeTab = document.querySelector('.tab-content.active');
+      if (!activeTab) return;
+      
+      const activeTabId = activeTab.id.replace('tab-content', '').split('-')[0];
+      const sliderId = `splide${activeTabId}-{{ section.id }}`;
+      
+      const featuredSlider = window.featuredSliders[sliderId];
+      if (!featuredSlider) return;
+      
+      if (featuredSlider && featuredSlider.Components && featuredSlider.Components.Drag) {
+        setTimeout(function() {
+          featuredSlider.Components.Drag.disable(false);
+        }, 100);
+      }
+    };
+    
+    // Clean up and re-add touchend handler
+    document.removeEventListener('touchend', touchEndHandler);
+    document.addEventListener('touchend', touchEndHandler);
+    
+    // Initialize active tab on load
+    const activeTab = document.querySelector('.tab-content.active');
+    if (activeTab) {
+      const activeTabId = activeTab.id.replace('tab-content', '').split('-')[0];
+      const sliderId = `splide${activeTabId}-{{ section.id }}`;
+      initializeTabSlider(activeTabId, sliderId);
+      
+      // Initialize bundle sliders in the active tab
+      initializeBundleSlidersInTab(activeTab.id);
+      
+      // Also set up interactions between bundle sliders and featured slider on initial load
+      setTimeout(() => {
+        const initialBundleSliders = activeTab.querySelectorAll('.bundle-card-slider');
+        initialBundleSliders.forEach(setupBundleSliderInteraction);
+      }, 200); // Small delay to ensure all sliders are properly initialized
+    } 
+    
+    // Handle tab switching
+    const tabButtons = document.querySelectorAll('.tab-button');
+    tabButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const tabId = this.dataset.tab;
+        const targetTabId = this.dataset.targetTab;
+        
+        // Remove active class from all tab buttons and contents
+        document.querySelectorAll('.tab-button').forEach(btn => {
+          btn.classList.remove('active'); 
+        });
+        document.querySelectorAll('.tab-content').forEach(content => { 
+          content.classList.remove('active');
+        });
+        
+        // Add active class to clicked tab button and corresponding content
+        this.classList.add('active');
+        const tabContent = document.getElementById(targetTabId);
+        if (tabContent) {
+          tabContent.classList.add('active');
+          
+          // Initialize the slider for this tab if not already initialized
+          const tabNum = tabId.split('-')[0].replace('tab', '');
+          const sliderId = `splide${tabNum}-{{ section.id }}`;
+          
+          // Initialize featured slider
+          initializeTabSlider(tabNum, sliderId);
+          
+          // Check progress bar visibility multiple times as content loads
+          setTimeout(() => checkSliderNeedsScrolling(sliderId), 150);
+          setTimeout(() => checkSliderNeedsScrolling(sliderId), 500); 
+          setTimeout(() => checkSliderNeedsScrolling(sliderId), 1500);
+          
+          // Initialize bundle sliders in this tab with a delay
+          // to ensure DOM is ready and hidden elements are properly sized
+          setTimeout(() => {
+            // First make sure all bundle sliders in the tab have progress bars reset to initial state
+            const bundleSliders = tabContent.querySelectorAll('.bundle-card-slider');
+            bundleSliders.forEach(slider => {
+              resetBundleSliderProgress(slider);
+            });
+            
+            // Then initialize them
+            initializeBundleSlidersInTab(targetTabId);
+            
+            // Set up interactions between bundle sliders and featured slider
+            bundleSliders.forEach(setupBundleSliderInteraction);
+            
+            // Force a refresh of all bundle sliders to ensure proper display
+            setTimeout(() => {
+              bundleSliders.forEach(slider => {
+                if (slider.sliderInstance && typeof slider.sliderInstance.refresh === 'function') {
+                  slider.sliderInstance.refresh();
+                }
+              });
+            }, 50);
+          }, 100);
+        }
+      });
+    });
+    
+    // Handle window resize to recheck if progress bars should be shown/hidden
+    window.addEventListener('resize', function() {
+      // Immediately hide all progress bars on laptop/desktop
+      if (isLaptopOrDesktop()) {
+        document.querySelectorAll('.featured-collection-progress-container').forEach(container => {
+          container.style.display = 'none';
+        });
+      }
+      
+      // Check all initialized sliders with a slight delay to ensure accurate measurements
+      setTimeout(() => {
+        for (const sliderId in window.featuredSliders) {
+          if (window.featuredSliders[sliderId]) {
+            checkSliderNeedsScrolling(sliderId);
+          }
+        }
+      }, 100);
+    });
+    
+    // Initial check on page load
+    if (isLaptopOrDesktop()) {
+      document.querySelectorAll('.featured-collection-progress-container').forEach(container => {
+        container.style.display = 'none';
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured collection Title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading",
+      "default": "Featured collection Subtitle"
+    },
+    {
+      "type": "text",
+      "id": "tab1_title",
+      "label": "Tab 1 Title",
+      "default": "Tab 1"
+    },
+    {
+      "type": "text",
+      "id": "tab1_subtitle",
+      "label": "Tab 1 Subtitle",
+    },
+    {
+      "id": "collection1",
+      "type": "collection",
+      "label": "Collection for Tab 1",
+      "info": "Select a collection for Tab 1"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list1",
+      "label": "Products for Tab 1",
+      "limit": 20
+    },
+    {
+      "type": "text",
+      "id": "tab2_title",
+      "label": "Tab 2 Title",
+      "default": "Tab 2"
+    },
+    {
+      "type": "text",
+      "id": "tab2_subtitle",
+      "label": "Tab 2 Subtitle",
+    },
+    {
+      "id": "collection2",
+      "type": "collection",
+      "label": "Collection for Tab 2",
+      "info": "Select a collection for Tab 2"
+    },
+    { 
+      "type": "product_list",
+      "id": "product_list2",
+      "label": "Products for Tab 2",
+      "limit": 20
+    },
+    {
+      "type": "text",
+      "id": "tab3_title",
+      "label": "Tab 3 Title",
+      "default": "Tab 3"
+    },
+    {
+      "type": "text",
+      "id": "tab3_subtitle",
+      "label": "Tab 3 Subtitle",
+    },
+    {
+      "id": "collection3",
+      "type": "collection",
+      "label": "Collection for Tab 3",
+      "info": "Select a collection for Tab 3"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list3",
+      "label": "Products for Tab 3",
+      "limit": 20
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "View all button text",
+      "default": "View all"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "View all button link"
+    },
+    {
+      "type": "select",
+      "id": "limit",
+      "label": "Limit",
+      "default": "3",
+      "options": [
+        {"value": "3", "label": "3"},
+        {"value": "4", "label": "4"}
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

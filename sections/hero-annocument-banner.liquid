@@ -1,0 +1,104 @@
+<section class="w-full py-8 mb-4 border-y border-border bg-secondary-bg">
+    <!-- Desktop version -->
+    <div class="hidden md:flex px-8 gap-x-16 items-center justify-between max-w-screen-pageMaxWidth mx-auto">
+        {% for block in section.blocks %}
+            {% if block.settings.title != blank %}
+                <div class="flex gap-x-4 items-center justify-center">
+                    {% if block.settings.icon != blank %}
+                        <img class="w-6" src="{{ block.settings.icon | image_url: width: 60 }}" alt="{{ block.settings.title }}">
+                    {% endif %}
+                    <div class="flex flex-col gap-y-1">
+                        <h3 class="tracking-tight text-xl font-light text-primary-text">{{ block.settings.title }}</h3>
+                        {% if block.settings.richtext != blank %}<div class="richtext-usp text-sm/4 text-primary-text">{{ block.settings.richtext }}</div>{% endif %}
+                    </div>
+                </div>  
+            {% endif %}
+        {% endfor %}
+    </div>
+    
+    <!-- Mobile Splide slider -->
+    <div class="md:hidden splide hero-announcement-splide px-8 max-w-screen-pageMaxWidth mx-auto">
+        <div class="splide__track">
+            <ul class="splide__list">
+                {% for block in section.blocks %}
+                    {% if block.settings.title != blank %}
+                        <li class="splide__slide">
+                            <div class="flex gap-x-4 items-center justify-center">
+                                {% if block.settings.icon != blank %}
+                                    <img class="w-6" src="{{ block.settings.icon | image_url: width: 60 }}" alt="{{ block.settings.title }}">
+                                {% endif %}
+                                <div class="flex flex-col gap-y-1">
+                                    <h3 class="tracking-tight text-xl font-light text-primary-text">{{ block.settings.title }}</h3>
+                                    {% if block.settings.richtext != blank %}<div class="richtext-usp text-sm/4 text-primary-text">{{ block.settings.richtext }}</div>{% endif %}
+                                </div>
+                            </div>
+                        </li>  
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const splideElement = document.querySelector('.hero-announcement-splide');
+            if (splideElement && window.Splide) {
+                new Splide(splideElement, {
+                    perPage: 1,
+                    arrows: false,
+                    pagination: false,
+                    autoplay: true,
+                    interval: 3000,
+                    type: 'loop'
+                }).mount();
+            }
+        });
+    </script>
+</section>
+
+<style>
+    .richtext-usp em {
+        font-size: 10px;
+        font-style: normal;
+    }
+</style>
+
+{% schema %}
+{
+    "name": "Hero announcment banner",
+    "settings": [
+    ],
+    "blocks": [
+        {
+            "name": "Info panel",
+            "type": "feature",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title"
+                },
+                {
+                    "type": "richtext",
+                    "id": "richtext",
+                    "label": "Richtext"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "icon",
+                    "label": "Icon or image"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Hero announcment banner",
+            "category": "section",
+            "blocks": [
+            
+            ]
+        }
+    ]
+}
+{% endschema %}

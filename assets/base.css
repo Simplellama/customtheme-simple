@@ -1,0 +1,195 @@
+:root {
+  --duration-short: 100ms;
+  --duration-default: 200ms;
+  --duration-announcement-bar: 250ms;
+  --duration-medium: 300ms;
+  --duration-long: 500ms;
+  --duration-extra-long: 600ms;
+  --duration-extended: 3s;
+  --ease-out-slow: cubic-bezier(0, 0, 0.3, 1);
+  --animation-slide-in: slideIn var(--duration-extra-long) var(--ease-out-slow) forwards;
+  --animation-fade-in: fadeIn var(--duration-short) var(--ease-out-slow);
+}
+
+@font-face {
+  font-family: "Sharp_Sans";
+  src: url("https://cdn.shopify.com/s/files/1/0682/1229/3772/files/Sharp_Sans.woff?v=1739982414");
+  font-display: auto;
+  font-style: normal;
+  font-weight: 400; 
+}
+
+@font-face {
+  font-family: "Sharp_Sans";
+  src: url("https://cdn.shopify.com/s/files/1/0682/1229/3772/files/SharpSansBold.woff?v=1739982414");
+  font-display: auto;
+  font-style: normal;
+  font-weight: 700;
+} 
+
+@font-face {
+  font-family: "Sharp_Sans";
+  src: url("https://cdn.shopify.com/s/files/1/0682/1229/3772/files/Sharp_Sans_Medium.woff?v=1740047009");
+  font-display: auto;
+  font-style: medium;
+  font-weight: 600;
+} 
+
+
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}	
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr)); 
+}	
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}	  
+
+
+/* arrow animation */
+.animate-arrow .icon-arrow path {
+  transform: translateX(-0.25rem);
+  transition: transform var(--duration-short) ease;
+}
+
+.animate-arrow:hover .icon-arrow path {
+  transform: translateX(-0.05rem); 
+}
+
+/* base-details-summary */
+summary {
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+}
+
+
+summary::-webkit-details-marker {
+  display: none; 
+}
+
+.disclosure-has-popup {
+  position: relative;
+}
+
+.disclosure-has-popup[open] > summary::before {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  display: block;
+  cursor: default;
+  content: ' ';
+  background: transparent;
+}
+
+.disclosure-has-popup > summary::before {
+  display: none;
+}
+
+.disclosure-has-popup[open] > summary + * {
+  z-index: 100;
+}
+
+@media screen and (min-width: 750px) {
+  .disclosure-has-popup[open] > summary + * {
+    z-index: 99;
+  }
+
+  .facets .disclosure-has-popup[open] > summary + * {
+    z-index: 99;
+  }
+}
+
+
+.select .icon-caret,
+.customer select + svg {
+  height: 0.6rem;
+  pointer-events: none;
+  position: absolute;
+  top: calc(50% - 0.2rem);
+  right: calc(var(--inputs-border-width) + 1.5rem);
+}
+
+.select__select,
+.customer select {
+  cursor: pointer;
+  line-height: calc(1 + 0.6 / var(--font-body-scale));
+  padding: 0 calc(var(--inputs-border-width) + 3rem) 0 2rem;
+  margin: var(--inputs-border-width);
+  min-height: calc(var(--inputs-border-width) * 2);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate--ambient > img,
+  .animate--ambient > svg {
+    animation: animateAmbient 10s linear infinite;
+  }
+
+  @keyframes animateAmbient {
+    0% {
+      transform: rotate(0deg) translateX(1em) rotate(0deg) scale(1.2);
+    }
+    100% {
+      transform: rotate(360deg) translateX(1em) rotate(-360deg) scale(1.2);
+    }
+  }
+
+  .scroll-trigger.animate--slide-in .image_container img {
+    opacity: 0.1;
+  }
+
+  .scroll-trigger.animate--slide-in .image_container img {
+    transform: translateY(-1rem);
+  }
+
+  .scroll-trigger:not(.scroll-trigger--offscreen).animate--fade-in .image_container img{
+    opacity: 1;
+    animation: var(--animation-fade-in);
+  }
+
+  .scroll-trigger:not(.scroll-trigger--offscreen).animate--slide-in .image_container img{
+    animation: var(--animation-slide-in);
+    animation-delay: calc(var(--animation-order) * 75ms);
+  }
+
+
+
+  .scroll-trigger.scroll-trigger--design-mode.animate--slide-in .image_container img {
+    transform: translateY(0);
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateY(-1rem);
+      opacity: 0.01;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      transform: translateY(-1rem);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+.scroll-trigger:not(.scroll-trigger--offscreen) .slider--desktop {
+  animation: var(--animation-slide-in);
+}
+
+.scroll-trigger:not(.scroll-trigger--offscreen) .slider--tablet {
+  animation: var(--animation-fade-in);
+}
+

@@ -1,0 +1,207 @@
+{% for block in section.blocks %}
+  {% assign menuTitle = block.settings.menu_id | downcase %}
+  <div data-megamenu="{{ menuTitle }}" class="Mega_menu w-full relative z-[0] bg-primary-bg border-b border-border shadow-lg">
+    <div class="container min-h-[400px] w-full grid {% if block.settings.image_link_3 != blank %} grid-cols-4 {% else %} grid-cols-4 {% endif %} gap-4 pt-8 pb-8 text-black">
+       
+      {% assign iconList = shop.metaobjects.navigation_icon_list.navigation_icon_list.navigation_icon_list.value %}
+      {% assign menu_column_count = 0 %}
+      {% for link in linklists.main-menu.links %} 
+        {% assign linkTitle = link.title | downcase %} 
+          {% if menuTitle == linkTitle %}
+            {% if link.links.size > 0 %}
+              {% for child_link in link.links %}
+                {% assign menu_column_count = menu_column_count | plus: 1 %}
+                <ul class="hidden w-full mb-4 space-y-4 md:mb-0 md:block mega-col" aria-labelledby="mega-menu-full-image-button">
+                  <li class="w-full border-b border-border pb-2 "><a href="{{ child_link.url }}" class="font-semibold  text-xl w-full">{{ child_link.title | replace: "_", "" }}</a></li>
+                  {% if child_link.links.size > 0 %}
+  
+                    {% for great_grandchild_link in child_link.links %}
+                      {% assign icon_to_insert = '' %}
+                      {% for icon in iconList %} 
+                          {% assign icon_name = icon.name_of_nav_item | downcase %}
+                          {% assign great_grandchild_title = great_grandchild_link.title | downcase %}
+                          {% if icon_name == great_grandchild_title %}
+                            {% assign icon_to_insert = icon.icon %}
+                          {% endif %}
+                      {% endfor %}
+                      <li><a class="text-lg  flex items-center gap-1 group hover:text-primary-black" href="{{ great_grandchild_link.url }}">{% if icon_to_insert.value != blank %}<span class="icon"><img class="group-hover:scale-[95%]" loading="lazy" width="35" height="35" src="{{ icon_to_insert.value | image_url: width: 35, height: 35 }}" alt="menu link {{ great_grandchild_link.title }}"></span>{% endif %}{{ great_grandchild_link.title }}</a></li>
+                    {% endfor %} 
+                     
+                  {% endif %}
+                </ul>
+              {% endfor %}
+            {% endif %}
+          {% endif %}
+      {% endfor %}
+
+      {% if block.settings.image_link != blank  %}
+        <a href="{{ block.settings.link  }}" class="mega-col flex-1 hover:opacity-90 flex relative overflow-hidden justify-stretch flex-col min-h-[250px] text-left bg-secondary-bg-400">
+          <img src="{{ block.settings.image_link | image_url: width: 800 }}" loading="lazy" alt="{{ block.settings.image_text }}" class="relative w-full h-full object-cover z-0" />
+          
+          <div class="flex justify-center gap-x-2 bg-primary-bg">
+            <p class="max-w-xl z-10 relative text-center text-xl/7 font-bold pb-2   text-primary-text pt-2">{{ block.settings.image_text }}</p>
+            <p class="max-w-xl z-10 relative text-center text-sm/7  pb-2   text-primary-text pt-2">{{ block.settings.person_count }}</p>
+            {% if block.settings.price_text != blank %}<p class="max-w-xl z-10 relative text-center text-sm/7  pb-2 text-primary-text pt-2">-</p>{% endif %}
+            <p class="max-w-xl z-10 relative text-center text-sm/7  pb-2 text-primary-text pt-2">{{ block.settings.price_text }}</p>
+          </div>
+        </a>
+      {% endif %}
+
+      {% if block.settings.image_link_2 != blank %}
+        <a href="{{ block.settings.link_2 }}" class="mega-col flex-1 hover:opacity-90 flex relative overflow-hidden justify-stretch flex-col min-h-[250px] text-left bg-secondary-bg-400" >
+          <img src="{{ block.settings.image_link_2 | image_url: width: 800 }}" loading="lazy" alt="{{ block.settings.image_text_2 }}" class=" relative w-full h-full object-cover z-0" />
+          <div class="flex justify-center gap-x-2 bg-primary-bg">
+            <p class="max-w-xl z-10 relative text-center text-xl/7 font-bold pb-2   text-primary-text pt-2">{{ block.settings.image_text_2 }}</p>
+            <p class="max-w-xl z-10 relative text-center text-sm/7  pb-2   text-primary-text pt-2">{{ block.settings.person_count_2 }}</p>
+            {% if block.settings.price_text_2 != blank %}<p class="max-w-xl z-10 relative text-center text-sm/7  pb-2 text-primary-text pt-2">-</p>{% endif %}
+            <p class="max-w-xl z-10 relative text-center text-sm/7  pb-2 text-primary-text pt-2">{{ block.settings.price_text_2 }}</p>
+          </div>
+        </a>
+      {% endif %}
+  
+      {% if block.settings.image_link_3 != blank %}
+        <a href="{{ block.settings.link_3 }}" class="mega-col flex-1 hover:opacity-90 flex relative overflow-hidden justify-stretch flex-col min-h-[250px] text-left bg-secondary-bg-400" >
+          <img src="{{ block.settings.image_link_3 | image_url: width: 800 }}" loading="lazy" alt="{{ block.settings.image_text_3 }}" class=" relative w-full h-full object-cover z-0" />
+          <div class="flex justify-center gap-x-2 bg-primary-bg">
+            <p class="max-w-xl z-10 relative text-center text-xl/7 font-bold pb-2   text-primary-text pt-2">{{ block.settings.image_text_3 }}</p>
+            <p class="max-w-xl z-10 relative text-center text-sm/7  pb-2   text-primary-text pt-2">{{ block.settings.person_count_3 }}</p>
+            {% if block.settings.price_text_3 != blank %}<p class="max-w-xl z-10 relative text-center text-sm/7  pb-2 text-primary-text pt-2">-</p>{% endif %}
+            <p class="max-w-xl z-10 relative text-center text-sm/7  pb-2 text-primary-text pt-2">{{ block.settings.price_text_3 }}</p>
+          </div>
+        </a>
+      {% endif %} 
+      
+
+      
+
+      
+    </div>
+  </div>
+  {% endfor %}
+  {% schema %}
+  {
+    "name": "Mega menus right",
+    "class": "relative",
+    "settings": [
+    ],
+    "blocks": [
+      {
+        "type": "link_list",
+        "name": "Mega menu right",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "fourCols",
+            "label": "4 columns",
+            "default": false
+          },
+          {
+            "type": "text",
+            "id": "menu_id",
+            "label": "Mega menu selection",
+            "info": "Select the menu you want to use for this link list"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_link",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "image_text",
+            "label": "Image text"
+          },
+          {
+            "type": "text",
+            "id": "person_count",
+            "label": "Person count text",
+            "default": "8-10 Personer"
+          },
+          {
+            "type": "text",
+            "id": "price_text",
+            "label": "Price text",
+            "default": "Fra 8.495,-"
+          },
+          {
+            "type": "text",
+            "id": "image_button_text",
+            "label": "Image button text",
+            "default": "Learn more"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "link"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_link_2",
+            "label": "Image 2"
+          },
+          {
+            "type": "text",
+            "id": "image_text_2",
+            "label": "Image text 2"
+          },
+          {
+            "type": "text",
+            "id": "person_count_2",
+            "label": "Person count text 2",
+            "default": "6-8 Personer"
+          },
+          {
+            "type": "text",
+            "id": "price_text_2",
+            "label": "Price text 2",
+            "default": "Fra 13.495,-"
+          },
+          {
+            "type": "text",
+            "id": "image_button_text_2",
+            "label": "Image button text 2",
+            "default": "Learn more"
+          },
+          {
+            "type": "url",
+            "id": "link_2",
+            "label": "link"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_link_3",
+            "label": "Image 3"
+          },
+          {
+            "type": "text",
+            "id": "image_text_3",
+            "label": "Image text 3"
+          },
+          {
+            "type": "text",
+            "id": "person_count_3",
+            "label": "Person count text 3",
+            "default": "8-10 Personer"
+          },
+          {
+            "type": "text",
+            "id": "price_text_3",
+            "label": "Price text 3",
+            "default": "Fra 15.495,-"
+          },
+          {
+            "type": "text",
+            "id": "image_button_text_3", 
+            "label": "Image button text 3",
+            "default": "Learn more"
+          },
+          {
+            "type": "url",
+            "id": "link_3",
+            "label": "link"
+          }
+        ]
+      }
+    ]
+  }
+  {% endschema %}

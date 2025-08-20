@@ -1,0 +1,218 @@
+<section class="flex justify-center items-center mt-0 mb-28 richtext flex-col gap-y-8 max-w-screen-pageMaxWidth mx-auto">
+  <div class="mx-auto max-w-screen-pageMaxWidth container">
+    <div class="relative isolate overflow-hidden bg-primary-black px-6 py-24  sm:px-24 xl:py-32">
+
+
+
+    <div class="flex flex-col w-full gap-x-8 max-w-5xl mx-auto
+      {% if section.settings.text_align == 'center' %}text-center justify-center
+      {% elsif section.settings.text_align == 'left' %}text-left justify-start
+      {% elsif section.settings.text_align == 'right' %}text-right{% endif %}
+      ">
+      {% for block in section.blocks %} 
+        {%- case block.type -%}
+
+        {% when 'title'%}
+          <h3 class="{% if block.settings.subtitle == true %} text-lg/7 font-bold uppercase text-primary-orange {% else %} max-w-2xl Heading text-5xl/tight sm:text-7xl/tight font-bold  text-primary-bg {% endif %} "
+              >
+            {{ block.settings.title }}
+          </h3>
+
+        {% when 'image'%}
+          <div class="w-full flex justify-center  max-w-[200px] mt-8">
+            <img src="{{ block.settings.image | img_url: '300x' }}" alt="{{ block.settings.title }}" class="w-full h-full object-cover overflow-hidden" loading="lazy">
+          </div>
+
+ 
+        {% when 'text' %}
+          <div class="mx-auto mt-6  text-lg/6 text-primary-bg"
+
+          >
+            {{ block.settings.richtext }}
+          </div>
+
+        {% when 'button' %}
+          {% if block.settings.button != blank %}
+            <div 
+              class="w-full flex mt-6
+              {% if section.settings.text_align == 'center' %}justify-center
+              {% elsif section.settings.text_align == 'left' %}justify-start
+              {% elsif section.settings.text_align == 'right' %}justify-end{% endif %}
+              ">
+            <a href="{{ block.settings.button_link }}" 
+              class="Button {% if block.settings.button_primary == true %}Button_primary{% else %}Button_secondary{% endif %}">
+              {{ block.settings.button }}</a>
+            </div>
+          {% endif %}  
+              
+        {%- endcase -%}
+      {% endfor %}
+    </div>
+    <svg viewBox="0 0 1024 1024" class="absolute left-1/2 top-1/2 -z-10 size-[72rem] -translate-x-1/2" aria-hidden="true">
+      <circle cx="512" cy="512" r="512" fill="url(#759c1415-0410-454c-8f7c-9a820de03641)" fill-opacity="0.7" />
+      <defs>
+        <radialGradient id="759c1415-0410-454c-8f7c-9a820de03641" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(512 512) rotate(90) scale(512)">
+          <stop stop-color="#D3C996" />
+          <stop offset="1" stop-color="#586052" stop-opacity="0" />
+        </radialGradient>
+      </defs>
+    </svg>
+  </div>
+</div>
+
+
+  </div>
+</section>  
+  
+  {% schema %}
+  {
+    "name": "Richtext section", 
+    "settings": [
+      {
+        "type": "select",
+        "id": "section_width",
+        "label": "Section width",
+        "default": "container",
+        "options": [
+          {
+            "value": "container",
+            "label": "Container"
+          },
+          {
+            "value": "small",
+            "label": "small"
+          },
+          {
+            "value": "medium",
+            "label": "medium"
+          },
+          {
+            "value": "large",
+            "label": "large"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "text_align",
+        "label": "Text align",
+        "default": "center",
+        "options": [
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background color",
+        "info": "default is #F3F3ED",
+        "default": "#F3F3ED"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text color",
+        "info": "default is #242424",
+        "default": "#242424"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Title",
+        "type": "title",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "This is a heading"
+          },
+          {
+            "type": "checkbox",
+            "id": "subtitle",
+            "label": "Subtitle"
+          }
+        ]
+      },
+      {
+        "name": "Image",
+        "type": "image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      },
+      {
+        "name": "Text",
+        "type": "text",
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "richtext",
+            "label": "Richtext",
+            "default": "<p>This is a description</p>"
+          }
+        ]
+      },
+      {
+        "name": "Button",
+        "type": "button",
+        "settings": [
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button link"
+          },
+          {
+            "type": "text",
+            "id": "button",
+            "label": "Button text",
+            "default": "Read more"
+          },
+          {
+            "type": "checkbox",
+            "id": "button_primary",
+            "label": "Button primary"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Richtext section",
+        "category": "section",
+        "blocks": [
+          {
+            "type": "title",
+            "settings": {
+            }
+          },
+          {
+            "type": "text",
+            "settings": {
+            }
+          },
+          {
+            "type": "button",
+            "settings": {
+            }
+          }
+        ]
+      }
+    ]
+  }
+  {% endschema %}

@@ -1,0 +1,310 @@
+{% if product.metafields.custom.shop_the_look.value.product_list != blank %}
+    {% assign lookProducts = product.metafields.custom.shop_the_look.value.product_list.value %}
+    {% assign lookImage = product.metafields.custom.shop_the_look.value.look_image.value %}
+    {% for product in lookProducts %}
+      {% assign productCount = productCount | plus: 1 %}
+    {% endfor %}
+  
+    <script defer type="text/template" data-look-colors-json>
+      {% if lookProducts != blank %}
+        {
+          "lookColorsArray": {
+            {% for product in lookProducts %}
+                "{{ product.id }}": {
+                  "prodcolors": [
+                    {% for color in product.metafields.custom.product_colors.value.product_color_list.value %}
+                        {
+                          "{{ color.product.value.id }}": {
+                              "colorHandle": "{{ color.product.value.handle }}",
+                              "colorProductPrice": "{{ color.product.value.price }}",
+                              "productHandle": "{{ product.handle }}",
+                              "LookImage": "{{ color.product.value.featured_image | img_url: '250x' }}",
+                              "colorTitle": "{{ color.product.value.title }}",
+                              "variants": [
+                                  {% for variant in color.product.value.variants %}
+                                      {
+                                          "variantId": "{{ variant.id }}",
+                                          "variantTitle": "{{ variant.title }}",
+                                          "variantPrice": "{{ variant.price }}",
+                                          "variantAvailable": "{{ variant.available }}"
+                                      }{% unless forloop.last %},{% endunless %}
+                                  {% endfor %}
+                              ]
+                          }
+                        }{% unless forloop.last %},{% endunless %}
+                    {% endfor %}
+                  ]
+              }{% unless forloop.last %},{% endunless %}
+            {% endfor %}
+          }
+        }
+      {% endif %}
+    </script>
+      
+
+<section id="shop-the-look" class="shop-the-look">
+    <div class="container py-16 flex flex-col {% if productCount > 3 %}max-w-nonel{% else %}max-w-[1000px]{% endif %}">
+        <div class="Section_header">
+            <div class="Section_header__inner flex flex-col gap-4 pb-8">
+                <h3 class="font-semibold text-6xl">{{ section.settings.title }}</h3>
+                <p>{{ section.settings.subtitle }}</p>
+            </div>
+        </div> 
+        <div class="grid grid-cols-8 gap-4">  
+            <div class="col-span-8 md:col-span-4 grid grid-cols-2 flex-col gap-2 h-fit">
+                {%- for look_product in lookProducts -%}
+                {% assign colorList = look_product.metafields.custom.product_colors.value.product_color_list.value %}
+                <div class="shop-the-look-product {% if productCount > 3 %}col-span-1{% else %}col-span-2{% endif %} w-full " data-look-product-container="{{ look_product.id }}">
+                    <ajax-cart-product-form>
+                        {% form 'product', look_product, class: 'h-full' %}
+                        {%- assign current_variant = look_product.selected_or_first_available_variant -%}
+                        {%- assign defaultImage = look_product.featured_image -%}
+                        {%- assign defaultVariantId = current_variant.id -%}
+                        <div class="flex {% if productCount > 3 %}flex-col{% else %}flex-row{% endif %} w-full h-full items-center bg-primary-bg overflow-hidden rounded-md">
+                            <div class="w-full h-full min-h-[200px] {% if productCount > 3 %}flex-col sm:min-h-[350px]{% else %}sm:min-w-[220px] flex-row sm:min-h-[400px]{% endif %}"> 
+                                {% render 'media', media: look_product.featured_image, loading: 'lazy', class: "look_image h-full w-full", alt: look_product, width: 300 %}
+                            </div>
+                            <div class="p-4 flex flex-col justify-center w-full h-full bg-primary-bg">
+                                <h3 class="color-title Heading text-base sm:text-lg font-bold">{{ look_product.title | truncate: 50 }}</h3>
+                                <p class="py-2 ">{{ look_product.price | money_without_trailing_zeros }}</p>
+                                <div class="color_list flex items-center gap-[2px] mb-3">
+                                    {% for color in colorList %} 
+                                        {% assign colorHandle = color.product.value.handle %}
+                                
+                                        {% if look_product.id == color.product.value.id %}
+                                            {% assign activeColor = true %} 
+                                        {% else %}
+                                            {% assign activeColor = false %}
+                                        {% endif %}
+                                    
+
+                                        <a class="group color_link {% if activeColor == true %} cursor-default active_color order-[-1] {% endif %}"
+                                            href="#"
+                                            data-color-handle="{{ color.product.value.handle }}"
+                                            data-product-id="{{ color.product.value.id }}"
+                                            data-look-product-id="{{ look_product.id }}"
+                                            data-variant-id="{{ color.product.value.variants.first.id }}"
+                                            data-color-id="{{ color.product.value.id }}">
+                                            <div
+                                                class="w-[18px] h-[12px] block origin-bottom transition-all duration-100 {% if activeColor == false %} group-hover:scale-y-105{% endif %}"
+                                                style="background:{{ color.color }}"></div>
+                                                {% if forloop.index > 5 %}
+                                                    <a href="{{ color.product.url }}" class="ml-2 text-base h-[10px]">+{{ forloop.length | minus: 5 }}</a>
+                                                    {% break %}
+                                                {% endif %}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                                {% if look_product.variants.size > 1 %}
+                                    <div class="variant-options w-full relative"> 
+                                        <select name="id"
+                                                class="no-js w-full bg-white px-2 py-1 border-sm mb-1 text-sm"
+                                                aria-label="size select"
+                                                data-product-select>
+                                            {% for variant in look_product.variants %}
+                                                <option value="{{ variant.id }}"
+                                                        {% if variant.id == current_variant.id %}selected{% endif %}
+                                                        {% unless variant.available %}disabled{% endunless %}>
+                                                    {{ variant.title }} {% if variant.available %}{% else %} - {{ 'products.product.sold_out' | t }}{% endif %}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                        <div class="w-3 absolute right-2 top-[10px]"> {% render 'icon-caret', size: 10 %}</div>
+                                    </div>
+                                {% endif %}
+                                <input type="hidden" name="id" id="Look-variant-id-{{ look_product.id }}"
+                                        value="{{ defaultVariantId }}" />
+                                <input type="hidden" name="Look-image-{{ look_product.id }}"
+                                        id="Look-image-{{ look_product.id }}" value="{{ defaultImage }}" />
+                                <div class="add-to-cart-buttons">
+                                    <input class="Button Button_primary py-1 m-auto w-full text-base" type="submit"
+                                            value="{{ 'products.product.add_to_cart' | t }}">
+                                </div>
+                            </div>
+                        </div>
+                        {% endform %}
+                    </ajax-cart-product-form>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="order-[-1] md:order-1 col-span-8 md:col-span-4 h-full {% if productCount > 3 %}min-h-[1000px]{% else %} min-h-[800px]{% endif %}">
+                <div class="max-w-1/2 h-full rounded-md overflow-hidden">
+                    {%- liquid
+                        if section.index > 1
+                          assign lazyload = true
+                        else
+                          assign lazyload = false 
+                        endif
+                      -%}
+                    
+                    {% if lookImage == blank %} 
+                        {% render 'media', media: product.images[0], lazyload: lazyload, class: "w-full h-full", alt: product.featured_image.alt, width: 832 %}
+                    {% else %}
+                        {% render 'media', media: lookImage, lazyload: lazyload, class: "w-full h-full", alt: product.title, width: 832 %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script defer>
+    function initializeLookProduct(productContainer) {
+        // Retrieve color data for the current product container
+        let colorData = document.querySelector("[data-look-colors-json]");
+        
+        if (colorData) {
+            const lookColors = JSON.parse(colorData.innerHTML).lookColorsArray;
+            
+
+            // Add a click event listener to color links within the product container
+            productContainer.querySelectorAll('.color_link').forEach(function (link) {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    // Retrieve data from the clicked link
+                    let clickedProductId = link.getAttribute('data-look-product-id');
+                    let clickedColorId = link.getAttribute('data-color-id');
+        
+                    // Find the corresponding data in the lookColors JSON based on productId
+                    let selectedProductData = lookColors[clickedProductId];
+        
+
+                    // Declare and initialize selectedVariantId
+                    let selectedVariantId = null;
+
+                    // Check if the selected product data exists
+                    if (selectedProductData) {
+
+                        // Find the data for the clicked color ID inside the selected product data
+                        let selectedColorData = selectedProductData.prodcolors.find(function (color) {
+                            return color.hasOwnProperty(clickedColorId);
+                        });
+
+                        // Access the object inside selectedColorData using colorId
+                        let colorData = selectedColorData[clickedColorId];
+
+                        // Update the look_image and color-title element in the productContainer
+                        let lookImageElement = productContainer.querySelector('.look_image');
+                        let colorTitleElement = productContainer.querySelector('.color-title');
+                        let variantInput = productContainer.querySelector('input[name="id"][type="hidden"]');
+
+                        if (lookImageElement && colorTitleElement) {
+                            lookImageElement.src = colorData.LookImage;
+                            lookImageElement.srcset = ""; // This will remove the srcset attribute
+
+                            colorTitleElement.textContent = colorData.colorTitle; 
+            
+                        } else {
+                            console.error('look_image element or color-title element not found in product container.');
+                        }
+
+                        variantInput.value = colorData.variants[0].variantId;
+
+                        // Update the select element
+                        let variantSelect = productContainer.querySelector('select[name="id"]');
+                        if (variantSelect) {
+                            // Get the currently selected variant ID
+                            let selectedVariantId = variantSelect.value;
+
+                            // Clear existing options
+                            variantSelect.innerHTML = '';
+
+                            // Loop through the variants in the selected color data and add options
+                            colorData.variants.forEach(function (variant) {
+                                let option = document.createElement('option');
+                                option.value = variant.variantId;
+                                option.textContent = variant.variantTitle;
+
+                                if (variant.variantId === selectedVariantId) {
+                                    option.setAttribute('selected', true);
+                                }
+
+                                if (variant.variantAvailable === 'false') {
+                                    option.setAttribute('disabled', true);
+                                    option.textContent += ' - {{ 'products.product.sold_out' | t }}';
+                                }
+
+                                variantSelect.appendChild(option);
+                            });
+
+                            // Add change event listener to handle variant selection changes
+                            variantSelect.addEventListener('change', function () {
+                                let selectedOption = variantSelect.options[variantSelect.selectedIndex];
+                                selectedVariantId = selectedOption.value;
+    
+
+                                // Update the upsellVariantIdInput value
+                                let upsellVariantIdInput = productContainer.querySelector('input[name="id"][type="hidden"]');
+                                if (upsellVariantIdInput) {
+                                    upsellVariantIdInput.value = selectedVariantId;
+                                } else {
+                                    console.error('upsellVariantIdInput not found in product container.');
+                                }
+                            });
+                        } else {
+                        // use the input wit the and insert variant id 
+                        variantInput.value = colorData.variants[0].variantId;
+                        }
+                    } else {
+                        console.error('Selected product data not found in lookColors.');
+                    }
+                });
+            });
+        } else {
+            console.error('Color data not found.');
+        }
+    }
+
+    // Function to reinitialize the Look product
+    function reinitializeLookProduct() {
+        // Find all product containers and initialize the Look product for each
+        document.querySelectorAll('.shop-the-look-product').forEach(function (productContainer) {
+            initializeLookProduct(productContainer);
+        });
+    }
+
+    // Listen for the liquid-ajax-cart:request-end event
+    document.addEventListener("liquid-ajax-cart:request-end", function (event) {
+        const { requestState } = event.detail;
+
+        // Check if the request is not from a mutation function
+        if (requestState.info.initiator !== "mutation") {
+            // Reinitialize the Look product
+            reinitializeLookProduct();
+        }
+    });
+
+    // Initialize the Look product initially for all product containers
+    document.querySelectorAll('.shop-the-look-product').forEach(function (productContainer) {
+        initializeLookProduct(productContainer);
+    });
+
+</script>
+{% endif %}
+
+{% schema %}
+{
+"name": "Shop the look",
+"settings": [
+    {
+    "type": "text",
+    "id": "title",
+    "label": "Heading",
+    "default": "Shop the look Title"
+    },
+    {
+    "type": "text",
+    "id": "subtitle",
+    "label": "Subheading",
+    "default": "Shop the look Subtitle"
+    }
+],
+"presets": [
+    {
+    "name": "Shop the look",
+    "category": "Collection"
+    }
+]
+}
+{% endschema %}

@@ -1,0 +1,28 @@
+{% if product.metafields.custom.product_colors.value != blank %}
+    {% assign colorList = product.metafields.custom.product_colors.value %}
+    
+    {% for color in colorList.product_color_list.value %}
+        {% assign colorAmount = forloop.length %}
+    {% endfor %}
+    
+    <div class="Color_container flex gap-2 pt-10 pb-4">
+        <div class="color_container flex flex-col">
+            <h3 class="text-base pb-2">{{ 'products.product.color.available_in' | t }} {{ colorAmount }} {{ 'products.product.color.colors' | t }}</h3>
+            <div class="flex gap-x-2 relative mt-2 pt-1">
+                {% for color in colorList.product_color_list.value %}
+                    {% assign colorHandle = color.product.value.handle %}
+                    {% assign productHandle = product.handle %}
+                    {% capture activeColor %}{% if productHandle == colorHandle %}true{% else %}false{% endif %}{% endcapture %}
+                    <a class="group {% if activeColor == 'true' %}cursor-default active_color order-[-1] {% else %}color_link{% endif %}" href="{{ color.product.value.url }}">
+                        <img width="100" src="{{ color.product.value.featured_image | image_url: width: 100 }}"/>
+                        {% comment %} <div class="w-[17px] h-[30px] sm:w-[20px] sm:h-[30px] block origin-bottom transition-all duration-100 {% if activeColor == 'false' %}group-hover:scale-y-105{% endif %}" style="background:{{ color.color }}"></div> {% endcomment %}
+                        {% comment %} <span class="color_name relative block mt-2 text-sm"> {{ color.color_name | split: '-' | first }}</span> {% endcomment %}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div> 
+{% endif %}
+
+
+ 

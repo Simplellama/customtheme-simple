@@ -1,0 +1,186 @@
+{%- assign order_date = order.created_at | time_tag: format: 'date_at_time' -%}
+<div class="customer order section-{{ section.id }} mb-12">
+  <div class="container">
+    <div class="flex flex-col md:flex-row gap-y-3 justify-between mt-12">
+      <div class="flex items-center gap-x-2">
+        {% render 'icon', icon: 'cart', size: 30, stroke: '#000' %}<h1 class="customer__title Heading font-bold text-3xl">{{ 'customer.order.title' | t }}</h1>
+      </div>
+
+      <a class="Button Button_secondary flex gap-x-2 items-center" href="{{ routes.account_url }}">{% render 'icon', icon: 'arrow-right', size: 12, fill: '#000', class: 'rotate-180' %} {{ 'customer.account.return' | t }}</a>
+    </div>
+
+    <div class="grid grid-cols-6 md:gap-x-4 md:border md:border-border md:py-8 md:px-8 rounded-md mt-4">
+      <div class="col-span-6 grid grid-cols-8 adresses items-start bg-primary-bg w-full md:py-8 md:px-8 mb-8 rounded-md">
+
+        <div class="col-span-8 md:col-span-2 p-8">
+          <h3 class="Heading font-bold text-3xl mb-4">{{ 'customer.order.billing_address' | t }}</h3>
+          <div class="text-base">{{ order.billing_address | format_address }}</div>
+        </div>
+
+        <div class="col-span-8 md:col-span-2 p-8">
+          <h3 class="Heading font-bold text-3xl mb-4">{{ 'customer.order.shipping_address' | t }}</h3>
+          <div class="text-base">{{ order.shipping_address | format_address }}</div>
+        </div>
+
+        <div class="col-span-8 md:col-span-4 bg-white p-8 rounded-md">
+          <h3 class="Heading font-bold text-3xl mb-4">{{ 'customer.order.got_any_questions' | t }}</h3>
+          <div class="text-base">{{ 'customer.order.got_any_questions' | t }}</div>
+
+          <div class="flex flex-col flex-wrap md:flex-row gap-y-2 justify-start gap-x-2 mt-8">
+            <div class="">
+              <a class="Button Button_secondary py-2 px-5 text-base w-full" href="/pages/contact">{{ 'customer.order.contact_form' | t }}</a>
+            </div>
+            <div class="">
+              <a class="Button Button_secondary py-2 px-5 text-base w-full" href="/pages/faq">{{ 'customer.order.faq_page' | t }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-span-8 md:col-span-6 mb-4">
+        <h3 class="customer__title Heading font-bold text-3xl">{{ 'customer.order.name' | t }}</h3>
+        <p>{{ 'customer.order.id' | t }} - {{ order.name }}</p>
+
+        {%- if order.cancelled -%}
+          {%- assign cancelled_at = order.cancelled_at | time_tag: format: 'date_at_time' -%}
+          <p>{{ 'customer.order.cancelled_html' | t: date: cancelled_at }}</p>
+          <p>{{ 'customer.order.cancelled_reason' | t: reason: order.cancel_reason_label }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="flex flex-col md:flex-row w-full col-span-8 md:col-span-6 gap-4">
+        <div class="flex flex-col col-span-3 gap-y-2 w-full sticky top-34  h-fit">
+
+          <div class="flex items-center justify-between gap-2 py-8 px-6 rounded-md border border-border">            
+            <p class="Heading font-bold">{{ 'customer.order.payment_status' | t }}</p>
+            <div class="flex gap-x-1 items-center">
+              <p class="underline">{{ order.financial_status_label }}</p>
+              <div class="w-4 h-4 rounded-full block border border-border {% if order.financial_status_label == 'Paid' %}bg-green-600 {% else %}bg-rose-600 {% endif %}"></div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between gap-2 py-8 px-6 rounded-md border border-border">            
+            <p class="Heading font-bold">{{ 'customer.order.fulfillment_status' | t }}</p>
+            <div class="flex gap-x-1 items-center">
+              <p class="underline">{{ order.fulfillment_status_label }}</p>
+              <div class="w-4 h-4 rounded-full block border border-border {% if order.fulfillment_status_label == 'Fulfilled' %}bg-green-600 {% else %}bg-rose-600 {% endif %}"></div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between gap-2 py-8 px-6 rounded-md border border-border">     
+            <div class="flex flex-col">       
+              <p class="Heading font-bold">{{ 'customer.order.tracking_code' | t }}</p>
+              <p class="text-sm"><span>Shipping company:</span> {{ line_item.fulfillment.company }}</p>
+            </div>
+            <div class="flex gap-x-1 items-center">
+              {% if line_item.fulfillment.tracking_number and line_item.fulfillment.tracking_url %}
+                <a href="line_item.fulfillment.tracking_url">{{ line_item.fulfillment.tracking_number}}</a>
+              {% else %}
+              <div class="flex flex-col items-center justify-end gap-y-1">
+                <p class="text-sm text-center">{{ 'customer.order.tracking_missing' | t }}</p>
+                <a href="/pages/contact" class="Button Button_secondary py-2 px-5 text-base">{{ 'customer.order.get_in_touch' | t }}</a>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          
+          <div class="flex items-center justify-between gap-2 py-2 px-4 rounded-md border border-border">
+            <div class="">         
+              <p class="Heading text-center md:text-left font-bold" id="ColumnPrice">{{ 'customer.order.shipping' | t }}</p>
+              <p class="text-center md:text-left">{{ order.shipping_price | money_without_trailing_zeros }}</p>
+            </div>        
+            <div class="">         
+              <p class="Heading font-bold" id="ColumnPrice">{{ 'customer.order.tax' | t }}</p>
+              <p class="text-center md:text-left">{{ order.tax_price | money_without_trailing_zeros }}</p>
+            </div> 
+
+            <div class="">       
+              <p class="Heading text-center md:text-left font-bold" id="ColumnQuantity">{{ 'customer.order.quantity' | t }}</p>
+              <p class="text-center md:text-left">{{ order.item_count }}</p>
+            </div>
+                    
+            <div class=""> 
+              <p class="Heading text-center md:text-left font-bold" id="ColumnTotal">{{ 'customer.order.subtotal' | t }}</p>
+              <p class="text-center md:text-left">{{ order.subtotal_price | money_without_trailing_zeros }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col col-span-3 gap-y-2 w-full px-6 rounded-md border border-border">
+          <div class="flex gap-x-2 items-center justify-between w-full">
+            <div class="order-details mt-8">
+
+              <div class="flex items-center gap-2 mb-4">
+                <h3 class="Heading text-3xl font-bold">{{ 'customer.order.products' | t }}</h3><p>( {{ order.item_count }} )</p>
+              </div>
+              <div class="grid grid-cols-4 gap-2 h-full w-full mb-12">
+                <!-- Loop through order items -->
+                {% for line_item in order.line_items %}
+                {% assign line_item_index = forloop.index %}
+            
+                  <a href="{{ line_item.url }}" target="_blank" class="order_item col-span-4 lg:col-span-2 md:border md:border-border flex items-center justify-between gap-4 rounded-md overflow-hidden hover:border-black">
+                    <div class="max-w-[90px] w-full h-full">
+                      {{ line_item.image | image_url: width: 90 | image_tag: width: '90', alt: line_item.title, loading: 'eager', class: 'w-full h-full object-cover' }}
+                    </div>
+
+                    <div class="flex flex-col justify-center w-full px-1">
+                      <p class="Heading text-base font-bold">{{ line_item.title | escape }}</p>
+                      {%- if line_item.properties != empty -%}
+                        <ul class="orderItem__PropertyList">
+                          {%- for property in line_item.properties -%}
+                          {%- assign first_character_in_key = property.first | truncate: 1, '' -%}
+          
+                          {%- if property.last == blank or first_character_in_key == '_' -%}
+                            {%- continue -%}
+                          {%- endif -%}   
+                          {% unless property.first == '_Bundle' or property.first == '_BundleCollection' %}
+                            <li class="orderItem__Property text-sm mt-2 bg-black text-white w-fit px-2 py-1 {% if line_item.properties.Giftwrap %}hidden{% endif %}">{{ property.first }}: {{ property.last }}</li>
+                          {% endunless %}
+                          
+                          {%- endfor -%}
+                        </ul>
+                      {%- endif -%}
+            
+                      <div class="flex flex-col justify-center items-start gap-2 mt-2">
+                        <div class="flex flex-col w-[60%] mt-2 gap-y-2">
+                          <div class="flex justify-between w-full text-sm pb-1 border-border border-b">
+                            <span class="Heading font-bold ">{{ 'customer.order.quantity' | t }}</span> <span>{{ line_item.quantity }}</span>
+                          </div>
+                  
+                          <div class="text-sm w-full flex justify-between pb-1 border-border border-b">
+                            <span class="Heading font-bold">{{ 'customer.order.price' | t }}</span>
+                            <span>
+                              {{ line_item.final_line_price | money_without_trailing_zeros }} 
+                              {% unless line_item.final_line_price >= line_item.original_price %}
+                                <span class="font-bold line-through text-red-500">{{ line_item.original_price | money_without_trailing_zeros }}</span>
+                              {% endunless %}
+                              {% if line_item.compare_at_price %}
+                                <span class="font-bold">{{ line_item.compare_at_price | money_without_trailing_zeros }}</span>
+                              {% endif %}
+                            </span>
+                          </div>
+                        </div>
+
+                        <!-- Display discount allocations if they exist -->
+                        {% if line_item.line_level_discount_allocations.size > 0 %}
+                          <div class="discount pt-2">
+                            <ul>
+                              {% for allocation in line_item.line_level_discount_allocations %}
+                                <li class="flex flex-col">
+                                  <span class="bg-black text-white w-fit px-2 py-1 text-sm">{{ allocation.discount_application.title }}</span>
+                                </li>
+                              {% endfor %}
+                            </ul>
+                          </div>
+                        {% endif %}
+                        {% render 'line-item-components' components: line_item.item_components %}
+                      </div>
+                    </div>
+                  </a>
+                {% endfor %}
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

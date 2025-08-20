@@ -1,0 +1,83 @@
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 py-36 px-4 md:px-6">
+    <div class="col-span-1">
+      {% assign heading_tag = section.settings.heading_tag | default: 'h3' %}
+      <{{ heading_tag }} class="font-regular text-7xl md:max-w-[80%]">{{ section.settings.title }}</{{ heading_tag }}>
+    </div>
+    <div class="col-span-2 md:col-span-2 lg:col-span-3 max-w-[1000px]">
+        <div class="{% if section.settings.large_text == true %}[&>*]:text-2xl [&>*]:tracking-tight{% else %}[&>*]:text-base [&>*]:tracking-tight{% endif %}">{{ section.settings.richtext }}</div>
+    </div>
+</div>
+
+{% schema %}  
+    {
+        "name": "Text section",
+        "settings": [
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Title"
+            },
+            {
+              "type": "select",
+              "label": "H tags",
+              "id": "heading_tag",
+              "options": [
+                { "value": "h1", "label": "H1" },
+                { "value": "h2", "label": "H2" },
+                { "value": "h3", "label": "H3" },
+                { "value": "h4", "label": "H4" },
+                { "value": "h5", "label": "H5" },
+                { "value": "h6", "label": "H6" }
+              ],
+              "default": "h3"
+            },
+            {
+                    "type": "richtext",
+                    "id": "richtext", 
+                    "label": "Text"
+            },
+            {
+                    "type": "checkbox",
+                    "id": "large_text",
+                    "label": "Large text",
+                    "default": false
+            }
+        ],
+        "presets": [{
+            "name": "Text section"
+        }]
+    }
+{% endschema %}
+
+
+
+
+<script>
+    fetch("https://api-misty.culmas.io/templateComponents/theaters/FrankPadelTour/template?templateIds=e4XEuOElHFJc1P7yPxTU&venueIds=pztXFFYVkGE6fOsKOzFn")
+      .then((templateProductsResponse)=> {
+        if(templateProductsResponse.status==200){
+          templateProductsResponse.text().then((templateProductsHtml)=>{
+            let previewComponent = document.getElementById("culmas-template-component-e4XEuOElHFJc1P7yPxTU-pztXFFYVkGE6fOsKOzFn")
+            if(previewComponent){
+              previewComponent.innerHTML = templateProductsHtml
+            }
+          }).catch( error => {
+            let previewComponent = document.getElementById("culmas-template-component-e4XEuOElHFJc1P7yPxTU-pztXFFYVkGE6fOsKOzFn")
+            if(previewComponent){
+              previewComponent.innerHTML = "An error occured while loading the products"
+            }
+          })
+        } else {
+          let previewComponent = document.getElementById("culmas-template-component-e4XEuOElHFJc1P7yPxTU-pztXFFYVkGE6fOsKOzFn")
+          if(previewComponent){
+            previewComponent.innerHTML = "An error occured while loading the products"
+          }
+        }
+      }).catch( error => {
+        let previewComponent = document.getElementById("culmas-template-component-e4XEuOElHFJc1P7yPxTU-pztXFFYVkGE6fOsKOzFn")
+        if(previewComponent){
+          previewComponent.innerHTML = "An error occured while loading the products"
+        }
+      })
+  </script>
+

@@ -1,0 +1,44 @@
+{% comment %}
+  Renders sub line_item components for bundle products in card
+  Accepts:
+  - components: {Array} Array of sub line_items
+
+
+  Usage:
+  {% render 'line-item-components' components: item.item_components %}
+{% endcomment %}
+
+{%- if components and components != empty -%}
+<div class="line-item-components">
+    <div class="flex flex-col flex-wrap gap-x-2 gap-y-1">
+   
+    {%- for item in components -%}
+      <div class="flex flex-row  items-center bg-secondary-bg py-1">
+
+        <div class="cell">
+           <div>
+            {% if item.image %}
+              {% comment %} Leave empty space due to a:empty CSS display: none rule {% endcomment %}
+              <a href="{{ item.url }}" class="cart-item__link" aria-hidden="true" tabindex="-1"> </a>
+              <div class="cart-item__image-container">
+                <img
+                  src="{{ item.image | image_url: width: 160 }}"
+                  class="cart-item__image h-[40px] w-auto object-cover"
+                  alt="{{ item.image.alt | escape }}"
+                  loading="lazy"
+                  width="40"
+                  height="40"
+                >
+              </div>
+            {% endif %}
+          </div> 
+        </div>
+        <div class="flex gap-2 flex-row text-xs py-1 pr-2">
+          <span class="text-sm ">{{ item.quantity }} × {{ item.product.title | split: "-" | last | strip  }}</span></span>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+{%- endif -%}
+ 

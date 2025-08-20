@@ -1,0 +1,74 @@
+<div class="container py-20 !mx-auto" >
+    <h1 class="Heading font-bold text-5xl mb-6">{{ 'general.sitemap.sitemap' | t }}</h1>
+
+    <div class="fixed bottom-[2%] left-0 right-0 mx-auto flex flex-col gap-y-5 bg-primary-bg w-fit py-6 px-10 rounded-md">
+        <h2 class="Heading font-bold text-xl text-center">{{ 'general.sitemap.click_to_scroll_to' | t }}</h2>
+        <div class="flex gap-x-4">
+            <a class="animation Button Button_primary" href="#pages">{{ 'general.sitemap.pages' | t }}</a>
+            <a class="animation Button Button_primary" href="#collections" >{{ 'general.sitemap.collections' | t }}</a>
+            <a class="animation Button Button_primary" href="#products">{{ 'general.sitemap.products' | t }}</a>
+            <a class="animation Button Button_primary" href="#blog" >{{ 'general.sitemap.blogs' | t }}</a>
+        </div>
+    </div>
+
+    <div class="wrapper py-8">
+        <div class="html_sitemap grid grid-cols-12">
+            <div id="pages" class="col-span-12 sm:col-span-6 mb-8">
+                <h3 class="Heading font-bold text-2xl mb-2">{{ 'general.sitemap.pages' | t }}</h3>
+                <ul>
+                    {% for p in pages %}
+                        <li>
+                            <a href="{{ p.url }}">{{ p.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div id="collections" class="col-span-12 sm:col-span-6 mb-8">
+                <h3 class="Heading font-bold text-2xl mb-2">{{ 'general.sitemap.collections' | t }}</h3>
+                <ul>
+                    {% paginate collections by 1000 %}
+                        {% for c in collections %}
+                            {% unless c.metafields.seo.hidden == 1 %}
+                                <li>
+                                    <a href="{{ c.url }}">{{ c.title }}</a>
+                                </li>
+                            {% endunless %}
+                        {% endfor %}
+                    {% endpaginate %}
+                </ul>
+            </div>
+
+            <div id="products" class="col-span-12 sm:col-span-6 mb-8">
+                <h3 class="Heading font-bold text-2xl mb-2">{{ 'general.sitemap.products' | t }}</h3>
+                <ul>
+                    {% paginate collections.all.products by 1000 %}
+                        {% for product in collections.all.products %}
+                            {% unless product.metafields.seo.hidden == 1 %}
+                            <li>
+                                <a href="{{ product.url }}">{{ product.title }}</a>
+                            </li>
+                            {% endunless %}
+                        {% endfor %}
+                    {% endpaginate %}
+                </ul>
+            </div>
+
+            <div id="blog" class="col-span-12 sm:col-span-6 mb-8">
+                <h3 class="Heading font-bold text-2xl mb-2">{{ 'general.sitemap.blogs' | t }}</h3>
+                <ul>
+                    {% assign blog_handles = "the-basic-universe,looks" | split: "," %}
+                    {% for handle in blog_handles %}
+                        {% for article in blogs[handle].articles %}
+                            <li>
+                                <a href="{{ article.url }}">{{ article.title }}</a>
+                            </li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+</div>

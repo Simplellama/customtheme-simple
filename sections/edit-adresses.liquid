@@ -1,0 +1,42 @@
+{% for address in customer.addresses %}
+  {% form 'customer_address', address %}
+    <label for="address[first_name]">{{ 'customer.addresses.first_name' | t }}</label>
+    <input type="text" name="address[first_name]">
+    
+    <label for="address[last_name]">{{ 'customer.addresses.last_name' | t }}</label>
+    <input type="text" name="address[last_name]">
+    
+    <label for="address[company]">{{ 'customer.addresses.company' | t }}</label>
+    <input type="text" name="address[company]">
+    
+    <label for="address[address1]">{{ 'customer.addresses.address1' | t }}</label>
+    <input type="text" name="address[address1]">
+    
+    <label for="address[address2]">{{ 'customer.addresses.address2' | t }}</label>
+    <input type="text" name="address[address2]">
+    
+    <label for="address[city]">{{ 'customer.addresses.city' | t }}</label>
+    <input type="text" name="address[city]">
+    
+    <label for="address[country]">{{ 'customer.addresses.country' | t }}</label>
+    <input type="text" name="address[country]">
+    
+    <label for="address[province]">{{ 'customer.addresses.province' | t }}</label>
+    <input type="text" name="address[province]">
+    
+    <label for="address[zip]">{{ 'customer.addresses.zip' | t }}</label>
+    <input type="text" name="address[zip]">
+    
+    <label for="address[phone]">{{ 'customer.addresses.phone' | t }}</label>
+    <input type="tel" name="address[phone]">
+    
+    <label for="address[province]">{{ 'customer.addresses.province' | t }}</label>
+    <input type="select" name="address[province]">
+    
+    <label for="address[country]">{{ 'customer.addresses.country' | t }}</label>
+    <input type="select" name="address[country]">
+    
+    <label for="address[phone]">{{ 'customer.addresses.phone' | t }}</label>
+    <input type="tel" name="address[phone]">
+  {% endform %}
+{% endfor %}

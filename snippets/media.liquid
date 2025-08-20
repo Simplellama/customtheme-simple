@@ -1,0 +1,22 @@
+{% assign media_width = media_width | default: 0.65 %}
+{%- capture sizes -%}
+(min-width: 1024) {{ 1440 | minus: 100 | times: media_width | divided_by: 4 | round }}px, (min-width: 1280) calc({{ media_width | times: 100 | divided_by: 4 }}vw - 10rem), (min-width: 768) calc((100vw - 11.5rem) / 2), calc(100vw / 2);
+{%- endcapture -%}
+
+
+{% assign media = media %}
+{% assign ratio = ratio | default:media.aspect_ratio %}
+{% assign image_height = width | divided_by: ratio %}
+
+
+{%- if lazyload == true -%}
+    {%- assign loading = 'lazy' -%}
+{% elsif lazyload == false %}
+    {%- assign loading = 'eager' -%}
+{%- endif -%}
+
+<div class="relative w-full h-full pt-[var(--aspect-ratio)] {{ bg_color }}" style="--aspect-ratio:{{ 1 | divided_by: ratio | times: 100 }}%;">
+        <div class=" [&>*]:object-center [&>*]:object-cover [&>*]:absolute [&>*]:h-full [&>*]:w-full  [&>*]:inset-0"  data-media-id="{{ media.id }}">
+                {{ media | image_url: width: width, height: image_height | image_tag: loading: loading, widths: '150w,200w,300w,352w,500w,832w,1024w,1200w,1536w,1920w,2560w', alt: alt, class: class,  sizes: sizes, focus: focus  }}
+        </div>
+</div>  

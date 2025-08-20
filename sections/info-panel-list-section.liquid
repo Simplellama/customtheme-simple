@@ -1,0 +1,715 @@
+{% if page.metafields.custom.info_list_panel_section_meta.value %}
+  {% assign panel_section = page.metafields.custom.info_list_panel_section_meta.value %}
+{% elsif product.metafields.custom.info_list_panel_section_meta.value %}
+  {% assign panel_section = product.metafields.custom.info_list_panel_section_meta.value %}
+{% endif %}
+
+{% assign read_more = false %}
+
+<!-- Add Splide CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+
+<section class="info-panel-list-section pt-32 pb-12">
+    <div class="container flex flex-col gap-y-8 mx-auto">
+        <div class="flex flex-col text-center gap-y-2 pb-4 sm:pb-8 w-full">
+            <p class="text-lg/7 font-bold uppercase text-primary-orange">{{ panel_section.subtitle }}</p>
+            <h3 class="Heading tracking-tight text-7xl font-bold text-primary-text">{{ panel_section.title }}</h3>
+        </div>
+        <div id="video_list_container">
+            <!-- Convert to Splide -->
+            <div class="splide" id="video-splide">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        {% for panel in panel_section.video_panel.value %}
+                            {% assign moreItemsCount = 0 %}
+                            <li class="splide__slide panel  bg-secondary-bg overflow-hidden w-fit h-fit flex flex-col video_step{{ forloop.index0 }} video_step">
+                                <button class="relative group video__play video__play{{ forloop.index0 }} vid">
+                                    <video id="stepVideo{{ forloop.index0 }}" class="video step_video{{ forloop.index0 }} w-[400px] h-[580px] sm:h-[750px] object-cover" width="400" muted playsinline poster="{{ panel.image | image_url: width: 450 }}">
+                                        <source data-src="{{ panel.video.value.sources[0].url }}" type="application/x-mpegURL">
+                                        <source data-src="{{ panel.video.value.sources[1].url }}" type="video/mp4">
+                                    </video>
+                                    <div class="flex gap-x-1 absolute bottom-4 right-1 w-fit h-fit">
+                                        <div class="play-btn-{{ forloop.index0 }} flex items-center gap-x-1 rounded-full py-1 px-3 text-sm/5 font-semibold text-primary-text bg-primary-bg border border-border hover:border-primary-text">Afspil {% render 'icon', icon: 'play', size: '12px', fill: 'var(--primary-text)', stroke: 'var(--primary-text)' %}</div>
+                                        <div class="sound-btn-{{ forloop.index0 }} flex items-center gap-x-1 rounded-full py-1 px-3 text-sm/5 font-semibold text-primary-text bg-primary-bg border border-border hover:border-primary-text">Lyd {% render 'icon', icon: 'volume-x', size: '12px', fill: 'var(--primary-text)', stroke: 'var(--primary-text)' %}</div>
+                                        <div class="popup-btn-{{ forloop.index0 }} flex items-center gap-x-1 rounded-full py-1 px-3 text-sm/5 font-semibold text-primary-text bg-primary-bg border border-border hover:border-primary-text">Fuld video {% render 'icon', icon: 'maximize', size: '12px', fill: 'var(--primary-text)', stroke: 'var(--primary-text)' %}</div>
+                                    </div>
+                                </button>
+                                <div class="progress-bar-container" data-index="{{ forloop.index0 }}">
+                                    <div class="progress-bar" id="progress-bar-{{ forloop.index0 }}">
+                                        <div class="progress-thumb" id="progress-thumb-{{ forloop.index0 }}"></div>
+                                    </div>
+                                </div>
+                                <!-- Rest of panel content -->
+                                <div class="flex h-full flex-col px-8 gap-y-4 py-8">
+                                    <div class="flex flex-col gap-y-2 mb-3">
+                                        <h3 class="Heading tracking-tight font-bold text-3xl text-primary-text">{{ panel.title }} <span class="font-thin Heading text-4xl text-primary-text">{{ panel.title_light }}</span></h3>
+                                        <p class="text-base/5 text-primary-text">{{ panel.subtitle }}</p>
+                                    </div>
+
+                                    {% if panel.product.value != blank %}
+                                        <div class="flex flex-col py-2">
+                                            <div class="flex flex-col items-start gap-x-2 pb-2">
+                                                {% if panel.product.value.compare_at_price %}
+                                                    <span class="text-base">Før: <span class="line-through">{{ panel.product.value.compare_at_price | money }}</span></span>
+                                                {% endif %}
+                                                <span class="font-bold text-4xl/10 {% if panel.product.value.compare_at_price %} text-button-primary {% endif %}">{{ panel.product.value.price | money }}</span>
+                                                <span class="text-base">Gratis fragt</span>
+                                            </div>
+                                            <div class="flex mt-4 gap-x-2 justify-end items-center">
+                                                <a class="Button Button_primary text-lg w-full flex gap-x-2 px-2 items-center shadow-sm" href="">{{ 'products.product.add_to_cart' | t }} {% render 'icon', icon: 'cart', size: 16, class: 'stroke-[1.5px] -mt-1', stroke: 'var(--primary-bg)' %}</a>
+                                                <a class="Button Button_secondary text-lg w-full flex gap-x-2 px-2 items-center shadow-sm" href="{{ panel.product.value.url }}">{{ 'collections.general.read_more' | t }} {% render 'icon', icon: 'arrow-right', size: 10, class: '-mt-[2px]', fill: 'var(--primary-text)' %}</a>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if panel.list_item.value != blank %}
+                                        <ul class="panel-{{ forloop.index }} flex flex-col pb-4 relative" id="info-panel-list-{{ forloop.index }}">
+                                            {% assign panel_index = forloop.index0 %}
+                                            {% assign totalItems = 0 %}
+                                            {% for item in panel.list_item.value %}
+                                                {% assign item_index = forloop.index0 %}
+                                                {% assign totalItems = totalItems | plus: 1 %}
+                                                <li class="relative border !cursor-pointer  border-border transition-all ease duration-300 border-x-0 px-1 {% if forloop.first %}border-t{% else %}border-t-0{% endif %} {% unless forloop.last %}border-b{% endunless %} {% if forloop.index > 6 %}hidden{% endif %} {% if forloop.index == 6 and forloop.length != 6 %}show-half{% endif %}">
+                                                    <button class="panel-item-trigger-{{ panel_index }}-{{ item_index }} flex w-full justify-between items-center py-2 group" data-panel-index="{{ panel_index }}" data-item-index="{{ item_index }}">
+                                                        <div class="flex items-center gap-x-3">
+                                                            <p class="text-base/5">{{ item.title }}</p>
+                                                        </div>
+                                                        {% render 'icon', icon: 'info', size: '20px', class: 'fill-tertiary-bg hidden group-hover:block' %}
+                                                    </button>
+                                                </li>
+                                                {% if forloop.index > 6 %}
+                                                    {% assign moreItemsCount = totalItems | minus: 6 %}
+                                                {% endif %}
+                                                {% render 'panel-item-popup', panel-index: panel_index, item-index: item_index, panel-list-item: item %}
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+
+                                    {% if moreItemsCount > 0 %}
+                                        <button class="read-more-btn flex items-center justify-between gap-x-2 text-base/6 py-2 font-semibold mt-0 w-fit text-center bg-white relative z-2 text-primary-text rounded border border-border px-6 shadow-sm" data-panel-index="{{ forloop.index }}">
+                                            <div class="flex items-center gap-x-3">
+                                                <div class="flex items-center">
+                                                    <span>Se hele listen +</span>
+                                                    <span class="extraItemsCount flex gap-x-1 items-center pr-3 border-r h-fit border-border" data-items-count="{{ moreItemsCount }}">{{ moreItemsCount }}</span>
+                                                </div>
+                                                {% render 'icon', icon: 'arrow-down', size: 14, class: 'arrow-icon -mt-[0px] bg-primary-orange rounded-full w-5 h-5 py-1', fill: 'var(--primary-bg)' %}
+                                            </div>
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+      
+
+                <div class="splide__arrows mx-auto w-fit mt-4">
+                  <button class="splide__arrow splide__arrow--prev">{% render 'icon', icon: 'arrow-left', size: 10, class: '-mt-[2px]' %}</button>
+                  <span class="splide__slide-count !font-light !text-sm"></span>
+                  <button class="splide__arrow splide__arrow--next">{% render 'icon', icon: 'arrow-right', size: 10, class: '-mt-[2px]' %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Setup videos and controls BEFORE Splide initialization
+      const sectionElement = document.querySelector('.info-panel-list-section');
+      const videos = sectionElement.querySelectorAll('.video');
+      const plays = sectionElement.querySelectorAll('.vid');
+      const progressBarContainers = sectionElement.querySelectorAll('.progress-bar-container');
+      const progressThumbs = sectionElement.querySelectorAll('.progress-thumb');
+      let currentVideoIndex = 0;
+      let isDragging = false;
+      
+      // Store original videos and their data (without loading them)
+      const videoRegistry = [];
+      videos.forEach((video, index) => {
+        // Store reference to original video and its components without loading
+        videoRegistry[index] = {
+          video: video,
+          progressBar: document.getElementById(`progress-bar-${index}`),
+          progressThumb: document.getElementById(`progress-thumb-${index}`),
+          isLoaded: false
+        };
+      });
+      
+      // Function to load a specific video when needed
+      function loadVideo(index) {
+        const videoData = videoRegistry[index];
+        
+        // Skip if this video is already loaded
+        if (videoData.isLoaded) return;
+        
+        // Load video sources
+        const sources = videoData.video.querySelectorAll('source');
+        sources.forEach(source => {
+          source.src = source.getAttribute('data-src');
+        });
+        videoData.video.load();
+        videoData.isLoaded = true;
+      }
+      
+      // Initialize Splide slider
+      const startSlideIndex = 0;
+      const splide = new Splide(sectionElement.querySelector('#video-splide'), {
+        type: 'loop',
+        gap: '2rem',
+        focus: 'center',
+        pagination: false,
+        arrows: true,
+        autoWidth: true,
+        start: startSlideIndex,
+        breakpoints: {
+          768: {
+            perPage: 1,
+            gap: '1rem'
+          }
+        }
+      }).mount();
+      
+      // Force initial slide position after mount
+      setTimeout(() => {
+        splide.go(startSlideIndex);
+        
+        // Load only the initial video
+        loadVideo(startSlideIndex);
+        
+        // Initialize button visibility on first load
+        updatePlayButtonVisibility(startSlideIndex);
+        updateSoundButtonVisibility(startSlideIndex);
+      }, 100);
+      
+      // Set up Intersection Observer to play/pause videos when section enters/exits viewport
+      const videoSection = sectionElement.querySelector('#video_list_container');
+      const observerOptions = {
+        root: null, // viewport
+        rootMargin: '0px',
+        threshold: 0.3 // 30% of the element must be visible
+      };
+      
+      const videoSectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Section is in view, load and play the first video
+            if (videoRegistry[startSlideIndex]) {
+              // Load video if not already loaded
+              loadVideo(startSlideIndex);
+              
+              // Go to the starting slide and play it
+              splide.go(startSlideIndex);
+              videoRegistry[startSlideIndex].video.play().catch(error => {
+                if (error.name !== 'AbortError') {
+                  console.error('Error playing video on scroll:', error);
+                }
+              });
+            }
+          } else {
+            // Section is out of view, pause all videos
+            videoRegistry.forEach(data => {
+              if (data && data.video) {
+                data.video.pause();
+              }
+            });
+          }
+        });
+      }, observerOptions);
+      
+      // Start observing the video section
+      videoSectionObserver.observe(videoSection); 
+      
+      // Get all slides after Splide initialization (including clones)
+      const allSlides = sectionElement.querySelectorAll('.splide__slide');
+      const originalSlidesCount = videos.length;
+      
+      // Better function to get real slide index for both original and cloned slides
+      function getRealSlideIndex(slide) {
+        // Find which video_step class this slide has
+        let stepClass = null;
+        for (let cls of slide.classList) {
+          if (cls.startsWith('video_step') && !cls.endsWith('video_step')) {
+            stepClass = cls;
+            break;
+          }
+        }
+        
+        if (stepClass) {
+          return parseInt(stepClass.replace('video_step', ''));
+        }
+        
+        // Fallback: try to find the video element and get its ID
+        const videoEl = slide.querySelector('video');
+        if (videoEl && videoEl.id) {
+          return parseInt(videoEl.id.replace('stepVideo', ''));
+        }
+        
+        // Last resort fallback
+        return 0;
+      }
+      
+      // Make each slide clickable to navigate to that slide - fixed for clones
+      allSlides.forEach(slide => {
+        slide.addEventListener('click', function(e) {
+          // Avoid triggering this when clicking elements that have their own handlers
+          if (e.target.closest('.vid') || 
+              e.target.closest('.progress-bar-container') || 
+              e.target.closest('[class^="sound-btn-"]') || 
+              e.target.closest('[class^="popup-btn-"]') ||
+              e.target.closest('.panel-item-trigger') ||
+              e.target.closest('.read-more-btn')) {
+            return;
+          }
+          
+          // Get the real index from video_step class or video ID
+          const realIndex = getRealSlideIndex(slide);
+          
+          // Pause all videos first
+          videos.forEach(video => video.pause());
+          
+          // Use Splide's API to navigate directly to the slide by index
+          // Note: When using 'loop' mode, Splide will handle the clone navigation correctly
+          splide.Components.Controller.go(realIndex, true);
+          
+          // After navigation, play the appropriate video
+          setTimeout(() => {
+            const videoData = videoRegistry[realIndex];
+            if (videoData && videoData.video) {
+              videoData.video.play().catch(error => {
+                if (error.name !== 'AbortError') {
+                  console.error('Error playing video:', error);
+                }
+              });
+            }
+          }, 50); // Small delay to ensure slide transition has started
+        });
+      });
+      
+      // Set up click handlers for all play buttons (both original and cloned)
+      allSlides.forEach(slide => {
+        const playButton = slide.querySelector('.vid');
+        if (!playButton) return;
+        
+        playButton.addEventListener('click', function(e) {
+          e.stopPropagation(); // Prevent triggering slide click
+          
+          // Get the real index from slide
+          const realIndex = getRealSlideIndex(slide);
+          
+          // Get the data for the original video
+          const videoData = videoRegistry[realIndex];
+          if (!videoData || !videoData.video) return;
+          
+          // Make sure video is loaded before attempting to play
+          loadVideo(realIndex);
+          
+          // Toggle play/pause based on current state
+          if (videoData.video.paused) {
+            // First pause all videos
+            videos.forEach(video => video.pause());
+            
+            // Then play this one
+            videoData.video.play().catch(error => {
+              if (error.name !== 'AbortError') {
+                console.error('Error playing video:', error);
+              }
+            });
+          } else {
+            // It's playing, so just pause it (nothing else)
+            videoData.video.pause();
+          }
+          
+          // Update current index
+          currentVideoIndex = realIndex;
+          
+          // Update play button state
+          updatePlayButtonState(realIndex);
+          
+          // Only navigate if we're playing the video, not when pausing
+          if (!videoData.video.paused) {
+            splide.Components.Controller.go(realIndex, true);
+          }
+        });
+      });
+      
+      // Set up click handlers for all progress bars (both original and cloned)
+      allSlides.forEach(slide => {
+        const progressBar = slide.querySelector('.progress-bar-container');
+        if (!progressBar) return;
+        
+        progressBar.addEventListener('click', function(e) {
+          e.stopPropagation(); // Prevent triggering slide click
+          
+          const realIndex = getRealSlideIndex(slide);
+          const videoData = videoRegistry[realIndex];
+          if (!videoData || !videoData.video) return;
+          
+          // Calculate position
+          const rect = this.getBoundingClientRect();
+          const offsetX = e.clientX - rect.left;
+          const width = rect.width;
+          const percentage = offsetX / width;
+          
+          // Set video position
+          videoData.video.currentTime = percentage * videoData.video.duration;
+          
+          // Use direct API call for navigation
+          splide.Components.Controller.go(realIndex, true);
+        });
+      });
+      
+      // Pause all videos when sliding
+      splide.on('move', function() {
+        videos.forEach(video => video.pause());
+      });
+      
+      // Update current video index and play appropriate video when slide changes
+      splide.on('moved', function(newIndex) {
+        // Get the normalized index (original slide index)
+        const normalizedIndex = ((newIndex % originalSlidesCount) + originalSlidesCount) % originalSlidesCount;
+        currentVideoIndex = normalizedIndex;
+        
+        // Load and play the corresponding original video
+        loadVideo(normalizedIndex);
+        const videoData = videoRegistry[normalizedIndex];
+        if (videoData && videoData.video) {
+          videoData.video.play().catch(error => {
+            if (error.name !== 'AbortError') {
+              console.error('Error playing video:', error);
+            }
+          });
+        }
+        
+        // Update buttons visibility - only show on active slide
+        updateSoundButtonVisibility(normalizedIndex);
+        updatePlayButtonVisibility(normalizedIndex);
+      });
+      
+      // Function to update play button visibility
+      function updatePlayButtonVisibility(activeIndex) {
+        // Hide all play buttons first
+        sectionElement.querySelectorAll('[class^="play-btn-"]').forEach(btn => {
+          btn.style.display = 'none';
+        });
+        
+        // Show only the active slide's play button
+        const activeSlide = splide.Components.Slides.getAt(splide.index).slide;
+        if (activeSlide) {
+          const activeButton = activeSlide.querySelector('[class^="play-btn-"]');
+          if (activeButton) {
+            activeButton.style.display = 'flex';
+            
+            // Update its text based on video state
+            updatePlayButtonState(activeIndex);
+          }
+        }
+      }
+      
+      // Function to update play button state (text)
+      function updatePlayButtonState(videoIndex) {
+        const videoData = videoRegistry[videoIndex];
+        if (!videoData || !videoData.video) return;
+        
+        const isPaused = videoData.video.paused;
+        const iconType = isPaused ? 'play' : 'pause';
+        const buttonText = isPaused ? 'Afspil' : 'Pause';
+        
+        // Update all play buttons for this video index
+        sectionElement.querySelectorAll(`.play-btn-${videoIndex}`).forEach(btn => {
+          btn.innerHTML = `${buttonText} {% render "icon", icon: "${iconType}", size: "12px", fill: "var(--primary-text)", stroke: "var(--primary-text)" %}`;
+        });
+      }
+      
+      // Function to update sound button visibility
+      function updateSoundButtonVisibility(activeIndex) {
+        // Hide all sound buttons first
+        sectionElement.querySelectorAll('[class^="sound-btn-"]').forEach(btn => {
+          btn.style.display = 'none';
+        });
+        
+        // Show only the active slide's sound button
+        const activeSlide = splide.Components.Slides.getAt(splide.index).slide;
+        if (activeSlide) {
+          const activeButton = activeSlide.querySelector('[class^="sound-btn-"]');
+          if (activeButton) {
+            activeButton.style.display = 'flex';
+          }
+        }
+      }
+      
+      // Function to play next video and handle loop
+      function playNextVideo() {
+        splide.go('+1'); // Let Splide handle the navigation
+      }
+      
+      function resetAllVideos() {
+        videoRegistry.forEach(data => {
+          if (data && data.video) {
+            data.video.pause();
+            data.video.currentTime = 0;
+            if (data.progressBar) {
+              data.progressBar.style.width = '0%';
+            }
+            if (data.progressThumb) {
+              data.progressThumb.style.left = '0%';
+            }
+          }
+        });
+      }
+      
+      // Set up video playback and progress tracking for original videos
+      videos.forEach((video, index) => {
+        // Play next video when this one ends
+        video.addEventListener('ended', playNextVideo);
+        
+        // Update play button when video state changes
+        video.addEventListener('play', () => {
+          updatePlayButtonState(index);
+        });
+        
+        video.addEventListener('pause', () => {
+          updatePlayButtonState(index);
+        });
+        
+        // Update progress bar for ALL instances (original and cloned)
+        video.addEventListener('timeupdate', () => {
+          if (!isDragging) {
+            const progress = (video.currentTime / video.duration) * 100;
+            const normalizedIndex = ((index % originalSlidesCount) + originalSlidesCount) % originalSlidesCount;
+            
+            // Update original progress bar
+            const videoData = videoRegistry[normalizedIndex];
+            if (videoData.progressBar) {
+              videoData.progressBar.style.width = `${progress}%`;
+            }
+            if (videoData.progressThumb) {
+              videoData.progressThumb.style.left = `${progress}%`;
+            }
+            
+            // Also update all cloned progress bars for this slide
+            sectionElement.querySelectorAll(`.splide__slide.is-cloned [id="progress-bar-${normalizedIndex}"]`).forEach(bar => {
+              bar.style.width = `${progress}%`;
+            });
+            sectionElement.querySelectorAll(`.splide__slide.is-cloned [id="progress-thumb-${normalizedIndex}"]`).forEach(thumb => {
+              thumb.style.left = `${progress}%`;
+            });
+          }
+        });
+      });
+      
+      // Set up sound toggle for all buttons (both original and cloned)
+      allSlides.forEach(slide => {
+        const soundButton = slide.querySelector('[class^="sound-btn-"]');
+        if (!soundButton) return;
+        
+        // Extract the video index from the class name
+        const match = soundButton.className.match(/sound-btn-(\d+)/);
+        if (!match) return;
+        
+        const videoIndex = parseInt(match[1]);
+        const normalizedIndex = ((videoIndex % originalSlidesCount) + originalSlidesCount) % originalSlidesCount;
+        
+        soundButton.addEventListener('click', function(e) {
+          e.stopPropagation(); // Prevent triggering parent elements
+          
+          // Toggle mute state for ALL videos
+          const newMuteState = !videoRegistry[normalizedIndex].video.muted;
+          
+          // Apply to all videos
+          videoRegistry.forEach(data => {
+            if (data && data.video) {
+              data.video.muted = newMuteState;
+            }
+          });
+          
+          // Update button text for all buttons
+          const iconType = newMuteState ? 'volume-x' : 'volume-2';
+          const buttonText = newMuteState ? 'Lyd' : 'Mute';
+          
+          // Update all sound buttons in this section only
+          sectionElement.querySelectorAll('[class^="sound-btn-"]').forEach(btn => {
+            btn.innerHTML = `${buttonText} {% render "icon", icon: "${iconType}", size: "12px", fill: "var(--primary-text)", stroke: "var(--primary-text)" %}`;
+          });
+        });
+      });
+      
+      // Set up popup buttons for all slides (both original and cloned)
+      allSlides.forEach(slide => {
+        const popupButton = slide.querySelector('[class^="popup-btn-"]');
+        if (!popupButton) return;
+        
+        popupButton.addEventListener('click', function(e) {
+          e.stopPropagation();
+          
+          // Pause all currently playing videos first
+          videos.forEach(video => video.pause());
+          
+          const match = this.className.match(/popup-btn-(\d+)/);
+          if (!match) return;
+          
+          const videoIndex = parseInt(match[1]);
+          const normalizedIndex = ((videoIndex % originalSlidesCount) + originalSlidesCount) % originalSlidesCount;
+          
+          // Ensure the video is loaded before opening the popup
+          loadVideo(normalizedIndex);
+          const videoData = videoRegistry[normalizedIndex];
+          
+          if (videoData && videoData.video) {
+            const videoUrl = videoData.video.querySelector('source[type="video/mp4"]').getAttribute('data-src');
+            openVideoPopup(videoUrl);
+          }
+        });
+      });
+      
+      // Handle video popup functionality
+      function openVideoPopup(url) {
+        const popup = document.createElement('div');
+        popup.id = 'video-popup';
+        popup.classList.add('video-popup');
+        popup.innerHTML = `
+          <div class="popup-content relative max-w-[60vw] rounded-lg">
+            <div class="close-button absolute right-0 mx-auto cursor-pointer hover: -top-14 flex items-center justify-center rounded-full w-10 h-10 border border-border hover:border-primart-text bg-primary-bg">
+              <span class="h-[23px] text-2xl/none w-fit">&times;</span>
+            </div>
+            <video controls autoplay class="w-full rounded-lg overflow-hidden">
+              <source src="${url}" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        `;
+        document.body.appendChild(popup);
+        
+        const style = document.createElement('style');
+        style.innerHTML = `
+          .video-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+          }
+          .popup-content {
+            position: relative;
+            background: #fff;
+          }
+        `;
+        document.head.appendChild(style);
+        
+        popup.querySelector('.close-button').addEventListener('click', () => {
+          popup.remove();
+          style.remove();
+        });
+        
+        popup.addEventListener('click', (e) => {
+          if (e.target === popup) {
+            popup.remove();
+            style.remove();
+          }
+        });
+      }
+      
+      // No need to modify read more button functionality, as it's not affected by cloned slides
+    });
+</script>
+
+<style>
+    /* Scoped styles to this section only */
+    .info-panel-list-section .progress-bar-container {
+        width: 100%;
+        height: 8px;
+        background-color: #e0e0e0;
+        margin-top: -5px;
+        cursor: pointer;
+        position: relative;
+        transition: height 0.2s ease;
+    }
+
+    .info-panel-list-section .progress-bar {
+        height: 100%;
+        background-color: #ff5722;
+        width: 0;
+        transition: width 0.01s ease;
+    }
+
+    .info-panel-list-section .progress-thumb {
+        width: 12px;
+        height: 12px;
+        background-color: #ff5722;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+    } 
+
+   
+    /* Keep existing styles but scoped */
+    .info-panel-list-section .show-half {
+        position: relative;
+        border-bottom: none;
+        opacity: 0.3;
+        pointer-events: none;
+        overflow: hidden;
+        max-height: 50px;
+    }
+
+    .info-panel-list-section .show-half::after {
+        content: '';
+        position: absolute; 
+        pointer-events: none;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: linear-gradient(to top, white 70%, transparent);
+    }
+
+    .info-panel-list-section .rotate-180 {
+        transform: rotate(180deg);
+    }
+
+    /* Slide styles without hover/transform effects - now scoped */
+    .info-panel-list-section .splide__slide.is-cloned .progress-bar-container {
+        pointer-events: auto;
+    }
+
+    .info-panel-list-section .splide__slide {
+        cursor: pointer;
+        opacity: 0.6; /* Fade all slides by default */
+        transition: opacity 0.3s ease; /* Smooth transition */
+    }
+
+    .info-panel-list-section .splide__slide.is-active {
+        z-index: 2;
+        opacity: 1; /* Full opacity for active slide */
+    }
+
+    /* Hide all sound buttons by default - now scoped */
+    .info-panel-list-section [class^="sound-btn-"] {
+        display: none;
+    }
+
+    /* Keep play buttons hidden by default */
+    .info-panel-list-section [class^="play-btn-"] {
+        display: none;
+    }
+</style>
+
+{% schema %}
+{
+    "name": "Info panel section",
+    "settings": [],
+    "presets": [
+        {
+            "name": "Info panel section",
+            "category": "section"
+        }
+    ]
+}
+{% endschema %}

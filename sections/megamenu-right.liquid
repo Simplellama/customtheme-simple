@@ -1,0 +1,164 @@
+{% for block in section.blocks %}
+{% assign menuTitle = block.settings.menu_id | downcase %}
+<div data-megamenu="{{ menuTitle }}" class="Mega_menu w-full relative z-[0] bg-white border-border border-y border-border drop-shadow-[0_150px_70px_-30px_#000000cf]">
+  <div class="container min-h-[300px] grid gap-4 pt-10 pb-16 mx-auto text-sm text-black {% if block.settings.fourCols == true %}md:grid-cols-4{% else %}md:grid-cols-3{% endif %}">
+    
+    {% assign iconList = shop.metaobjects.navigation_icon_list.navigation-icon-list.navigation_icon_list.value %}
+    {% for link in linklists.main-menu-right.links %}
+      {% assign linkTitle = link.title | downcase %} 
+        {% if menuTitle == linkTitle %}
+
+          {% if link.links.size > 0 %}
+            {% for child_link in link.links %}
+              <ul class="hidden mb-4 space-y-4 md:mb-0 md:block mega-col" aria-labelledby="mega-menu-full-image-button">
+                <li><a href="{{ child_link.url }}" class="font-bold text-xl text-black">{{ child_link.title | replace: "_", "" }}</a></li>
+                {% if child_link.links.size > 0 %}
+
+                  {% for great_grandchild_link in child_link.links %}
+                    {% assign icon_to_insert = '' %}
+                    {% for icon in iconList %} 
+                        {% assign icon_name = icon.name_of_nav_item | downcase %}
+                        {% assign great_grandchild_title = great_grandchild_link.title | downcase %}
+                        {% if icon_name == great_grandchild_title %}
+                          {% assign icon_to_insert = icon.icon %}
+                        {% endif %}
+                    {% endfor %}
+                    <li><a class="text-base flex items-center gap-2 group hover:text-primary-black" href="{{ great_grandchild_link.url }}">{% if icon_to_insert.value != blank %}<span class="icon"><img class="group-hover:scale-[95%]" loading="lazy" width="35" height="35" src="{{ icon_to_insert.value | image_url: width: 35, height: 35 }}" alt="menu link {{ great_grandchild_link.title }}"></span>{% endif %}{{ great_grandchild_link.title }}</a></li>
+                  {% endfor %} 
+                  
+                {% endif %}
+              </ul>
+            {% endfor %}
+          {% endif %}
+        {% endif %}
+    {% endfor %}
+
+    {% if block.settings.image_link != blank  %}
+      <a href="{{ block.settings.link  }}" class="mega-col flex relative flex-col min-h-[250px] py-8 px-4 text-left bg-secondary-bg">
+        <img src="{{ block.settings.image_link | image_url: width: 330 }}" loading="lazy" alt="{{ block.settings.image_text }}" class="w-full h-full object-cover" />
+        <button type="button" class="relative text-left">
+          {{ block.settings.image_button_text }}
+        </button>
+      </a>
+    {% endif %}
+    
+    {% if block.settings.image_link_2 != blank %}
+      <a href="{{ block.settings.link_2 }}" class="mega-col hover:opacity-90 flex relative overflow-hidden justify-end flex-col min-h-[250px] py-8 px-4 text-left bg-right bg-no-repeat bg-cover bg-secondary-bg">
+        <img src="{{ block.settings.image_link_2 | image_url: width: 330 }}" loading="lazy" alt="{{ block.settings.image_text_2 }}" class="absolute top-0 left-0 w-full h-full object-cover z-0" />
+        <p class="max-w-xl z-[1] relative mb-5 text-2xl font-bold leading-tight tracking-tight text-white">{{ block.settings.image_text_2 }}</p>
+        <button type="button" class="Button Button_primary text-base inline-flex z-[1]">
+          {{ block.settings.image_button_text_2 }}
+          <svg class="w-3 h-3 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+          </svg>
+        </button>
+      </a>
+    {% endif %}
+
+    {% if block.settings.image_link_3 != blank %}
+      <a href="{{ block.settings.link_3 }}" class="mega-col hover:opacity-90 flex relative overflow-hidden justify-end flex-col min-h-[250px] py-8 px-4 text-left bg-right bg-no-repeat bg-cover ">
+        <img src="{{ block.settings.image_link_3 | image_url: width: 330 }}" loading="lazy" alt="{{ block.settings.image_text_3 }}" class="absolute top-0 left-0 w-full h-full object-cover z-0" />
+        <p class="max-w-xl z-[1] relative mb-5 text-2xl font-bold leading-tight tracking-tight text-white">{{ block.settings.image_text_3 }}</p>
+        <button type="button" class="Button Button_primary text-base inline-flex z-[1]">
+          {{ block.settings.image_button_text_3 }}
+          <svg class="w-3 h-3 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+          </svg>
+        </button>
+      </a>
+    {% endif %}
+    
+  </div>
+</div>
+{% endfor %}
+{% schema %}
+{
+  "name": "Mega menus right",
+  "class": "relative",
+  "settings": [
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Mega menu right",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "fourCols",
+          "label": "4 columns",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "menu_id",
+          "label": "Mega menu selection",
+          "info": "Select the menu you want to use for this link list"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_link",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_text",
+          "label": "Image text"
+        },
+        {
+          "type": "text",
+          "id": "image_button_text",
+          "label": "Image button text",
+          "default": "Learn more"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_link_2",
+          "label": "Image 2"
+        },
+        {
+          "type": "text",
+          "id": "image_text_2",
+          "label": "Image text 2"
+        },
+        {
+          "type": "text",
+          "id": "image_button_text_2",
+          "label": "Image button text 2",
+          "default": "Learn more"
+        },
+        {
+          "type": "url",
+          "id": "link_2",
+          "label": "link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_link_3",
+          "label": "Image 3"
+        },
+        {
+          "type": "text",
+          "id": "image_text_3",
+          "label": "Image text 3"
+        },
+        {
+          "type": "text",
+          "id": "image_button_text_3", 
+          "label": "Image button text 3",
+          "default": "Learn more"
+        },
+        {
+          "type": "url",
+          "id": "link_3",
+          "label": "link"
+        }
+      ] 
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,183 @@
+{% assign faqList = product.metafields.custom.product_faq_section_list.value.product_faq_section_list.value %}
+
+{% if faqList != blank or section.blocks != blank %}
+  <section id="faq-section" class="faq-section fixed-bg flex items-center pt-4 sm:pt-24 pb-6 mt-4 mb-4 mx-4 px-4 {% if section.settings.background == true %}bg-secondary-bg{% endif %}">
+    <div class="sm:container">
+      <div class="faq-container m-auto max-w-screen-pageMaxWidth flex flex-col gap-y-8 {% if section.settings.margin == true %}my-8 sm:my-20{% endif %}  pb-12 sm:pb-24">
+        <div class="flex flex-col gap-y-2 pb-4 w-full text-center">
+          <p class="text-lg/7 font-bold uppercase text-primary-orange">{{ section.settings.subtitle }}</p>
+          <h3 class="Heading tracking-tight text-7xl font-bold text-primary-text">{{ section.settings.title }}</h3>
+        </div>
+        <div class="bg-primary-bg w-full max-w-4xl mx-auto overflow-hidden">
+          {% assign contentFlag = false %}
+          {% for block in section.blocks %}
+            {%- case block.type -%} 
+              {% when 'title' %}
+                  {% if contentFlag == true %}
+                      </div>
+                      {% assign contentFlag = false %}
+                  {% endif %}
+                  <h3 class="acc-title cursor-pointer border-b text-center px-6 sm:px-8 py-8 w-full first:mt-0 accordion"><a href="#" class="flex justify-between items-center " id="accordion-title_{{ block.id }}"><span class="text-left text-lg">{{ block.settings.title }}</span><div class="flex items-center gap-4"><span class="Heading  hidden md:block">{{ block.settings.subtitle }}</span><span class="plus-icon text-base text-left sm:text-4xl Heading origin-center">+</span></div></a></h3>
+              {% when 'faq' %}
+                {% if contentFlag == false %}
+                  <div id="accordion-content_{{ block.id }}" class="bg-white my-2- faq-item faq_item_{{ block.id }} w-full" style="display: none;">
+                  {% assign contentFlag = true %}
+                {% endif %} 
+                  <ul class="grid-cols-1 faq-item-container grid md:grid-cols-1 m-auto items-center justify-items-stretch text-left border-b pt-4 pb-8 px-8 gap-6">
+                    <li class="faq-item-title text-left Heading text-lg">{{ block.settings.item-title }}</li>
+                    <li class="faq-item-text">{{ block.settings.item-text | newline_to_br }}</li>
+                    {% if block.settings.faq_link != blank %}<li><a href="{{ block.settings.faq_link }}" target="_blank" class="faq-item-title Button Button_secondary py-2 px-4 w-fit flex items-center gap-2">{{ block.settings.custom_btn }}<span class="arrow-hover">{%- render 'icon', icon: 'arrow-right', fill: '#000', size: 15 -%}</span></a></li>{% endif %}
+                  </ul>
+            {% endcase %}   
+          {% endfor %} 
+          {% for faqItem in faqList %}
+              {% assign uniqueId = forloop.index %}
+
+                {% if faqItem.collection_link.value.url != blank %} 
+                  {% assign faqLink = faqItem.collection_link.value.url %}
+
+                {% elsif faqItem.product_link.value.url != blank %}
+                  {% assign faqLink = faqItem.product_link.value.url %}
+
+                {% elsif faqItem.page_link.value.url != blank %}
+                  {% assign faqLink = faqItem.page_link.value.url %}
+                {% else %}
+                  {% assign faqLink = faqItem.button_link %}
+                {% endif %}
+      
+              {% if faqItem.title_question.value %}
+                {% if contentFlag == true %}
+                  </div>
+                  {% assign contentFlag = false %}
+                {% endif %}
+                <h3 class="acc-title cursor-pointer border-b text-center px-8 py-8 w-full first:mt-0 accordion"><a href="#" class="flex justify-between items-center " id="accordion-title_{{ uniqueId }}"><span class="text-base text-left sm:text-lg lg:text-2xl">{{ faqItem.title_question.value }}</span><div class="flex items-center gap-4"><span class="Heading  hidden md:block"></span><span class="plus-icontext-base text-left sm:text-lg lg:text-2xl Heading ">+</span></div></a></h3>
+              {% endif %}
+              {% if faqItem.text_answer.value or faqItem.text_answer_richtext.value %}
+                  {% if contentFlag == false %}
+                    <div id="accordion-content_{{ uniqueId }}" class="bg-white my-2- faq-item faq_item_{{ uniqueId }} w-full" style="display: none;">
+                    {% assign contentFlag = true %}
+                  {% endif %} 
+                    <ul class="grid-cols-1 faq-item-container grid md:grid-cols-1 m-auto items-center justify-items-stretch text-left border-b pt-4 pb-8 px-8 gap-6">
+                      <li class="faq-item-text">{% if faqItem.text_answer_richtext.value == blank %}{{ faqItem.text_answer | metafield_tag | newline_to_br  }}{% else %} {{ faqItem.text_answer_richtext | metafield_tag | newline_to_br }}{% endif %}</li>
+                      {% if faqLink != blank %}
+                        <li>
+                          <a href="{{ faqLink }}" target="_blank" class="faq-item-title Button Button_secondary py-2 px-4 w-fit flex items-center gap-2">{% if faqLink != blank %}{{ faqItem.button_text  }}{% endif %}<span class="arrow-hover">{%- render 'icon', icon: 'arrow-right', fill: '#000', size: 15 -%}</span></a>
+                        </li>
+                      {% endif %}
+                    </ul>
+              {% endif %}   
+          {% endfor %}
+
+          {% if contentFlag == true %} 
+              </div>
+          {% endif %}
+        </div>
+        {% if section.settings.link != blank %}<a href="{{ section.settings.link }}" class="flex-none w-fit text-center mx-auto rounded-full bg-light-green px-8 py-2.5 text-base font-semibold text-dark-green  hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white mt-6">{{ section.settings.link-text }}</a>{% endif %}
+      </div>
+    </div>
+  </section> 
+{% endif %}
+
+{% schema %}  
+{ 
+  "name": "Faq section",
+  "class": "faq_section",
+  "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "FAQ - FREQUENTLY ASKED QUESTIONS"
+      }, 
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Subheading",
+        "default": "We have the answers to your questions right here"
+      },
+      { 
+        "type": "url",
+        "id": "link",
+        "label": "Button link"
+      },
+      { 
+        "type": "text",
+        "id": "link-text",
+        "label": "Button text",
+        "default": "Go to all FAQ's"
+      },
+      {
+        "type": "checkbox",
+        "id": "background",
+        "label": "Background",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "margin",
+        "label": "Margin",
+        "default": true
+      }
+    ],
+    "blocks": [
+      {
+        "type": "faq",
+        "name": "Faq",
+        "settings": [
+          {
+              "type": "text",
+              "id": "item-title",
+              "label": "Item title"
+          },
+          {
+              "type": "richtext",
+              "id": "item-text",
+              "label": "Item text" 
+          },
+          {
+              "type": "url",
+              "id": "faq_link",
+              "label": "faq link"
+          },
+          {
+              "type": "text",
+              "id": "custom_btn",
+              "label": "Custom button text"
+          }
+        ]
+      },
+    {
+      "type": "title",
+      "name": "Title",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle"
+        }
+      ]
+      }
+    ],
+    "presets": [
+    {
+      "name": "Faq",
+      "category": "section",
+      "blocks": [
+        {
+          "type": "title",
+          "settings": {}
+        },
+        {
+          "type": "faq",
+          "settings": {}
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

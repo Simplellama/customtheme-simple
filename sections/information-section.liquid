@@ -1,0 +1,112 @@
+<section class="w-full pt-24 pb-36 px-4">
+    <div class="flex flex-col gap-y-8 max-w-screen-pageMaxWidth mx-auto">
+        <div class="grid grid-cols-12 isolate overflow-hidden bg-primary-black  relative justify-center items-center w-full h-full py-8 min-h-[450px] bg-cover bg-no-repeat" >
+            <div class="absolute inset-x-0 top-1/2 -z-10 -translate-y-1/2 transform-gpu overflow-hidden opacity-30 blur-3xl" aria-hidden="true">
+                <div class="ml-[max(50%,38rem)] aspect-[1613/771] w-[100.0625rem] bg-gradient-to-tr from-dark-green to-light-green opacity-70" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+              </div>
+              <div class="absolute inset-x-0 top-0 -z-10 flex transform-gpu overflow-hidden pt-32 opacity-25 blur-3xl sm:pt-40 xl:justify-end" aria-hidden="true">
+                <div class="ml-[-22rem] aspect-[1313/771] w-[100.0625rem] flex-none origin-top-right rotate-[60deg] bg-gradient-to-tr from-dark-green to-light-green  xl:ml-0 xl:mr-[calc(50%-12rem)]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+              </div>
+            <div class="col-span-12 col-span-6 col-start-4 flex justify-center items-center text-center flex-col gap-y-2 pb-4 w-full">
+                <p class="text-lg/7 font-bold uppercase text-primary-orange">{{ section.settings.subtitle }}</p>
+                <h3 class="Heading tracking-tight text-7xl/none font-bold text-[#F7F4EC]">{{ section.settings.title }}</h3>
+                <a class="flex-none rounded-full bg-light-green px-8 py-2.5 text-base font-semibold text-dark-green  hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white mt-8" href="{{ section.settings.url }}">{{ section.settings.link_text }} </a> 
+            </div>
+        </div>
+        <div class="grid grid-cols-12 justify-between gap-x-6 gap-y-2">
+            {% for block in section.blocks %}
+                {% if block.settings.title != blank %}
+                    <div class="col-span-12 md:col-span-4 bg-primary-black gap-y-2 bg-[primary-bg] flex flex-col py-12 px-6 items-center text-center gap-1">
+                        <div class="flex flex-col">
+                            {% if block.settings.icon != blank %}
+                                <img src="{{ block.settings.icon | image_url: width: 60 }}" alt="{{ block.settings.title }}">
+                            {% endif %}
+                            <div class="flex flex-col gap-y-2">
+                                <h3 class="Heading tracking-tight text-4xl font-semibold text-[#F7F4EC] ">{{ block.settings.title }}</h3>
+                                <div class="max-w-[85%] text-[#F7F4EC] sm:max-w-[70%] mx-auto text-light ">{{ block.settings.richtext }}</div>
+                                
+
+                            </div>
+                        </div>
+                        <a class="underline text-xl text-[#F7F4EC]"  href="{{ block.settings.link }}" {% if block.settings.button_text == 'Åben chat' %} onclick="GorgiasChat.open();" {% endif %}>{{ block.settings.button_text }}</a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div> 
+    </div> 
+</section>
+
+{% schema %}
+{
+    "name": "Information section", 
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Subtitle"
+        },
+        {
+            "type": "url",
+            "id": "url",
+            "label": "Link"
+        },
+        {
+            "type": "text",
+            "id": "link_text",
+            "label": "Link text"
+        },
+        {
+            "type": "image_picker",
+            "id": "background",
+            "label": "Background image"
+        }
+    ],
+    "blocks": [
+        {
+            "name": "Info panel",
+            "type": "feature",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title"
+                },
+                {
+                    "type": "richtext",
+                    "id": "richtext",
+                    "label": "Richtext"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "icon",
+                    "label": "Icon or image"
+                },
+                {
+                    "type": "text",
+                    "id": "button_text",
+                    "label": "Button text"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Link"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Information section",
+            "category": "section",
+            "blocks": [
+            
+            ]
+        }
+    ]
+}
+{% endschema %}

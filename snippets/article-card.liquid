@@ -1,0 +1,50 @@
+
+{%- if article and article != empty -%}
+    <a href="{{ article.url }}" class="article-card-wrapper">
+        
+        <div class="card article-card">
+        <div class="card__inner">
+          {%- if article.image -%}
+            <div class="card__media mb-4">
+         
+                <img src="{{ article.image | image_url: width: 450 }}" alt="{{ article.image.alt | escape }}" class="card__image" />
+            </div>
+          {%- endif -%}
+          <div class="card__content">
+            <div class="card__information">
+              <h3 class="mb-3">
+                <a href="{{ article.url }}" class="text-3xl Heading font-bold">
+                  {{ article.title | truncate: 50 | escape }}
+                </a>
+              </h3>
+              {% comment %} <div class="article-card__info my-2">
+                  <span class="circle-divider text-sm">{{ article.published_at | time_tag: format: 'date' }}</span>
+              </div> {% endcomment %}
+
+                {%- if article.excerpt.size > 0 or article.content.size > 0 -%}
+                  <p class="article-card__excerpt text-base">
+                    {%- if article.excerpt.size > 0 -%}
+                      {{ article.excerpt | strip_html | truncatewords: 30 }}
+                    {%- else -%}
+                      {{ article.content | strip_html | truncatewords: 30 }}
+                    {%- endif -%}
+                  </p>
+                {%- endif -%}
+
+                <a href="{{ article.url }}" class="text-base underline mt-6 block">{{ 'collections.general.read_more' | t }}</a> 
+
+
+                <div class="article-card__footer">
+                  {%- if article.comments_count > 0 and blog.comments_enabled? -%}
+                    <span>{{ 'blogs.article.comments' | t: count: article.comments_count }}</span>
+                  {%- endif -%}
+                </div>
+            
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </a>
+  {%- endif -%}

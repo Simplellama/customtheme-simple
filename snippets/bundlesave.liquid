@@ -1,0 +1,129 @@
+{% assign compare_price = product.selected_or_first_available_variant.compare_at_price %}
+{% assign discount_percentage = 0 %}
+{% assign discount_percentage = compare_price | minus: product.price | times: 100 | divided_by: compare_price %}
+
+<div class="w-full hidden">
+    <div class="flex flex-col justify-between">
+        {{ sizeContainer }}
+    </div> 
+</div>
+
+
+{% comment %} <script defer>
+    let defaultPrice = 0;
+    document.addEventListener('DOMContentLoaded', function () {
+
+   
+// Get the store's currency and locale from Liquid and assign them to JavaScript variables
+let storeCurrency = "{{ shop.currency }}";
+let storeLocale = "DA-DK"; // Danish locale uses . for thousands and , for decimals
+
+console.log('currency: ' + storeCurrency); // Debug line
+console.log('locale: ' + storeLocale); // Debug line
+
+// Get the currency symbol from the locale and currency
+let formattedParts = new Intl.NumberFormat(storeLocale, { style: 'currency', currency: storeCurrency }).formatToParts(0);
+let currencySymbol = '';
+for (let part of formattedParts) {
+    if (part.type === 'currency') {
+        currencySymbol = part.value;
+        break;
+    }
+}
+console.log('symbol: ' + currencySymbol);
+
+// Get the default price element
+const defaultPriceElement = document.querySelector('.default_price');
+let defaultPriceText = defaultPriceElement.innerText;
+
+// Extract the numeric value from the default price text
+// Replace non-numeric characters except for the decimal separator
+let numericValue = defaultPriceText
+    .replace(currencySymbol, '')
+    .replace(/\s+/g, '') // Remove any spaces
+    {% comment %} .replace('.', '') // Remove thousands separator dot
+    .replace(',', '.'); // Replace decimal comma with dot {% endcomment %}
+
+let defaultPrice = parseFloat(numericValue);
+
+// Get the formatter for the currency
+let formatter = new Intl.NumberFormat(storeLocale, {
+    style: 'currency',
+    currency: storeCurrency,
+    minimumFractionDigits: 0, // Ensure two decimal places
+    maximumFractionDigits: 0, // Ensure two decimal places
+    useGrouping: true // Use grouping separators (thousands separator)
+});
+
+// Function to format prices with the customized formatter
+function formatPrice(price) {
+    let formattedPrice = formatter.format(price);
+    // Ensure the currency symbol stays the same and is correctly placed
+    return formattedPrice;
+}
+
+// Example usage
+console.log(formatPrice(defaultPrice));
+
+// Update the default price element with the formatted price
+{% comment %} defaultPriceElement.innerText = formatPrice(defaultPrice); {% endcomment %}
+
+
+        // Get the quantity input element 
+        const quantityInput = document.getElementById('Quantity-{{ section.id }}');
+        let quantityCount = parseInt(quantityInput.value, 10);
+    
+        // Get all size options
+        const sizeOptions = document.querySelectorAll('.size-option'); 
+        
+        
+        // Add an event listener to each size option
+        sizeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Get the active variant price from the data-variant-default-price attribute
+                const activeVariantPrice = parseFloat(option.getAttribute('data-variant-default-price'));
+                console.log(activeVariantPrice); // Debug line
+
+                // Update the default price
+                defaultPrice = activeVariantPrice;
+
+                // Reset the quantity to 1
+                quantityCount = 1;
+                quantityInput.value = quantityCount;
+
+                // Check if data-count-saving has a value
+                const dataCountSaving = option.getAttribute('data-count-saving');
+                if (dataCountSaving) {
+                    // If data-count-saving has a value, update data-variant-default-price
+                    option.setAttribute('data-variant-default-price', dataCountSaving);
+                }
+
+                // Update the inner text of the defaultPriceElement
+                defaultPriceElement.innerText = formatter.format(defaultPrice);
+            });
+        });
+
+        // Function to update bundle visibility and border color
+        function updateBundleVisibilityAndBorderColor() {
+            // This function has been removed since it was related to bundle discounts.
+        }
+
+    
+        // Get the decrement and increment buttons
+        const decrementButton = document.querySelector('#decrement-btn');
+        const incrementButton = document.querySelector('#increment-btn');
+    
+        // Event listener for the decrement button
+        decrementButton.addEventListener('click', () => {
+            // Decrease the quantity count
+            quantityCount = Math.max(1, quantityCount - 1);
+        });
+    
+        // Event listener for the increment button
+        incrementButton.addEventListener('click', () => {
+            // Increase the quantity count
+            quantityCount = quantityCount + 1;
+        });
+    
+    });
+</script> {% endcomment %}

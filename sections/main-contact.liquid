@@ -1,0 +1,221 @@
+<section class="bg-primary-bg">
+  <div class="container py-6 lg:py-20"> 
+    <div class="form_section grid grid-cols-12 gap-y-8 lg:gap-x-20 items-center">
+
+      <div class="form col-span-12 lg:col-span-6">
+        <div class="header flex">
+          {% comment %} <h1 class="Heading font-bold text-5xl mb-6">{{ page.title }}</h1> {% endcomment %}
+          <div class=""> 
+            {{ page.content }}  
+          </div>
+        </div> 
+  
+        {%- form 'contact' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="Alert Alert--success">{{ 'contact.form.successfully_sent' | t }}</p>
+            <br>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <div class="Form__Alert Alert Alert--error">
+              <ul class="Alert__ErrorList">
+                {%- for field in form.errors -%}
+                  {%- if field == 'form' -%}
+                    <li class="Alert__ErrorItem">{{ form.errors.messages[field] }}</li>
+                  {%- else -%}
+                    <li class="Alert__ErrorItem"><strong>{{ form.errors.translated_fields[field] }}</strong> {{ form.errors.messages[field] }}</li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul> 
+            </div>
+          {%- endif -%}
+          <div class="contact_form flex flex-col gap-4">
+            <div class="Form__Group grid sm:grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="Form__Item ">
+                <input type="text" class="Form__Input w-full placeholder-primary-black rounded-md py-2 px-4" name="contact[name]" aria-label="{{ 'contact.form.name' | t }}" placeholder="{{ 'contact.form.name' | t }}" required {% if customer %}value="{{ customer.name }}"{% endif %}>
+              </div>
+
+              <div class="Form__Item w-full">
+                <input type="email" class="Form__Input w-full placeholder-primary-black rounded-md py-2 px-4" name="contact[email]" aria-label="{{ 'contact.form.email' | t }}" placeholder="{{ 'contact.form.email' | t }}" required {% if customer %}value="{{ customer.email }}"{% endif %}>
+              </div>
+            </div>
+            
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
+              {%- for block in section.blocks -%}
+                {%- assign field_title = block.settings.title -%}
+      
+                {%- if field_title == blank -%}
+                  {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
+                {%- endif -%}
+      
+                {%- if block.type == 'text' -%}
+                  <div class="Form__Item {% if block.settings.full_width == true %}col-span-full{% endif %} ">
+                    {%- if block.settings.use_long_text -%}
+                      <textarea name="contact[{{ field_title | escape }}]" cols="30" rows="10" class="Form__Textarea" aria-label="{{ block.settings.title | escape }}" placeholder="{{ block.settings.title | escape }}" {% if block.settings.is_required %}required{% endif %}></textarea>
+                    {%- else -%}
+                      <input type="text" class="Form__Input w-full  placeholder-primary-black rounded-md py-2 px-4" name="contact[{{ field_title | escape }}]" aria-label="{{ block.settings.title | escape }}" placeholder="{{ block.settings.title | escape }}" {% if block.settings.is_required %}required{% endif %}>
+                    {%- endif -%}
+                  </div>
+                {%- elsif block.type == 'dropdown' -%}
+                  {%- assign values = block.settings.values | split: ',' -%}
+      
+                  {%- if values == empty -%}
+                    {%- continue -%}
+                  {%- endif -%}
+      
+                  <div class="Form__Item  {% if block.settings.full_width_select == true %}col-span-full{% endif %}">
+                    <div class="Form__Select Select bg-white  placeholder-primary-black rounded-md py-2 px-4">
+                      {%- render 'icon' with 'select-arrow' -%}
+      
+                      <select class="bg-white w-full text-primary-black" name="contact[{{ field_title | escape }}]" title="{{ block.settings.title | escape }}" {% if block.settings.is_required %}required{% endif %}>
+                        <option value="" disabled selected>{{ block.settings.title | escape }}</option>
+      
+                        {%- for value in values -%}
+                          {%- assign trim_value = value | strip -%}
+      
+                          <option value="{{ trim_value | escape }}">{{ trim_value | escape }}</option>
+                        {%- endfor -%}
+                      </select>
+                    </div>
+                  </div>
+
+                {%- elsif block.type == 'file_upload' -%}
+                  <div class="Form__Item {% if block.settings.full_width == true %}col-span-full{% endif %}">
+                    <input type="file" class="Form__Input" name="contact[{{ field_title | escape }}]" aria-label="{{ block.settings.title | escape }}" {% if block.settings.is_required %}required{% endif %}>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+
+            <div class="Form__Item w-full">
+              <textarea name="contact[body]" cols="30" rows="10" class="Form__Textarea max-h-40  placeholder-primary-black px-4 pt-4 rounded-md w-full" aria-label="{{ 'contact.form.message' | t }}" placeholder="{{ 'contact.form.message' | t }}" required></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="Button Button_primary flex-row items-center flex gap-x-2 mt-6">{{ 'contact.form.send' | t }}<span>{%- render 'icon', icon: 'arrow-right', size: 10, fill: 'white' -%}</span></button>
+        {%- endform -%}
+
+      </div>
+
+      <div class="contact_info col-span-12 lg:col-span-6 w-full h-[400px] order-[-1] lg:order-1 lg:h-full rounded-md overflow-hidden">
+        {% if section.settings.img != blank %}{{ section.settings.img | image_url: width: 1280 | image_tag: widths: '1280,1000,800,700,600', class: 'object-cover w-full h-full object-center' }}{% endif %}
+      </div>
+    </div>
+  </div>
+</section> 
+  
+{% schema %} 
+{
+  "name": "Contact page", 
+  "class": "contact_page",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "Image"
+    },
+    {
+      "type": "html",
+      "id": "html",
+      "label": "Custom HTML"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Name",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_long_text",
+          "label": "Use long text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "is_required", 
+          "label": "Field is required",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Full width", 
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "dropdown",
+      "name": "Dropdown",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Name",
+          "default": "Custom field"
+        },
+        {
+          "type": "text",
+          "id": "values",
+          "label": "Values",
+          "info": "Separate each value by a comma.",
+          "default": "value 1, value 2, value 3"
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width_select",
+          "label": "Full width",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "is_required", 
+          "label": "Field is required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "file_upload",
+      "name": "File upload",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Name",
+          "default": "Custom field"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_required",
+          "label": "Field is required",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Full width",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "text",
+        "settings": {
+          "title": "Your phone (optional)"
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

@@ -1,0 +1,119 @@
+<section class="w-full pt-8 pb-36 section_{{ section.id }}">
+    <div class="container flex flex-col gap-y-8">
+        <div class="flex flex-col gap-y-4 w-full text-center">
+            <p class="text-base font-bold text-primary-orange uppercase">{{ section.settings.subtitle }}</p>
+            <h3 class="Heading tracking-tight text-7xl font-bold text-primary-text">{{ section.settings.title }}</h3>
+        </div>
+        <div id="image-block-panel-slider" class="splide relative flex flex-col gap-y-6 w-full">
+            <div class="splide__track">
+                <ul class="splide__list flex gap-x-8">
+                    {% for block in section.blocks %}
+                        {% if block.settings.title != blank %}
+                            <li class="splide__slide w-[400px]">
+                                <div class="col-span-6 md:col-span-3 gap-y-6 bg-white flex pr-2 items-center justify-between gap-x-10 border-border overflow-hidden rounded-lg">
+                                    {% if block.settings.icon != blank %}
+                                        <div class="h-full w-full max-w-[43%]">
+                                            <img class="w-full h-full min-h-full object-cover object-right-bottom" src="{{ block.settings.icon | image_url: width: 250 }}" alt="{{ block.settings.title }}">
+                                        </div>
+                                    {% endif %}
+                                    <div class="flex flex-col gap-y-4 py-8 ">
+                                        <div class="flex flex-col gap-y-1">
+                                            <h3 class="Heading tracking-tight text-4xl font-bold text-primary-text">{{ block.settings.title }}</h3>
+                                            <div class="text-base/5 text-primary-text max-w-[80%]">{{ block.settings.richtext }}</div>
+                                        </div>
+                                        <a type="button" class="flex items-center w-fit justify-center gap-x-2 rounded-md bg-btn-secondary-bg border border-border px-5 py-3 text-lg font-semibold text-btn-secondary hover:border-primary-text" href="{{ block.settings.link }}">
+                                            {{ block.settings.button_text }} 
+                                            {% render 'icon', icon: 'arrow-right', size: 10, class: '', fill: 'var(--primary-text)' %}
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .collection_navigation .splide__arrow--next {
+        right: -0.8rem;
+    }
+    .splide__arrow--prev {
+        left: -0.8rem;
+    }
+    
+    .gradient-white .splide__arrow--prev::after, .gradient-white .splide__arrow--next::after {
+        background: -webkit-gradient(linear, right top, left top, from(white), to(transparent)) !important;
+        background: linear-gradient(to left, white, transparent) !important;
+    }
+</style>
+
+<script src="{{ 'image-block-panel-section.js' | asset_url }}"></script>
+
+
+{% schema %}
+{
+    "name": "Image block panel section",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Subtitle"
+        },
+        {
+            "type": "image_picker",
+            "id": "background",
+            "label": "Background image"
+        }
+    ],
+    "blocks": [
+        {
+            "name": "Info panel",
+            "type": "feature",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title"
+                },
+                {
+                    "type": "richtext",
+                    "id": "richtext",
+                    "label": "Richtext"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "icon",
+                    "label": "Icon or image"
+                },
+                {
+                    "type": "text",
+                    "id": "button_text",
+                    "label": "Button text"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Link"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Image block panel section",
+            "category": "section",
+            "blocks": [
+            
+            ]
+        }
+    ]
+}
+{% endschema %}

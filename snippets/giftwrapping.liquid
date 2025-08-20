@@ -1,0 +1,25 @@
+{% assign giftwrapProd = settings.giftwrap_product %}
+{% assign defaultVariantId = giftwrapProd.selected_or_first_available_variant.id %}
+{% assign defaultImage = giftwrapProd.featured_image | img_url: '80x' %}
+{% assign giftWrap = false %}
+{% for line_item in cart.items %}
+    {% if line_item.properties.Giftwrap %}
+        {% assign giftWrap = true %}
+    {% endif %}
+{% endfor %}
+
+{% if giftwrapProd != blank and giftWrap == false and cart.item_count > 0 %}
+    <ajax-cart-product-form id="giftwrapping" class="w-full ">
+        {% form 'product', giftwrapProd, class: 'w-full'%}
+
+            <input type="hidden" name="properties[Giftwrap]" value="Selected">
+            <input type="hidden" name="id" id="giftwrap" value="{{ defaultVariantId }}" />
+
+            <button class="w-fit py-2 px-3 flex text-sm border-primary-black border hover:bg-primary-black hover:text-white mb-4" type="submit" >  
+                <span class="font-body">{{ 'cart.general.add_bag' | t }}</span> <span class="font-body">- {{ giftwrapProd.price | money_without_trailing_zeros }}</span>
+            </button>
+
+        
+        {% endform %}
+    </ajax-cart-product-form>
+{% endif %}

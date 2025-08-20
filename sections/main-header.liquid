@@ -1,0 +1,136 @@
+<div data-section-id="{{ section.id }}" data-component="header" class="menu-navigation bg-primary-bg {% unless template.name == 'index'%} border-b border-[#f3f2eb] {% endunless %} relative bg-opacity-80 backdrop-blur-sm  flex items-center justify-between h-[60px] sm:h-[64px] ">
+  <header role="banner" id="shopify-section-header" class="section-header flex items-center justify-between container">
+    <div class='grid items-center grid-cols-12 w-full'> 
+      
+      <div class="flex items-start col-span-3">
+        <a aria-label="logo" class="w-[105px]" href="/">
+          {{ settings.logo_image | image_url: 'master' | img_tag: 'Logo' }} 
+        </a>
+      </div>
+
+
+ 
+      <div class='flex col-span-9 justify-end gap-x-4 items-center text-base relative'>
+        {% include 'navigation' %} 
+        {% comment %} <label for="openDropdown" id="openDroplang" aria-label="LanguageSelector" class="">
+          <span class="block" id="selectedLang">
+            {% assign locale = shop.locale %}
+        
+            {% if locale == "en" %}
+              En
+            {% elsif locale == "da" %} 
+              Dk
+            {% endif %}
+          </span>
+        </label>
+
+
+          <input type="checkbox" id="openDropdown" hidden="">
+          <div class="dropdown-menu-lang" id="dropdown-menu">
+            <a class="lang-menu-link" href="https://piccolocph.com/" data-lang="Europe" data-currency="DKK"><span class="lang-name">English</span><span class="lang-highlight"> - DKK</span></a>
+            <a class="lang-menu-link" href="https://piccolocph.dk/" data-lang="Danish" data-currency="DKK"><span class="lang-name">Danish</span><span class="lang-highlight"> - DKK</span></a>
+
+
+          </div> {% endcomment %}
+
+
+
+        {% if shop.customer_accounts_enabled %}
+          <a aria-label="account" class="hidden sm:block whitespace-nowrap" href="{{ routes.account_url }}">{{ 'customer.account.title' | t }}</a>
+        {% endif %}
+
+        <div class="flex gap-x-4">
+          <button id="search-trigger" class="block sm:-mb-0 uppercase" class="">{% render 'icon', icon: 'search', size: '27px', stroke: 'var(--primary-text)' %}</button>
+
+          <a id="cart-icon" class="relative cursor-pointer select-none">
+            <div class="relative w-fit flex flex-col items-center gap-y-1">
+              {% render 'icon', icon: 'cart', size: 26, stroke: '#000' %}
+              {% comment %} <span class="text-xs">{{ 'cart.general.bag' | t }}</span> {% endcomment %}
+                
+
+              {% if cart.item_count > 0 %}
+                <span class="flex items-center justify-center absolute -top-3 -right-2 rounded-full bg-primary-orange text-primary-bg w-4 h-4"><span class="text-xs" data-ajax-cart-bind="item_count">{{ cart.item_count }}</span></span>
+              {% endif %}
+            </div>
+          </a>
+        </div>
+
+        
+      </div>  
+    </div>   
+  
+
+
+  </header> 
+
+</div>
+{% if section.settings.search_bar == true %}
+  <div class="template-search__search hidden">
+    <predictive-search>
+      <main-search>
+        <form action="{{ routes.search_url }}" method="get" role="search" class="search">
+          <div class="flex bg-primary-bg">
+            <input
+              class="search_bar w-screen Heading placeholder-primary-black bg-primary-bg px-2 sm:px-6 sm:!top-0 sm:padding-top-2 sm:relative left-0 sm:left-none right-0 mx-auto sm:mt-0 search__input text-lg tracking-tight font-regular py-4 pl-4 focus:outline-none"
+              id="Search-In-Template"
+              type="search"
+              name="q"
+              value="{{ search.terms | escape }}"
+              placeholder="{{ 'general.search.search' | t }}"
+              role="combobox"
+              aria-expanded="false"
+              aria-owns="predictive-search-results"
+              aria-controls="predictive-search-results"
+              aria-haspopup="listbox"
+              aria-autocomplete="list"
+              autocorrect="off"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+              style="-webkit-appearance: none;"
+
+            > 
+            
+            
+            <input name="options[prefix]" type="hidden" value="last">
+
+            {%- if settings.predictive_search_enabled -%}
+              <div class="predictive-search predictive-search--search-template flex items-center justify-center left-0 sm:right-0 bg-white top-[125px] overflow-y-scroll max-h-screen" tabindex="-1" data-predictive-search>
+
+              </div>
+              <span class="predictive-search-status hidden" role="status" aria-hidden="true"></span>
+            {%- endif -%}
+
+            <button aria-label="search reset" type="reset" class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}" aria-label="{{ 'general.search.reset' | t }}"></button>
+            <div aria-label="close" id="closeBtn" class="px-6 text-lg flex items-center justify-end font-regular tracking-tight">Luk</div>
+          </div>
+        </form>
+      </main-search>
+    </predictive-search>
+  </div>
+{% endif %} 
+
+
+
+
+{% schema %} 
+  {
+    "name": "Header", 
+    "class": "header-section",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "search_bar",
+        "default": false,
+        "label": "Show search bar"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_bg",
+        "default": false,
+        "label": "Show background on homepage"
+      }
+    ]
+  }
+{% endschema %}
+

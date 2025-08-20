@@ -1,0 +1,70 @@
+{% assign media_width = 1 %}
+
+{%- capture sizes -%}
+(min-width: 1024) {{ 1440 | minus: 100 | times: media_width | divided_by: 4 | round }}px, (min-width: 1280) calc({{ media_width | times: 100 | divided_by: 4 }}vw - 10rem), (min-width: 768) calc((100vw - 11.5rem) / 2), calc(100vw / 2)
+{%- endcapture -%}
+
+
+{% case media.media_type %}
+
+  {% when 'video' %}
+    {%- if lazyload == true -%}
+      {%- assign loading = 'lazy' -%}
+    {% elsif lazyload == false %}
+      {%- assign loading = 'eager' -%}
+    {%- endif -%}
+    {% if thumbnail == true %}
+      <div class="product-single__media relative w-full h-full max-w-none" data-media-id="{{ media.id }}">
+        {{ media | video_tag: image_size: '345x', class: 'w-full h-full' }} 
+        {% render 'icon', icon: 'play', size: 25, class: 'absolute left-0 right-0 mx-auto top-[47%]', fill: '#fff' %}
+      </div>
+    {% else %}
+      <div class="product-single__media w-full h-full" data-media-id="{{ media.id }}">
+        {{ media | video_tag: image_size: '345x', controls: false, autoplay: true, muted: true, loop: true, class: 'w-full h-full' }} 
+      </div>
+    {% endif %}
+
+  {% when 'external_video' %}
+    {% if thumbnail == true %}
+      <div class="product-single__media" data-media-id="{{ media.id }}">
+        {{ media.preview_image | image_url: height: 215 | image_tag: widths: "215,160,140,80", alt: 'video', loading: 'lazy' }}
+      </div>
+    {% else %} 
+      <div class="product-single__media overflow-hidden" data-media-id="{{ media.id }}">
+        {{ media | external_video_tag }}
+      </div>
+    {% endif %}
+
+  {% when 'image' %}
+
+    {%- if lazyload == true -%}
+      {%- assign loading = 'lazy' -%}
+    {% elsif lazyload == false %}
+      {%- assign loading = 'eager' -%}
+    {%- endif -%}
+
+    {% unless media.alt == 'bundle-image' %}
+    <div class="relative  product-single__media w-full h-full">
+      <div class=" "  data-media-id="{{ media.id }}">
+        {% if thumbnail == true %}
+          
+          {% assign image_width = 352 %}
+          {% assign image_height = image_width | divided_by: media.preview_image.aspect_ratio %}
+
+            {{ media.preview_image | image_url: width: image_width, height: image_height | image_tag: widths: '108,150w,200w,300w,352w,560w,832w,1024w,1200w,1440w,1536w,1920w,2560w', alt: product.title, class: 'thumbnail w-full h-full', loading: loading, alt: product.title  }}
+        {% else %}
+
+        {% assign image_width = 1536 %}
+        {% assign image_height = image_width | divided_by: media.preview_image.aspect_ratio %}
+          {{ media.preview_image | image_url: width: image_width, height: image_height | image_tag: widths: '150w,200w,300w,352w,560w,832w,1024w,1200w,1440w,1536w,1920w,2560w', class: 'w-full h-full', loading: loading, alt: product.title }}
+        {% endif %}
+      </div>
+    </div>
+    {% endunless %}
+
+  {% when 'model' %}
+    <div class="product-single__media overflow-hidden rounded" data-media-id="{{ media.id }}">
+      {{ media | model_viewer_tag }}
+    </div>
+ 
+{% endcase %}

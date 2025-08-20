@@ -1,0 +1,74 @@
+{% comment %}
+Renders Build-your-bundle cart and its logic
+Accepts:
+- collection_id: {Object} Collection
+- product: {Object} Product Liquid object (optional)
+
+Usage:
+{% endcomment %}
+
+
+{%- if collection_id and collection_id != empty -%}
+
+  <div class="quick-add quick-add-bundle no-js-hidden mt-2">
+   
+      <form id="bundle_form_{{ collection_id }}_product_{{ product.id }}" class="form bundle-form" novalidate
+          data-type="add-to-bundle-form">
+  
+          {%- assign current_variant = product.selected_or_first_available_variant -%}
+          {% if product.variants.size > 1 %}
+           <div class="relative"> 
+              <select
+                  name="id"
+                  class="no-js w-full bg-primary-bg px-2 py-1 border-sm mb-1 text-sm mb-2"
+                  data-variant="{{ variant.title }}"
+                  data-product-select
+                > 
+                  {% for variant in product.variants %}
+                    <option 
+                      value="{{ variant.id }}"
+                      data-variant-title="{{ variant.title }}"
+                      {% if variant.id == current_variant.id %}
+                        selected
+                      {% endif %}
+                      {% unless variant.available %}
+                        disabled
+                      {% endunless %}
+                    >
+                      {{ variant.title }}
+                      {% if variant.available %}{% else %} - {{ 'products.product.sold_out' | t }}{% endif %}
+                    </option>
+                  {% endfor %}
+
+              </select>
+              <div class="w-3 absolute right-2 top-[10px]"> {% render 'icon-caret', size: 10 %}</div>
+            </div>
+          {% else %}
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-variant="{{ variant.title }}">
+          {% endif %}
+          
+          <input type="hidden" name="product_name" value="{{ product.title}}">
+          <input type="hidden" name="product_image" value="{{ product.featured_image | image_url }}">
+          <input type="hidden" name="price" value="{{ product.selected_or_first_available_variant.price }}">
+          <input type="hidden" name="Y29zdA" value="{{ product.metafields.custom.cost_price.value | times: 8 | base64_encode }}">
+          
+          {%- if collection_id -%}
+            <input type="hidden" id="bundleCollectionId" name="properties[_BundleCollection]" value="{{ collection_id }}">
+          {%- endif -%}
+  
+          <button id="{{ bundle_form_id }}-submit" type="submit" name="add" class="flex items-center mt-1 mb-4 text-center justify-center gap-x-2 rounded-full  px-4 min-h-[35px] text-base font-semibold text-white w-fit min-w-[150px] bg-primary-black hover:bg-medium-green "
+            aria-haspopup="dialog"
+            aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ product.id }}" aria-live="polite"
+            data-sold-out-message="true" {% if product.selected_or_first_available_variant.available == false %} disabled
+            {% endif %}
+            >
+              {%- if product.selected_or_first_available_variant.available -%}
+                {{ 'byb.add_to_bundle' | t }}
+              {%- else -%}
+                {{ 'products.product.sold_out' | t }}
+              {%- endif -%}
+        </button>
+      </form>
+  </div>
+  {%- endif -%}
+  

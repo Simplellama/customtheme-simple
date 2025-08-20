@@ -1,0 +1,240 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {}
+    },
+    "breadcrumbs_B98Y7g": {
+      "type": "breadcrumbs",
+      "settings": {}
+    },
+    "faq_mUQdPb": {
+      "type": "faq",
+      "blocks": {
+        "title_4hYJt3": {
+          "type": "title",
+          "settings": {
+            "title": "",
+            "subtitle": ""
+          }
+        },
+        "faq_HLfECN": {
+          "type": "faq",
+          "settings": {
+            "item-title": "",
+            "item-text": "",
+            "faq_link": "",
+            "custom_btn": ""
+          }
+        }
+      },
+      "block_order": [
+        "title_4hYJt3",
+        "faq_HLfECN"
+      ],
+      "settings": {
+        "title": "Om vores sauna telte",
+        "subtitle": "Hvad er et saunatelt?",
+        "link": "",
+        "link-text": "Go to all FAQ's",
+        "background": true,
+        "margin": true
+      }
+    },
+    "faq_VrBYDq": {
+      "type": "faq",
+      "blocks": {
+        "title_HTbLgr": {
+          "type": "title",
+          "settings": {
+            "title": "",
+            "subtitle": ""
+          }
+        },
+        "faq_rHWqdL": {
+          "type": "faq",
+          "settings": {
+            "item-title": "",
+            "item-text": "",
+            "faq_link": "",
+            "custom_btn": ""
+          }
+        }
+      },
+      "block_order": [
+        "title_HTbLgr",
+        "faq_rHWqdL"
+      ],
+      "settings": {
+        "title": "Levering",
+        "subtitle": "We have the answers to your questions right here",
+        "link": "",
+        "link-text": "Go to all FAQ's",
+        "background": true,
+        "margin": true
+      }
+    },
+    "faq_UJxYjJ": {
+      "type": "faq",
+      "blocks": {
+        "title_zaQkha": {
+          "type": "title",
+          "settings": {
+            "title": "",
+            "subtitle": ""
+          }
+        },
+        "faq_4zAFjG": {
+          "type": "faq",
+          "settings": {
+            "item-title": "",
+            "item-text": "",
+            "faq_link": "",
+            "custom_btn": ""
+          }
+        }
+      },
+      "block_order": [
+        "title_zaQkha",
+        "faq_4zAFjG"
+      ],
+      "settings": {
+        "title": "Betaling",
+        "subtitle": "We have the answers to your questions right here",
+        "link": "",
+        "link-text": "Go to all FAQ's",
+        "background": true,
+        "margin": true
+      }
+    },
+    "faq_p77TrT": {
+      "type": "faq",
+      "blocks": {
+        "title_hhAwxg": {
+          "type": "title",
+          "settings": {
+            "title": "",
+            "subtitle": ""
+          }
+        },
+        "faq_dchG6Q": {
+          "type": "faq",
+          "settings": {
+            "item-title": "",
+            "item-text": "",
+            "faq_link": "",
+            "custom_btn": ""
+          }
+        }
+      },
+      "block_order": [
+        "title_hhAwxg",
+        "faq_dchG6Q"
+      ],
+      "settings": {
+        "title": "Returnering",
+        "subtitle": "We have the answers to your questions right here",
+        "link": "",
+        "link-text": "Go to all FAQ's",
+        "background": true,
+        "margin": true
+      }
+    },
+    "faq_aiQ6fF": {
+      "type": "faq",
+      "blocks": {
+        "title_nw64ph": {
+          "type": "title",
+          "settings": {
+            "title": "",
+            "subtitle": ""
+          }
+        },
+        "faq_gt3WJg": {
+          "type": "faq",
+          "settings": {
+            "item-title": "",
+            "item-text": "",
+            "faq_link": "",
+            "custom_btn": ""
+          }
+        }
+      },
+      "block_order": [
+        "title_nw64ph",
+        "faq_gt3WJg"
+      ],
+      "settings": {
+        "title": "Generelt",
+        "subtitle": "We have the answers to your questions right here",
+        "link": "",
+        "link-text": "Go to all FAQ's",
+        "background": true,
+        "margin": true
+      }
+    },
+    "information_section_q9N349": {
+      "type": "information-section",
+      "blocks": {
+        "feature_nzdJ6E": {
+          "type": "feature",
+          "settings": {
+            "title": "Chat med os",
+            "richtext": "",
+            "button_text": "Åben chat",
+            "link": ""
+          }
+        },
+        "feature_rVnAtF": {
+          "type": "feature",
+          "settings": {
+            "title": "Skriv til os",
+            "richtext": "",
+            "button_text": "Support@smeltsauna.dk",
+            "link": "mailto:Support@smeltsauna.dk"
+          }
+        },
+        "feature_iaUqfU": {
+          "type": "feature",
+          "settings": {
+            "title": "Ring til os",
+            "richtext": "",
+            "button_text": "+45 28 25 89 53",
+            "link": "tel:+4571905836"
+          }
+        }
+      },
+      "block_order": [
+        "feature_nzdJ6E",
+        "feature_rVnAtF",
+        "feature_iaUqfU"
+      ],
+      "settings": {
+        "title": "Har du stadig spørgsmål?",
+        "subtitle": "Ring eller skriv til os",
+        "url": "",
+        "link_text": "Kontakt os"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "breadcrumbs_B98Y7g",
+    "faq_mUQdPb",
+    "faq_VrBYDq",
+    "faq_UJxYjJ",
+    "faq_p77TrT",
+    "faq_aiQ6fF",
+    "information_section_q9N349"
+  ]
+}

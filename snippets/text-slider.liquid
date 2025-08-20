@@ -1,0 +1,11 @@
+<div class="text-slider splide h-fit my-4 bg-secondary-bg">
+    <div class="splide__track">
+        <ul class="splide__list flex items-center">
+                <li class="splide__slide"><a class="Heading font-bold text-4xl text-center whitespace-nowrap" target="_blank" href="{{ blocklink }}">{{ content_one }}</a></li> 
+                <li class="splide__slide"><a class="Heading font-bold text-4xl text-center" href="{{ blocklink }}" target="_blank">{% if symbol == blank %}●{% else %}{{ symbol | image_url: width: 40 | image_tag: alt: 'icon', loading: 'lazy' }}{% endif %}</a></li> 
+                <li class="splide__slide"><a class="Heading font-bold text-4xl text-center whitespace-nowrap" target="_blank" href="{{ blocklink }}">{{ content_two }}</a></li> 
+                <li class="splide__slide"><a class="Heading font-bold text-4xl text-center" href="{{ blocklink }}" target="_blank">{% if symbol == blank %}●{% else %}{{ symbol | image_url: width: 40 | image_tag: alt: 'icon', loading: 'lazy' }}{% endif %}</a></li>
+        </ul>        
+    </div>
+</div> 
+<script src="{{ 'text-slider-splide.js' | asset_url }}" defer="defer"></script>  

@@ -1,0 +1,124 @@
+<section class="login-section grid grid-cols-2">
+    <div class="relative col-span-2 md:col-span-1 flex items-center justify-center h-[100vh]">
+        <div class="content-box p-8 min-h-[600px] w-full flex flex-col items-start justify-center h-fit">
+            <div class="content-box-inner w-full max-w-[600px] flex flex-col gap-8">
+              <div class="Section_header flex gap-2 items-start justify-start ">
+
+                  <div class="login-header flex flex-col gap-4 ">
+                    <h3 class="Heading text-4xl">{{ section.settings.title }}</h3>
+                    <h3 class="text-base">{{ section.settings.subtitle }}</h3>
+                  </div>          
+                    
+                  <div class="reset-header hidden login-header text-center flex flex-col gap-4 ">
+                    <h3 class="Heading font-bold text-6xl">{{ section.settings.title-reset }}</h3>
+                    <h3 class="Heading">{{ section.settings.subtitle-reset }}</h3>
+                  </div>      
+                </div>
+                
+                <div class="flex flex-col items-start justify-start w-full">
+                  {% form 'customer_login', class: 'login-form w-full flex flex-col gap-2'%}
+                    {{ form.errors | default_errors }}
+                
+                    <div class="email w-full" >
+                    <input class="w-full p-2 text-base overflow-hidden" type="email" placeholder="{{ 'customer.login.email' | t }}" name="customer[email]">
+                    </div>
+                
+                    <div class="password w-full">
+                    <input class="w-full p-2 text-base overflow-hidden" type="password" placeholder="{{ 'customer.login.password' | t }}" name="customer[password]">
+                    </div>
+                 
+                    <div class="Button Button_primary w-full mt-8 submit">
+                        <input type="submit" value="Sign in">
+                    </div>
+                  {% endform %}
+
+                  {% form 'recover_customer_password', class: 'reset-form hidden w-full flex flex-col gap-2' %}
+                    {{ form.errors | default_errors }}
+                    
+                    <div class="email w-full">
+                        <input class="w-full p-2 overflow-hidden" type="email" name="email" placeholder="{{ 'customer.login.email' | t }}">
+                    </div>
+                    
+                    <div class="submit">
+                        <input class="Button Button_primary w-fit mt-8" type="submit" value="{{ 'customer.login.submit' | t }}">
+                    </div>
+                  {% endform %}
+                  
+                  <div class="w-full flex text-base flex-col justify-between mt-4">
+                      <a class="mb-2" href="/account/register">{{ 'customer.login.dont_have_an_account' | t }}</a>
+                      <button id="forgot-password-link" class="w-fit">{{ 'customer.login.forgot_password' | t }}</button>
+                      <button id="back-to-login" class="hidden w-fit flex gap-1">{{ 'customer.login.back_to_login' | t }}</button>
+                  </div>
+                </div> 
+            </div>
+        </div>
+    </div>
+    <div class="col-span-2 md:col-span-1 w-full h-full">
+      <img class="w-full h-full object-cover" src="{{ section.settings.background_image | image_url: width: 1000 }}">
+    </div>
+</section>
+
+<script>
+  document.getElementById('forgot-password-link').addEventListener('click', function(event) {
+    event.preventDefault();
+    document.querySelector('.login-form').classList.add('hidden');
+    document.querySelector('.reset-form').classList.remove('hidden');
+    document.getElementById('forgot-password-link').classList.add('hidden');
+    document.getElementById('back-to-login').classList.remove('hidden');
+    document.querySelector('.login-header').classList.add('hidden');
+    document.querySelector('.reset-header').classList.remove('hidden');
+  });
+    
+  document.getElementById('back-to-login').addEventListener('click', function(event) {
+    event.preventDefault();
+    document.querySelector('.login-form').classList.remove('hidden');
+    document.querySelector('.reset-form').classList.add('hidden');
+    document.getElementById('forgot-password-link').classList.remove('hidden');
+    document.getElementById('back-to-login').classList.add('hidden');
+    document.querySelector('.login-header').classList.remove('hidden');
+    document.querySelector('.reset-header').classList.add('hidden');
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Login"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading",
+      "default": "Welcome back! Sign in to your account"
+    },
+    {
+        "type": "text",
+        "id": "title-reset",
+        "label": "Heading",
+        "default": "Reset password"
+    },
+    {
+        "type": "text",
+        "id": "subtitle-reset",
+        "label": "Subheading",
+        "default": "Enter your email address and we will send you a link to reset your password"
+    }
+  ]
+}
+
+{% endschema %}
+
+
+
+
+

@@ -1,0 +1,97 @@
+{% if product.metafields.custom.product_information.value != blank %}
+<section class="py-8 min-h-[250px] relative px-4 mt-6 finset-px">
+    <div class="accordion flex flex-col gap-y-6">
+        <div class="accordion-titles flex gap-x-10 items-stretch">
+            {% for item in product.metafields.custom.product_information.value %}
+            <div class="accordion-item cursor-pointer flex items-center" onclick="toggleAccordion(this)">
+                <div class="accordion-title Heading text-xl hover:text-primary-text font-semibold">
+                    {{ item.title }}
+                </div>
+            </div>
+            {% unless forloop.last %}
+            <div class="h-auto w-[1px] border-l border-border"></div>
+            {% endunless %}
+            {% endfor %}
+        </div>
+        <div class="accordion-contents flex-1 max-w-3xl">
+            {% for item in product.metafields.custom.product_information.value %}
+            <div class="accordion-content text-base/5 font-light hidden">
+                {{ item.richtext | metafield_tag | newline_to_br }}
+
+                {% if item.img != blank %}
+                <div class="flex justify-center max-w-[300px] mt-4">
+                    <img src="{{ item.img | image_url: width: 300 }}" alt="{{ item.title }}" class="rounded-md">
+                </div>
+                {% endif %}
+
+                
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+    .accordion-content h3 {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        position: relative;
+        font-weight: 500;
+    }
+
+    .accordion-content h4 {
+        margin-top: 1rem;
+        margin-bottom: 0.3rem;
+        position: relative;
+        font-weight: 400;
+    }
+
+    .active-acc {
+        color: #000;
+        border-bottom: 1px solid #ea6b41;
+        padding-bottom: 0.6rem;
+        font-weight: 800;
+    }
+  
+    .inactive-acc {
+        color: var(--primary-text);
+        padding-bottom: 0.4rem;
+    }
+</style>
+
+
+<script>
+function toggleAccordion(element) {
+    var allItems = document.querySelectorAll('.accordion-item');
+    var allContents = document.querySelectorAll('.accordion-content');
+    var index = Array.from(allItems).indexOf(element);
+    
+    allItems.forEach(function(i) {
+        i.classList.remove('active');
+        i.querySelector('.accordion-title').classList.remove('active-acc');
+        if (!i.classList.contains('first')) {
+            i.querySelector('.accordion-title').classList.add('inactive-acc');
+        }
+    });
+    
+    allContents.forEach(function(content, idx) {
+        content.classList.add('hidden');
+        if (idx === index) {
+            content.classList.remove('hidden');
+        }
+    });
+    
+    element.classList.add('active');
+    element.querySelector('.accordion-title').classList.add('active-acc');
+    element.querySelector('.accordion-title').classList.remove('inactive-acc');
+}
+
+// Initialize the first item as active
+document.addEventListener('DOMContentLoaded', function() {
+    var firstItem = document.querySelector('.accordion-item');
+    if (firstItem) {
+        toggleAccordion(firstItem);
+    }
+});
+</script>
+{% endif %}

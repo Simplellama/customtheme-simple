@@ -1,0 +1,35 @@
+<div class="">
+  <div class="default-page container max-w-[1000px] py-20 min-[80vh]">
+
+      <header> 
+        <div class="">
+          <h1 class="text-left text-primary-black text-5xl lg:text-6xl font-heading font-bold uppercase title-with-highlight">{{ page.title }}</h1>
+        </div>  
+      </header>
+
+      <wishlist-page 
+        show-product-title  
+        show-price
+        show-vendor
+        show-share-button  
+        show-buy-all-button
+        cta-button="add-to-cart"
+        product-options="dropdowns"
+        move-to-cart
+        wishlist-empty-link="/collections/all"
+      ></wishlist-page>
+
+    
+      <div class="text-primary-black pt-12">
+        {{ page.content }}
+      </div>
+  </div> 
+</div>
+  
+{% schema %} 
+{
+  "name": "wishlist",
+  "settings": [
+  ]
+}
+{% endschema %}

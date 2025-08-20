@@ -1,0 +1,264 @@
+{% assign freeshipping = false %}
+{% for line_item in cart.items %}
+    {% if line_item.properties.Discount %}
+        {% assign freeshipping = true %} 
+    {% endif %} 
+{% endfor %} 
+
+{% if upsellprod != blank %}
+<script type="text/template" data-upsellcolors-json>
+ 
+        {% assign colorList = upsellprod.metafields.custom.product_colors.value.product_color_list.value %}
+        {
+            "prodcolors": [
+                {% for color in colorList %}
+                    {
+                        "{{ color.product.value.id }}": {
+                            "colorTitle": "{{ color.product.value.title | truncate: 25 }}",
+                            "colorHandle": "{{ color.product.value.handle }}",
+                            "colorProductPrice": "{{ color.product.value.price }}",
+                            "productHandle": "{{ upsellprod.handle }}", 
+                            "upsellImage": "{{ color.product.value.featured_image | img_url: '120x' }}",
+                            "variants": [
+                                {% for variant in color.product.value.variants %}
+                                    {
+                                        "variantId": "{{ variant.id }}",
+                                        "variantTitle": "{{ variant.title }}",
+                                        "variantPrice": "{{ variant.price }}",
+                                        "variantAvailable": "{{ variant.available }}"
+                                    }{% unless forloop.last %},{% endunless %}
+                                {% endfor %}
+                            ]
+                        }
+                    }{% unless forloop.last %},{% endunless %}
+                {% endfor %}
+            ]
+        }
+   
+    
+</script>
+{% endif %}
+
+{% assign upsell = shop.metaobjects.free_shipping_upsell.unlock-free-shipping %}
+{% assign upsellTitle = upsell.title %}
+{% assign upsellSubtitle = upsell.subtitle %}
+{% assign colorList = upsellprod.metafields.custom.product_colors.value.product_color_list.value %}
+{% assign cartTotal = cart.total_price %}
+{%- assign current_variant = upsellprod.selected_or_first_available_variant -%}
+{%- assign defaultImage = upsellprod.featured_image -%}
+{%- assign defaultVariantId = current_variant.id -%}
+{% assign minPrice = upsell.insert_min_cart_price %}
+
+
+{% if upsellprod != blank and cart.item_count > 0 and freeshipping == false and cartTotal >= upsell.insert_min_cart_price %}
+    <div id="upsell-product" class="upsellProduct relative w-fit flex mt-2">
+   
+        <div class="flex relative justify-between gap-x-2 bg-white px-4 py-1 overflow-hidden rounded-md w-full ">
+
+            <div class="flex relative items-center justify-between w-full gap-3 py-0 overflow-hidden rounded-md -order-1 md:order-1">
+        
+                <div class="relative flex flex-row w-fit gap-2 max-w-[200px]">
+                    <div class="flex justify-center items-center ml-1 w-full">
+                        <ajax-cart-product-form id="up-sell-form" class="w-full">
+                            {% form 'product', upsellprod %}
+                                <div class="flex items-start justify-start gap-6 w-full">
+                                    <div>
+                                        {%- assign current_variant = upsellprod.selected_or_first_available_variant -%}
+                                        
+                                        <div class=" flex flex-col gap-1 mb-1 w-full max-w-[150px] ">
+                                            <h3 class="Heading flex items-center gap-x-1 text-sm md:text-base font-bold">{{ upsellTitle }}</h3>
+                                            <p class="text-xs">{{ upsellSubtitle }}<span id="upsellTitle" class="">{{ upsellprod.title | replace: 'The Original Performance', '' | truncate: 65 }}</span></p>
+                           
+                                        </div> 
+                                        <div class="flex flex-wrap gap-x-1 items-center">
+                                            <div class="flex items-center">
+                                                {% if upsellprod.variants.size > 1 %}
+                                                    <div class="variant-options w-full">
+                                                        <select aria-label="size select" name="id" class="no-js w-full bg-primary-bg px-2 py-0 border-sm mb-1 text-sm w-[80px]" data-product-select>
+                                                            {% for variant in upsellprod.variants %}
+                                                                <option value="{{ variant.id }}" {% if variant.id == current_variant.id %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>
+                                                                    {{ variant.title }} {% if variant.available %}{% else %} - {{ 'products.product.sold_out' | t }}{% endif %}
+                                                                </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="color_list flex relative pt-1 gap-[2px] mb-1">
+                                                {% for color in colorList limit: 13 %}
+                                                    {% unless color.product.value.available %}
+                                                        {% continue %}
+                                                    {% endunless %}
+                                                        
+                                                    {% assign colorHandle = color.product.value.handle %}
+                                                    {% capture activeColor %}{% if upsellprod.id == color.product.value.id %}true{% else %}false{% endif %}{% endcapture %}
+                                                    
+                                                    <a class="group color_link {% if activeColor == 'true' %}cursor-default active_color order-[-1] {% endif %}" href="#" data-color-handle="{{ color.product.value.handle }}" data-product-id="{{ color.product.value.id }}">
+                                                        <div class="w-[10px] h-[10px] block origin-bottom transition-all duration-100 {% if activeColor == 'false' %}group-hover:scale-y-125{% endif %}" style="background:{{ color.color }}"></div>
+                                                    </a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="properties[_CFS_MIN]" value="{{ upsell.insert_min_cart_price }}"/>
+                                        <input type="hidden" name="properties[_CFS]" value="bull"/>
+                                        <input type="hidden" name="properties[Discount]" value="Freeshipping">
+                                        <input type="hidden" name="properties[_upsellProdId]" value="{{ upsellprod.selected_or_first_available_variant.id }}">
+            
+                                        <input type="hidden" name="id" id="upsell-variant-id" value="{{ defaultVariantId }}" />
+                                        <input type="hidden" name="upsell-image" id="upsell-image" value="{{ defaultImage }}" />
+                                        <div class="add-to-cart-buttons">
+                                            <input class="Button Button_primary px-2 w-fit mt-1 text-xs py-[4px]" type="submit" value="{{ 'products.product.add_to_cart' | t }} - {{ upsellprod.price | money_without_trailing_zeros }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endform %}
+                        </ajax-cart-product-form> 
+                    </div>
+                </div>
+       
+                <div class="upsell-image-outer w-[80px] bg-gray-50">
+                    <img src="{{ defaultImage | img_url: '110x' }}" alt="upsell" class="w-full h-full object-cover upsell_image" id="upsell-img" loading="lazy" width="100" height="95">
+                </div>
+        
+            </div>
+        </div>
+
+    </div>
+{% endif %}
+
+{% if upsellprod != blank %}
+<script defer>
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    let colorData = document.querySelector("[data-upsellcolors-json]");
+    {% comment %} console.log(colorData.innerHTML); {% endcomment %}
+    // Close upsell product
+    
+    const upsellContainer = document.querySelector("#upsell-product");
+
+
+
+    // Function to get the value of the first non-disabled option in a select element
+    function getFirstAvailableVariantId(variants) {
+        for (let i = 0; i < variants.length; i++) {
+            if (variants[i].variantAvailable === 'true') {
+                return variants[i].variantId;
+            }
+        }
+        return null;
+    }
+
+
+
+    // Function to initialize the upsell product
+    function initializeUpsellProduct() {
+        // Retrieve color data
+        let colorData = document.querySelector("[data-upsellcolors-json]");
+    
+        if (colorData) {
+            const colorVariants = JSON.parse(colorData.innerHTML).prodcolors;
+    
+            // Add a click event listener to color links
+            document.querySelectorAll('#upsell-product .color_link').forEach(function (link) {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+    
+                    // Retrieve data from the clicked link
+                    var productId = link.getAttribute('data-product-id');
+    
+                    // Find the corresponding data in the colorVariants JSON based on productId
+                    let selectedColorData = colorVariants.find(function (colorData) {
+                        return Object.keys(colorData)[0] === productId;
+                    });
+    
+    
+                    // Find the product container
+                    let productContainer = document.querySelector('.upsellProduct');
+                    
+
+                    // Find the select element within the product container
+                    let variantSelect = productContainer.querySelector('select[name="id"]');
+                    let upsellImageElement = productContainer.querySelector('#upsell-img');
+                    let upsellVariantIdInput = productContainer.querySelector('input[name="id"][type="hidden"]');
+                    let productIDInput = productContainer.querySelector('input[name="product-id"]');
+                    let upsellTitleElement = document.querySelector('#upsellTitle'); 
+
+
+                    if (upsellImageElement && upsellVariantIdInput && productIDInput) {
+                        // Get the first available variant ID within the selected color data
+                        let selectedVariantId = getFirstAvailableVariantId(selectedColorData[productId].variants);
+
+                    
+                        // Update the hidden input with the new variant ID
+                        upsellVariantIdInput.value = selectedVariantId;
+                    
+                        // Update the product ID input with the clicked product ID
+                        productIDInput.value = productId;
+                    
+                        // If variantSelect exists, manipulate it
+                        if (variantSelect) {
+                            // Clear existing options
+                            variantSelect.innerHTML = '';
+                    
+                            // Loop through the variants in the selected color data and add options
+                            selectedColorData[productId].variants.forEach(function (variant) {
+                                let option = document.createElement('option');
+                                option.value = variant.variantId;
+                                option.textContent = variant.variantTitle;
+                    
+                                if (variant.variantId === selectedVariantId) {
+                                    option.setAttribute('selected', true);
+                                }
+                    
+                                if (variant.variantAvailable === 'false') {
+                                    option.setAttribute('disabled', true);
+                                    option.textContent += ' - {{ 'products.product.sold_out' | t }}';
+                                }
+                    
+                                variantSelect.appendChild(option);
+                            });
+                    
+                            // Add change event listener to handle variant selection changes
+                            variantSelect.addEventListener('change', function () {
+                                let selectedOption = variantSelect.options[variantSelect.selectedIndex];
+                                upsellVariantIdInput.value = selectedOption.value;
+                            });
+                        }
+                    
+                        // Update the image
+                        upsellImageElement.src = selectedColorData[productId].upsellImage;
+                        upsellImageElement.alt = selectedColorData[productId].colorHandle;
+                        upsellTitleElement.textContent = selectedColorData[productId].colorTitle;
+                    } else {
+                        console.error('Variant select element, upsellImage, upsellVariantIdInput, or productIDInput not found in product container.');
+                    }
+                });
+            });
+        } else {
+            console.error('Color data not found.');
+        }
+    }
+
+    // Function to reinitialize the upsell product
+    function reinitializeUpsellProduct() {
+        initializeUpsellProduct();
+    }
+
+    // Listen for the liquid-ajax-cart:request-end event
+    document.addEventListener("liquid-ajax-cart:request-end", function(event) {
+        const { requestState } = event.detail;
+
+        // Check if the request is not from a mutation function
+        if (requestState.info.initiator !== "mutation") {
+            // Reinitialize the upsell product
+            reinitializeUpsellProduct();
+        }
+    });
+
+    // Initialize the upsell product initially
+    initializeUpsellProduct();
+});
+
+</script>
+{% endif %}

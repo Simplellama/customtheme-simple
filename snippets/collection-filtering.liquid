@@ -1,0 +1,227 @@
+{% comment %} {%- assign has_active_filters = false -%}
+{%- for filter in collection.filters -%}
+    {%- if filter.type == "price_range" -%}
+        {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+            {%- assign has_active_filters = true -%}
+            {%- break -%}
+        {%- endif -%}
+    {%- else -%}
+        {%- if filter.active_values.size > 0 -%}
+            {%- assign has_active_filters = true -%}
+            {%- break -%}
+        {%- endif -%}
+    {%- endif -%}
+{%- endfor -%}
+
+<form class="Filter_from flex w-fit flex-row justify-start items-center gap-2">
+  {%- for filter in collection.filters -%}
+    <details class="">
+      <summary class="px-3 flex text-lg py-2 font-bold cursor-pointer"> 
+          <div class="flex gap-2 w-full">
+              <span class="flex justify-between items-center w-full gap-2">
+                  <div class="flex items-center">
+                      <span class="text-base">{{ filter.label }}</span>
+                      {%- if filter.active_values.size > 0 -%}
+                          <span class="font-normal text-sm ml-1">({{ filter.active_values.size }})</span>
+                      {%- endif -%}
+                  </div>
+                  <div class="icon">
+                      <span class="icon-down hidden">{% render 'icon', icon: 'arrow-up', fill: 'var(--primary-black)', size: '10px' %}</span>
+                      <span class="icon-up">{% render 'icon', icon: 'arrow-down', fill: 'var(--primary-black)', size: '10px' %}</span>
+                  </div>
+              </span>
+      
+          </div>
+      </summary>
+
+      <div class="filter-group-display hidden">
+        <div class="filter-group-display__header ">
+          {%- if filter.active_values.size > 0 -%}
+          {%- endif -%}
+        </div>
+
+        {%- case filter.type -%}
+          {%- when 'boolean' or 'list' -%}
+            <ul class="filter-group-display__list border border-border bg-white p-4 absolute z-[2] top-18 w-full">
+              {%- for filter_value in filter.values -%}
+                  <li class="filter-group-display__list-item relative">
+                      <input class="custom-checkbox" type="checkbox" 
+                        name="{{ filter_value.param_name }}"
+                        value="{{ filter_value.value }}"
+                        id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
+                        {% if filter_value.active -%}checked{%- endif %}
+                        {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
+                        onchange="this.form.submit()"
+                      >
+                      <label class="{% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}" for="Filter-{{ filter.param_name }}-{{ forloop.index }}">{{ filter_value.label }}</label>
+                    </li> 
+              {%- endfor -%}
+            </ul>
+
+          {%- when 'price_range' -%}
+              <div class="filter-group-display__price-range flex items-center gap-2 justify-between border border-border bg-white p-4 absolute z-[2] top-18 ">
+                  <div class="filter-group-display__price-range-from flex flex-col">
+                      <div class="flex">
+                          <input class="bg-transparent w-[100px] pl-4 py-2 border border-border" name="{{ filter.min_value.param_name }}"
+                              id="Filter-{{ filter.min_value.param_name }}"
+                              {% if filter.min_value.value -%}
+                              value="{{ filter.min_value.value | money }}"
+                              {%- endif %}
+                              type="text"
+                              placeholder="0.00 kr"
+                              onchange="this.form.submit()"
+                          >
+                
+                      </div>
+                  </div>
+                  <label for="Filter-{{ filter.max_value.param_name }}">Til</label>
+                  <div class="filter-group-display__price-range-to flex flex-col">
+                      <div class="flex412,">
+                          <input class="bg-transparent w-[100px] pl-4 py-2 border border-border" name="{{ filter.max_value.param_name }}"
+                              id="Filter-{{ filter.max_value.param_name }}"
+                              {% if filter.max_value.value -%}
+                              value="{{ filter.max_value.value | money }}"
+                              {%- endif %}
+                              type="text"
+                              placeholder="{{ filter.range_max | money }}"
+                              onchange="this.form.submit()"
+                          >
+                          
+                          </div>
+                  </div>
+              </div>
+        {%- endcase -%}
+      </div>
+    </details>
+  {%- endfor -%}
+
+
+  {%- if has_active_filters -%}
+    <a class="Button Button-Secondary" href="{{ collection.url | split: '?' | first }}">
+      Clear All Filters
+    </a>
+  {%- endif -%}
+  
+</form>
+
+  {%- if has_active_filters -%}
+
+    <div class="w-fit py-2">
+      <div class="active-filters flex gap-2">
+        {%- for filter in collection.filters -%}
+        {%- if filter.type == "price_range" -%}
+            {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+            <a class="active-filters__remove-filter" href="{{ filter.url_to_remove }}">
+                {%- assign min_value = filter.min_value.value | default: 0 -%}
+                {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
+                {{ min_value | money }} - {{ max_value | money }} <span class="">X</span>
+            </a>
+            {%- endif -%}
+        {%- else -%}
+            {%- for filter_value in filter.active_values -%}
+            <a class="Button Button_secondary text-sm active-filters__remove-filter" href="{{ filter_value.url_to_remove }}">
+                {{ filter_value.label }} <span class="">X</span>
+            </a>
+            {%- endfor -%}
+        {%- endif -%}
+        {%- endfor -%}
+    </div> 
+   {%- endif -%}
+
+<div class="sort-by-selector flex flex-row items-center gap-x-1 w-fit">
+  <label for="sort-by" class="text-sm font-bold text-right w-full">Sort by:</label> 
+  <select id="sort-by" class="sort-by text-sm py-1 pr-3 bg-transparent w-fit rounded-md border-border border">
+    {% for option in collection.sort_options %}
+      <option class="w-fit" value="{{ option.value }}"{% if option.value == collection.sort_by %}selected{% endif %}>{{ option.name }}</option>
+    {% endfor %}
+  </select>
+</div>
+
+
+
+<script>
+  // Save existing sort parameters
+  Shopify.queryParams = {};
+  if(location.search.length) {
+    for(var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+      aKeyValue = aCouples[i].split('=');
+      if (aKeyValue.length > 1) {
+        Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+      }
+    }
+  }
+
+  // Add existing sort parameters to current URL
+  document.querySelector('.sort-by').addEventListener('change', function(e) {
+    var value = e.currentTarget.value;
+    Shopify.queryParams.sort_by = value;
+    location.search = new URLSearchParams(Shopify.queryParams).toString();
+  });
+</script>
+
+<script>
+  document.querySelectorAll('details').forEach((details) => {
+    details.ontoggle = function() {
+      var iconUp = this.querySelector('.icon-up');
+      var iconDown = this.querySelector('.icon-down');
+      if (this.open) {
+        iconDown.style.display = "block";
+        iconUp.style.display = "none";
+      } else {
+        iconDown.style.display = "none";
+        iconUp.style.display = "block";
+      }
+    }
+  });
+  </script>
+
+
+
+<style>
+    .custom-checkbox {
+        display: none;
+      }
+      
+      .custom-checkbox + label {
+        position: relative;
+        padding-left: 35px;
+        cursor: pointer;
+      }
+      
+      .custom-checkbox + label:before {
+        content: '';
+        position: absolute;
+        width: 18px;  
+        height: 18px;  
+        border: 1px solid rgb(231 231 231 / var(--tw-border-opacity));
+        border-radius: 3px;
+        left: 7px;
+        top: 0; 
+    }
+
+    .custom-checkbox:disabled {
+        cursor: not-allowed;
+        color: lightgray;
+    }
+
+    .disabled {
+        color: lightgray;
+        pointer-events: none;
+    }
+
+    .custom-checkbox:disabled + label:before {
+        border: solid 1px lightgray;
+    }
+    
+    .custom-checkbox:checked + label:after {
+        content: '';
+        position: absolute;
+        left: 13px; 
+        top: 2px;
+        width: 6px; 
+        height: 10px;
+        border: 1px solid black;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
+</style> {% endcomment %}

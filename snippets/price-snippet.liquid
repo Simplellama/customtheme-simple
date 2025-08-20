@@ -1,0 +1,16 @@
+<meta itemprop="priceCurrency" content="{{ shop.currency }}">
+<meta itemprop="price" content="{{ variant.price | money_without_trailing_zeros }}">
+<meta itemprop="offers" content="{{ variant.compare_at_price | money_without_trailing_zeros }}">
+<meta itemprop="availability" content="http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}">
+
+<div class="price flex flex-row gap-x-4 justify-between w-fit pr-6 ">
+    <div class="flex gap-x-3 items-center">
+        <span data-product-price="{{ variant.price | money_without_trailing_zeros }}" class="{% if variant.compare_at_price > variant.price %} text-primary-red {% endif %} default_price whitespace-nowrap text-3xl font-semibold Heading">
+            {{ variant.price | money_without_trailing_zeros }}.
+        </span>
+
+        {% if variant.compare_at_price > variant.price %}
+            <span class="line-through font-regular text-lg whitespace-nowrap"> {{ variant.compare_at_price | money_without_trailing_zeros }}.</span>
+        {% endif %} 
+    </div>
+</div>

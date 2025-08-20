@@ -1,0 +1,154 @@
+<nav class="hidden lg:block" role="navigation">
+  <div class="flex space-x-8 relative z-[999999999]">
+    {% for link in linklists.main-menu.links %}
+        <a href="{{ link.url }}" class="relative flex font-semibold gap-x-1 items-center text-sm whitespace-nowrap sm:text-lg hover:text-primary-red z-30" data-menu-id="{{ link.title | downcase }}">
+          {{ link.title }}
+          {% comment %} <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg> {% endcomment %} 
+        </a>
+    {% endfor %}
+  </div>
+</nav>
+
+<button aria-label="open menu" id="open-nav" class="block lg:hidden">{% render 'icon', icon: 'menu', stroke: '#000', size: 30 %}</button>
+
+<script defer>
+  document.addEventListener('DOMContentLoaded', function () {
+    const headerContainer = document.querySelector('#header');
+    const headerSection = document.querySelector('#shopify-section-main-header');
+    const navigationItems = document.querySelectorAll('nav a');
+    const megaMenus = document.querySelectorAll('.Mega_menu');
+    const searchTrigger = document.getElementById('search-trigger');
+    const searchBox = document.querySelector('.template-search__search');
+    const closeBtn = document.querySelector('#closeBtn');
+    const searchInput = searchBox.querySelector('input'); // Assuming there's an input field inside the search box
+
+    let activeMenuItem = null; // Track the active menu item
+ 
+    function hideAllMenus() { 
+      megaMenus.forEach(menu => {
+        menu.classList.remove('active');
+      }); 
+      if (activeMenuItem) {
+        activeMenuItem.classList.remove('text-primary-black-400'); // Remove hover state class
+        activeMenuItem = null;
+      }
+      if (!searchBox.classList.contains('hidden')) {
+        headerSection.classList.add('bg-primary-bg');
+      } else {
+        headerSection.classList.remove('bg-primary-bg');
+      }
+    }
+
+    function showMenu(menuId, menuItem) {
+      hideAllMenus();
+      const matchingMegaMenu = document.querySelector(`[data-megamenu="${menuId}"]`);
+      if (matchingMegaMenu) {
+        matchingMegaMenu.classList.add('active');
+        menuItem.classList.add('text-primary-black-400'); // Add hover state class
+        activeMenuItem = menuItem; // Track the active menu item
+        headerSection.classList.add('bg-primary-bg');
+      }
+    }
+
+    navigationItems.forEach(item => {
+      item.addEventListener('mouseover', function () {
+        const menuId = item.getAttribute('data-menu-id');
+        showMenu(menuId, item);
+      });
+
+      item.addEventListener('click', function (e) {
+        // Allow the default link behavior
+        e.stopPropagation();
+      }); 
+    });
+
+    megaMenus.forEach(menu => {
+      menu.addEventListener('mouseleave', function () {
+        hideAllMenus();
+      });
+      menu.addEventListener('mouseover', function () {
+        if (activeMenuItem) {
+          activeMenuItem.classList.add('text-primary-black-400'); // Maintain hover state
+        }
+      });
+    });
+
+    headerContainer.addEventListener('mouseleave', function (e) {
+      setTimeout(() => {
+        if (!document.querySelector('.Mega_menu.active:hover') && !headerSection.matches(':hover')) {
+          hideAllMenus();
+        }
+      }, 100); // A short delay to allow for mouse movement detection to the mega menu
+    });
+
+    // Add event listeners for #shopify-section-main-header
+    headerSection.addEventListener('mouseenter', function () {
+      headerSection.classList.add('bg-primary-bg');
+    });
+
+    headerSection.addEventListener('mouseleave', function () {
+      setTimeout(() => {
+        if (!document.querySelector('.Mega_menu.active:hover') && !headerSection.matches(':hover') && !searchBox.matches(':hover')) {
+          headerSection.classList.remove('bg-primary-bg');
+        }
+      }, 100); // A short delay to allow for mouse movement detection to the mega menu
+    });
+
+    // Add event listeners for navigation links
+    const navLinks = document.querySelectorAll('nav.hidden.lg\\:block a');
+    navLinks.forEach(link => {
+      link.addEventListener('mouseenter', function () {
+        headerSection.classList.add('bg-primary-bg');
+      });
+
+      link.addEventListener('mouseleave', function () {
+        setTimeout(() => {
+          if (!document.querySelector('.Mega_menu.active:hover') && !headerSection.matches(':hover') && !searchBox.matches(':hover')) {
+            headerSection.classList.remove('bg-primary-bg');
+          }
+        }, 100); // A short delay to allow for mouse movement detection to the mega menu
+      });
+    });
+
+    // Search box functionality
+    searchTrigger.addEventListener('click', function() {
+      searchBox.classList.toggle('hidden');
+      document.body.classList.toggle('body-no-scroll'); // Prevent body scroll
+      if (!searchBox.classList.contains('hidden')) {
+        headerSection.classList.add('bg-primary-bg');
+        searchInput.focus(); // Focus the input field
+      } else {
+        headerSection.classList.remove('bg-primary-bg');
+      }
+    });
+
+    closeBtn.addEventListener('click', function() {
+      searchBox.classList.toggle('hidden');
+      document.body.classList.remove('body-no-scroll'); // Allow body scroll
+      headerSection.classList.remove('bg-primary-bg');
+    });
+
+    let searchElement = document.querySelector('.search_btn');
+    let searchBarElement = document.querySelector('.search_bar');
+  
+    if (searchElement && searchBarElement) {
+      searchElement.addEventListener('click', function () {
+        if (searchBarElement.classList.contains('translate-y-[-50vh]')) {
+          searchBarElement.classList.remove('translate-y-[-50vh]');
+          searchBarElement.classList.add('translate-y-0');
+          document.body.classList.add('body-no-scroll'); // Prevent body scroll
+          headerSection.classList.add('bg-primary-bg');
+          searchInput.focus(); // Focus the input field
+        } else {
+          searchBarElement.classList.remove('translate-y-0');
+          searchBarElement.classList.add('translate-y-[-50vh]');
+          document.body.classList.remove('body-no-scroll'); // Allow body scroll
+          headerSection.classList.remove('bg-primary-bg');
+          searchInput.focus();
+        }
+      });
+    }
+  });
+</script>

@@ -1,0 +1,49 @@
+<div class="product-recom__item">
+    <a href="{{ product.url }}" class="product-recom__link">
+    {{ product.featured_image.src | image_url: width: 125 | image_tag: widths: "125,75,50", alt: product.title | escape, class: 'product-recom__image', loading: 'lazy' }}
+      <h3 class="product-recom__title text-left">{{ product.title | escape }}</h3>
+      <p class="product-recom__price">
+        {{ product.price | divided_by: 100 | money_without_trailing_zeros }}
+      </p>
+    </a>
+    <div class="col_add_to_cart">
+        <ajax-cart-product-form>
+            {% form 'product', product %}
+            {% for variant in product.variants %}
+                {%- assign current_variant = product.selected_or_first_available_variant -%}
+                {% if product.variants.size > 1 %}
+        
+                <div class="variant-options w-full">
+                    <select aria-label="size select" name="id" class="no-js w-fit px-2 py-1 border-sm mb-1 text-sm" data-product-select>
+                    {% for variant in product.variants %}
+                        <option value="{{ variant.id }}" {% if variant.id == current_variant.id %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>
+                        {{ variant.title }} {% if variant.available %}{% else %} - {{ 'products.product.sold_out' | t }}{% endif %}
+                        </option>
+                    {% endfor %}
+                    </select>
+                </div>
+    
+                    {% if current_variant.available and product.metafields.custom.package_deal == blank %}
+                        <input class="Button Button_primary py-1 m-auto w-full text-base" type="submit" value="{{ 'products.product.add_to_cart' | t }}">
+                    {% elsif product.metafields.custom.package_deal == blank  %}
+                        <input class="Button Button_secondary py-1 m-auto w-full text-base" disabled="disabled" type="submit" value="{{ 'products.product.sold_out' | t }}">
+                    {% endif %}
+                
+                {% else %} 
+                    {% if current_variant.available and product.metafields.custom.package_deal == blank  %}
+                        <input class="Button Button_primary py-1 m-auto w-full text-base" type="submit" value="{{ 'products.product.add_to_cart' | t }}">
+                        <input type="hidden" name="id" value="{{ variant.id }}" />
+                    {% elsif product.metafields.custom.package_deal == blank  %}
+                        <input class="Button Button_secondary py-1 m-auto w-full text-base" disabled="disabled" type="submit" value="{{ 'products.product.sold_out' | t }}">
+                    {% endif %}
+                {% endif %}
+                {% break %}
+    
+            {% break %}
+            {% endfor %} 
+            {% endform %}
+        </ajax-cart-product-form> 
+        </div>
+  </div>
+  
+

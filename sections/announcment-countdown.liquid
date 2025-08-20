@@ -1,0 +1,213 @@
+{% if section.settings.show_section %}
+  <div id="announcement-countdown" style="background: {{ section.settings.bg_color }}; color: {{ section.settings.color }};" class="flex justify-center py-2.5 z-[29] relative">
+      <div class="relative flex items-center gap-x-6 overflow-hidden container">
+        <div class="w-full flex items-center justify-center">
+          <div class="flex flex-col sm:flex-row flex-wrap w-fit items-center gap-x-8 gap-y-2">
+              <div class="text-section flex flex-col sm:flex-row gap-x-3 items-center">
+                {% if section.settings.title != blank  %}
+                  <h3 class="Heading text-base font-bold mt-0 mb-1 sm:mb-0 tracking-tight ">{{ section.settings.title }}</h3>
+                  <span class="hidden sm:block">-</span>
+                {% endif %}
+              
+                <p class="text-base  text-center px-6 mb-0">{{ section.settings.subtitle }}</p>
+
+                <button onclick="window.location.href='{{ section.settings.button_link }}'" class="z-[2] relative flex w-fit mx-auto items-center justify-between gap-x-2 rounded-full text-primary-black border border-primary-bg px-6 min-h-[30px] text-base bg-primary-bg hover:text-primary-bg hover:bg-transparent">
+                  {{ section.settings.button_text }}
+                </button>
+              </div>
+              {% if section.settings.start_date != blank %}
+              <div class="timer-section  hidden md:block ">
+              <div id="countdown-timer" class="flex items-end space-x-[5px]">
+                  <div class="flex items-center justify-center gap-x-[1px]">
+                    <span id="days" class=" text-base font-semibold">00 </span><span class=" text-base font-semibold">d</span>
+                  </div> 
+  
+  
+  
+                  <div class="flex items-center justify-center gap-x-[1px]">
+                    <span id="hours" class=" text-base font-semibold">00 </span><span class=" text-base font-semibold">t</span>
+                  </div>
+  
+  
+                  <div class="flex items-center justify-center gap-x-[1px]">
+                    <span id="minutes" class=" text-base font-semibold">00 </span><span class=" text-base font-semibold">m</span>
+                  </div>
+  
+  
+  
+                  <div class="flex items-center justify-center gap-x-[1px]">
+                    <span id="seconds" class=" text-base font-semibold">00 </span><span class=" text-base font-semibold">s</span>
+                  </div>
+              </div>
+              <div class="progress-bar-timer relative w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                  <div id="time-progress" style="background: {{ section.settings.timer_color }}" class="absolute h-full rounded-full transition-all duration-1000"></div>
+              </div> 
+              </div> 
+              {% endif %}
+  
+          </div>
+          </div>
+          <div class="flex flex-1 justify-end mr-2 -ml-10 sm:-ml-0 sm:mr-0">
+              <button type="button" id="announcement-close-btn" class="-m-3 p-3 focus:outline-none">
+              <span class="sr-only">Dismiss</span>
+              <svg class="w-5 h-5 " viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+              </svg>
+              </button>
+        </div>
+      </div>
+  </div>
+  
+  <script>
+    // Check if announcement should be hidden based on previous user action
+    document.addEventListener('DOMContentLoaded', function() {
+      const announcementId = '{{ section.id }}';
+      const hiddenAnnouncementKey = `hidden_announcement_${announcementId}`;
+      
+      if (localStorage.getItem(hiddenAnnouncementKey) === 'true') {
+        document.getElementById('announcement-countdown').style.display = 'none';
+      }
+      
+      // Add click event listener to close button
+      document.getElementById('announcement-close-btn').addEventListener('click', function() {
+        document.getElementById('announcement-countdown').style.display = 'none';
+        localStorage.setItem(hiddenAnnouncementKey, 'true');
+      });
+    });
+  
+    const startDate = "{{ section.settings.start_date }}";
+    const startTime = "{{ section.settings.start_time }}"; 
+    const endDate = "{{ section.settings.end_date }}";
+    const endTime = "{{ section.settings.end_time }}";
+  
+    const startDateTime = new Date(`${startDate}T${startTime}:00`).getTime();
+    const endDateTime = new Date(`${endDate}T${endTime}:00`).getTime();
+    const totalDuration = endDateTime - startDateTime;
+  
+    const countdownFunction = setInterval(function() {
+      const now = new Date().getTime();
+      const distance = endDateTime - now;
+  
+      if (now < startDateTime) {
+        // Before start time
+        document.getElementById("time-progress").style.width = "5%"; // Minimum visibility
+        document.getElementById("countdown-timer").innerHTML = "00:00:00:00";
+        return;
+      }
+  
+      if (distance < 0) {
+        clearInterval(countdownFunction);
+        document.getElementById("countdown-timer").innerHTML = "{{ section.settings.expired }}";
+        document.getElementById("time-progress").style.width = "100%";
+        return;
+      }
+  
+      const elapsed = now - startDateTime;
+      // Ensure progress is always at least 5% visible and at most 100%
+      const progressPercent = Math.max(5, Math.min((elapsed / totalDuration) * 100, 100));
+  
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  
+      document.getElementById("days").innerHTML = String(days).padStart(2, '0');
+      document.getElementById("hours").innerHTML = String(hours).padStart(2, '0');
+      document.getElementById("minutes").innerHTML = String(minutes).padStart(2, '0');
+      document.getElementById("seconds").innerHTML = String(seconds).padStart(2, '0');
+  
+      document.getElementById("time-progress").style.width = `${progressPercent}%`;
+    }, 1000);
+  </script>
+  {% endif %}
+  
+  {% schema %}
+  {
+    "name": "Announcement Countdown",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_section",
+        "label": "Show section",
+        "default": false,
+        "info": "Toggle to show or hide this announcement"
+      },
+      {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background color",
+          "default": "#000000" 
+      },
+      {
+          "type": "color",
+          "id": "timer_color",
+          "label": "Timer color",
+          "default": "#000000" 
+      },
+      { 
+          "type": "color",
+          "id": "color",
+          "label": "Text color", 
+          "default": "#ffffff"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Special Offer!"
+      },
+      {
+          "type": "text",
+          "id": "expired",
+          "label": "EXPIRED",
+          "default": "EXPIRED"
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Subtitle",
+        "default": "Hurry up before the time runs out."
+      },
+      {
+        "type": "text",
+        "id": "start_date",
+        "label": "Start Date",
+        "default": "2023-12-31",
+        "info": "e.g. YYYY-MM-DD"
+      },
+      {
+        "type": "text",
+        "id": "start_time",
+        "label": "Start Time",
+        "default": "00:00",
+        "info": "e.g. HH:MM"
+      },
+      {
+        "type": "text",
+        "id": "end_date",
+        "label": "End Date",
+        "default": "2024-01-31",
+        "info": "e.g. YYYY-MM-DD"
+      },
+      {
+        "type": "text",
+        "id": "end_time",
+        "label": "End Time",
+        "default": "23:59",
+        "info": "e.g. HH:MM"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button Text",
+        "default": "Shop Now"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button Link",
+        "default": "/collections/all"
+      }
+    ]
+  }
+  {% endschema %}

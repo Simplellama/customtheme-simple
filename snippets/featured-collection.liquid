@@ -1,0 +1,63 @@
+{% if collection.metafields.custom.featured_collection_.value.custom_product_list.value != blank or collection.metafields.custom.featured_collection_.value.featured_collection.value.products != blank%}
+{% assign featuredHandles = "" %}
+
+{% if collection.metafields.custom.featured_collection_.value.custom_product_list.value == blank %}
+  {% assign featuredCol = collection.metafields.custom.featured_collection_.value.featured_collection.value.products %}
+{% else %}
+ {% assign featuredColList = collection.metafields.custom.featured_collection_.value.custom_product_list.value.product_list.value %}
+      {% for prod in featuredColList %}
+            {% assign featuredCol = featuredCol | append: prod.handle | append: ',' %}
+      {% endfor %}
+    {% assign featuredCol = featuredCol | split: ',' %}
+{% endif %}
+
+<section class="Featured_collection pt-6 md:pt-8">
+  <div class="container pl-2 sm:pl-8 pr-0 md:pr-6">
+    <div class="Section_header"> 
+      <div class="Section_header__inner flex flex-col gap-2 pb-4 md:pb-6">
+          <h3 class="font-bold text-4xl md:text-6xl">
+            {% if collection.metafields.custom.featured_collection_.value.title.value != blank %}
+              {{ collection.metafields.custom.featured_collection_.value.title.value }}
+            {% else %}
+              {{ 'collections.collections.bestsellers_and_best_offers' | t }}
+            {% endif %}
+            </h3>
+          {% if collection.metafields.custom.featured_collection_.value.subtitle.value %}<h3 class="text-base">{{ collection.metafields.custom.featured_collection_.value.subtitle.value }}</h3>{% endif %}
+      </div>
+    </div>
+    <div class="featured-collection-slider relative border-none sm:border-b border-border pb-4 sm:pb-8"> 
+      <div class="splide" id="splide{{ section.id }}">
+        <div class="splide__track">
+          <ul class="splide__list flex gap-4 justify-between">
+            {% for handle in featuredCol %}
+
+              {% if collection.metafields.custom.featured_collection_.value.custom_product_list.value.product_list.value != blank %}
+                {% assign product = all_products[handle] %}
+              {% else %}
+                {% assign product = handle %}
+              {% endif %}
+
+            {%- if product.available -%}
+              {% assign lazyload = false %}
+              {%- if forloop.index > 2 -%}
+                {%- assign lazyload = true -%}
+              {%- endif -%}
+              
+              <li class="splide__slide w-full max-w-[200px] sm:max-w-[335px]"  aria-hidden="false"> 
+            
+                  {% render 'card-product', product: product, lazyload: lazyload%}
+
+              </li>
+            {%- endif  -%}
+          {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endif %}
+
+    

@@ -1,0 +1,296 @@
+{% assign block_count = section.blocks.size %}
+
+{% assign col_count = 1 %}
+{% if block_count == 2 %}
+    {% assign col_span = 2 %}
+    {% assign col_count = 2 %}
+{% elsif block_count == 3 %}
+    {% assign col_span = 3 %}
+    {% assign col_count = 3 %}
+{% elsif block_count == 4 %}
+    {% assign col_span = 2 %}
+    {% assign col_count = 2 %}
+{% elsif block_count == 5 %}
+    {% assign col_span = 2 %}
+    {% assign col_count = 3 %}
+{% endif %}
+
+{% if block_count == 5 %}
+    {% assign offset = block_count | minus: 1 %}
+{% endif %}
+
+<div class="grid  {% if block_count == 5 %} grid-cols-1 sm:grid-cols-2 {% else %} grid-cols-{{ col_count }} {% endif %} {% if col_count <= 4 %}w-screen{% endif %}">
+    <div class="{% if block_count == 5 %} grid-cols-1 {% else %} col-span-{{ col_span }} {% endif %} grid grid-cols-{{ col_span }} {% if col_count >= 4 %}grid-rows-2{% endif %} flex flex-col  sm:min-h-screen xlg:min-h-full">
+        {% for block in section.blocks limit: offset %}
+      
+          <a href="{{ block.settings.link }}" class="flex {% if block.settings.link == blank %} cursor-default pointer-events-none {% endif %} flex-col w-full h-full items-center relative overflow-hidden {%  if block_count == 3 %} col-span-3 sm:col-span-1 {% endif %}">
+            {% if block.settings.overlay_position == 'on-top' or block.settings.overlay_position == 'on-bottom' %} 
+                <div class="flex flex-row justify-between w-full px-2 md:px-6 pt-10 pb-1 md:pb-10">
+                    <h3 class="text-primary-black font-regular tracking-tight text-base md:text-2xl">{{ block.settings.title }}</h3>
+                    <p class="[&>p]:text-primary-black text-lg">{{ block.settings.button_text }}</p> 
+                </div>
+            {% endif %}
+        
+            <div class="image-container overflow-hidden flex items-center justify-center w-full h-full relative">
+                <img class="w-full h-full object-cover relative" src="{{ block.settings.image | image_url: width: '1280px' }}">
+                {% if block.settings.overlay != blank %}
+                    <div class="w-full h-full absolute z-10" style="background: {{ block.settings.overlay }}; opacity: 0.{{ block.settings.opacity }};"></div>
+                {% endif %}
+            </div>
+            {% unless block.settings.overlay_position == 'on-top' or block.settings.overlay_position == 'on-bottom' %}
+                <div class="Content_overlay flex z-20 text-center flex-col absolute {{ block.settings.overlay_position }} {{ block.settings.text_alignment }}">
+                    <h3 class="tracking-tight text-white font-heading sm:font-text text-2xl sm:text-5xl pb-2">{{ block.settings.title }}</h3>
+                    <div class="[&>p]:text-white [&>p]:text-sm sm:[&>p]:text-base [&>p]:tracking-tight">{{ block.settings.text }}</div>
+                </div>
+            {% endunless %}
+        </a>
+        
+        <style>
+            .Content_overlay h3 {
+                white-space: normal; /* Allow the title to wrap to multiple lines */
+                word-wrap: break-word; /* Break long words if necessary */
+            }
+        </style>
+        {% endfor %} 
+    </div>
+    {% if block_count == 5 %}
+        <div class="col-span-1 flex">
+            {% for block in section.blocks offset: offset %}
+          
+                <a href="{{ block.settings.link }}" class="flex flex-col items-center relative h-screen xlg:h-full">
+                    {% if block.settings.overlay_position == 'on-top' or block.settings.overlay_position == 'on-bottom' %}
+                      <div class="flex flex-row justify-between w-full px-6 pt-8 pb-4">
+                          <p class="text-primary-black">{{ block.settings.title }}</p>
+                          <p class="[&>p]:text-primary-black">{{ block.settings.button_text }}</p>
+                      </div>
+                    {% endif %}
+
+                    <div class="image-container overflow-hidden flex items-center justify-center w-full h-full relative">
+                        {% if block.settings.image != blank %}
+                            <img class="w-auto h-full object-cover relative" src="{{ block.settings.image | image_url: width: '1280px' }}">
+                        {% endif %}
+                        {% if block.settings.overlay != blank %}
+                            <div class="w-full h-full absolute z-10" style="background: {{ block.settings.overlay }}; opacity: 0.{{ block.settings.opacity }};"></div>
+                        {% endif %}
+                    </div>
+                    {% unless block.settings.overlay_position == 'on-top' or block.settings.overlay_position == 'on-bottom'  %}
+                    <div class="Content_overlay flex z-20 text-center flex-col absolute {{ block.settings.overlay_position }} {{ block.settings.text_alignment }}">
+                        <h3 class="text-white font-bold text-5xl pb-4 tracking-tight">{{ block.settings.title }}</h3>
+                        <div class="[&>p]:text-white [&>p]:tracking-tight">{{ block.settings.text }}</div>
+                    </div>
+                    {% endunless %}
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+
+<style>
+    /* Regular Overlay Positions */
+    .Content_overlay.bottom-left {
+      bottom: 3rem;
+      left: 2rem;
+    }
+  
+    .Content_overlay.bottom-right {
+      bottom: 3rem;
+      right: 2rem;
+    }
+  
+    .Content_overlay.bottom-center {
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  
+    .Content_overlay.middle-left {
+      top: 50%;
+      left: 2rem;
+      transform: translateY(-50%);
+    }
+  
+    .Content_overlay.middle-center {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  
+    .Content_overlay.middle-right {
+      top: 50%;
+      right: 2rem;
+      transform: translateY(-50%);
+    }
+  
+    .Content_overlay.top-left {
+      top: 3rem;
+      left: 2rem;
+    }
+  
+    .Content_overlay.top-center {
+      top: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  
+    .Content_overlay.top-right {
+      top: 3rem;
+      right: 2rem;
+    }
+  
+    /* Regular Text Alignment */
+    .text-align-left {
+      justify-content: flex-start;
+      text-align: left;
+    }
+  
+    .text-align-center {
+      justify-content: center;
+      text-align: center;
+    }
+  
+    .text-align-right {
+      justify-content: flex-end;
+      text-align: right;
+    }
+
+</style>
+
+{% schema %}
+{
+    "name": "Mosaic Section",
+    "settings": [
+
+    ],
+    "blocks": [
+        {
+            "type": "image_with_text",
+            "name": "Image with Text",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "label": "Image URL",
+                    "id": "image"
+                },
+                {
+                    "type": "color",
+                    "label": "Overlay color",
+                    "id": "overlay"
+                },
+                {
+                    "type": "range",
+                    "id": "opacity",
+                    "min": 0,
+                    "max": 10,
+                    "step": 1,
+                    "label": "Opacity",
+                    "default": 0
+                },
+                {
+                    "type": "text",
+                    "label": "Title",
+                    "id": "title",
+                    "default": "Lorem Ipsum"
+                },
+                {
+                    "type": "richtext",
+                    "label": "Text",
+                    "id": "text",
+                    "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>"
+                },
+                {
+                    "type": "url",
+                    "label": "Link URL",
+                    "id": "link"
+                },
+                {
+                    "type": "text",
+                    "label": "Button text",
+                    "id": "button_text",
+                    "default": "Read more"
+                },
+                {
+                    "type": "select",
+                    "id": "overlay_position",
+                    "label": "Overlay Position",
+                    "options": [
+                      {
+                        "value": "bottom-left",
+                        "label": "Bottom Left"
+                      },
+                      {
+                        "value": "bottom-right",
+                        "label": "Bottom Right"
+                      },
+                      {
+                        "value": "bottom-center",
+                        "label": "Bottom Center"
+                      },
+                      {
+                        "value": "middle-left",
+                        "label": "Middle Left"
+                      },
+                      {
+                        "value": "middle-center",
+                        "label": "Middle Center"
+                      },
+                      {
+                        "value": "middle-right",
+                        "label": "Middle Right"
+                      },
+                      {
+                        "value": "top-left",
+                        "label": "Top Left"
+                      },
+                      {
+                        "value": "top-center",
+                        "label": "Top Center"
+                      },
+                      {
+                        "value": "top-right",
+                        "label": "Top Right"
+                      },
+                      {
+                        "value": "on-top",
+                        "label": "On top of image"
+                      },
+                      {
+                        "value": "on-bottom",
+                        "label": "On bottom of image"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "select",
+                    "id": "text_alignment",
+                    "label": "Text Alignment",
+                    "options": [
+                      {
+                        "value": "text-align-left",
+                        "label": "Left"
+                      },
+                      {
+                        "value": "text-align-center",
+                        "label": "Center"
+                      },
+                      {
+                        "value": "text-align-right",
+                        "label": "Right"
+                      }
+                    ]
+                  }
+            ]
+        }
+    ],
+    "max_blocks": 5,
+    "presets": [
+        {
+            "name": "Mosaic Section",
+            "category": "Sections"
+
+        }
+    ]
+}
+{% endschema %}
+
+

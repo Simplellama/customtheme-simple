@@ -1,0 +1,277 @@
+
+{% assign cross_sell = shop.metaobjects.cross_sell_popup.cross-sell-men %} 
+
+{% for line_item in cart.items %}
+  {%- if line_item.properties != empty -%}
+    {%- for property in line_item.properties -%}
+      {% if property.first == '_Gender' %}
+        {% assign gender = property.last %}
+        {% break %}
+      {% endif %}
+    {%- endfor -%}
+  {%- endif -%}
+
+  <!-- If gender is found, break the outer loop -->
+  {% if gender != "" %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+<!-- Check if we have a match and assign the appropriate cross-sell -->
+{% if gender == "Men" %}
+  {% assign cross_sell = shop.metaobjects.cross_sell_popup.cross-sell-men %}
+{% elsif gender == "Woman" %}
+  {% assign cross_sell = shop.metaobjects.cross_sell_popup.cross-sell-women %}
+{% endif %}
+
+{% if cross_sell.cross_sell_products.value != blank and cross_sell.select_collection_to_show_products_from.value == blank %}
+    {% assign product_list = cross_sell.cross_sell_products.value %}
+{% else %}
+    {% assign collection_handle = cross_sell.select_collection_to_show_products_from.value.handle %}
+    {% if collections[collection_handle] %}
+      {% paginate collections[collection_handle].products by 100 %}
+        {% assign product_list = collections[collection_handle].products %}
+      {% endpaginate %}
+    {% endif %}
+{% endif %}
+
+{% assign time = product.metafields.custom.cross_sell_popup.value.time_in_seconds %}
+
+<script defer type="text/template" data-cross-sell-json>
+    {
+        "active_variant": "{{ product_list.first.selected_or_first_available_variant.title }}",
+        "cross_prod_list": [
+            {% for prod in product_list %}
+                {%- if prod.available -%}
+                    {% assign mhkd = prod.metafields.custom.cost_price.value %}
+                    {% assign csmp = prod.metafields.custom.cross_sell_markup_.value %}
+                    {% assign mhkd_total = mhkd | times: 1.25 %}
+                    {% assign price = prod.price | money_without_currency | replace: '.', '' | replace: ',', '.' %}
+                    {% if prod.metafields.custom.cross_sell_markup_.value != blank %}
+                        {% assign difference = mhkd_total | plus: csmp | minus: price | abs %}
+                    {% else %}
+                        {% assign difference = mhkd_total | times: 1.20 | minus: price | abs %}
+                    {% endif %}
+                    {% assign discount = difference | times: 100 | divided_by: price %}
+                    {% assign remaining_percentage = 100 | minus: discount %}
+                    {% assign discount_price = price | times: remaining_percentage | divided_by: 100 %}
+                    {
+                        "mhkd_product": {{ mhkd | json }},
+                        "id": {{ prod.id | json }},
+                        "title": {{ prod.title | json }},
+                        "available": {{ prod.available | json }},
+                        "mhkd": {{ mhkd | json }},
+                        "csmp": {{ csmp | json }},
+                        "mhkd_total": {{ mhkd_total | round: 2 | json }},
+                        "total": {{ csmp | plus: mhkd_total | round: 2 | json }},
+                        "discounted_price": {{ prod.price | minus: csmp | minus: mhkd_total | json }},
+                        "discount": {{ discount | round: 2 | json }},
+                        "discount_price": {{ discount_price | plus: 0.01 | round: 2 | json }},
+                        "featured_image": {{ prod.featured_image | json }},
+                        "url": {{ prod.url | json }},
+                        "price": {{ prod.price | json }},
+                        "variants": [
+                            {% for variant in prod.variants %}
+                                {
+                                    "id": {{ variant.id | json }},
+                                    "title": {{ variant.title | json }},
+                                    "available": {{ variant.available | json }}
+                                }{% unless forloop.last %},{% endunless %}
+                            {% endfor %}
+                        ]
+                    }{% unless forloop.last %},{% endunless %}
+                {% endif %}
+            {% endfor %}
+        ]
+    }
+</script>
+
+<div class="hidden sm:block cart-recommendations relative w-[165px] px-[15px] pt-4 bg-primary-bg z-[999] h-full overflow-hidden rounded-md">
+  <h3 class="text-xl text-heading font-bold text-center pb-4">{{ 'cart.cart_recomendations.todays_deal' | t }}</h3>
+  <div class="cart-recommendations-container overflow-y-scroll h-[98vh] pb-16"></div>
+</div>
+
+<script defer>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.innerWidth > 640) {
+      let shopCurrency = "{{ shop.currency }}";
+      let selectedVariantTitles = []; // Track the selected variant titles from the cart
+
+      // Function to render cross-sell products in the cart
+      function updateCartProducts(variantTitles) {
+        // Fetch cross-sell data from the JSON embedded in the template
+        let crossSellData = JSON.parse(document.querySelector("[data-cross-sell-json]").innerHTML);
+
+        // If the first cart line item uses _Bundletitle, use all titles from that array
+        let firstCartItemTitles = variantTitles.length ? variantTitles[0] : null;
+
+        // Filter products that match any of the titles from the first cart line item
+        let matchingFirstItemProducts = crossSellData.cross_prod_list.filter(prod => 
+          firstCartItemTitles && prod.variants.some(variant => firstCartItemTitles.includes(variant.title) && variant.available)
+        );
+
+        // Filter other products that match the remaining variant titles
+        let otherMatchingProducts = crossSellData.cross_prod_list.filter(prod => 
+          prod.variants.some(variant => variantTitles.flat().includes(variant.title) && variant.available) &&
+          !matchingFirstItemProducts.includes(prod) // Avoid duplicates
+        );
+
+        // Combine the two lists, with products matching the first item's titles at the top
+        let filteredProducts = [...matchingFirstItemProducts, ...otherMatchingProducts];
+
+        // Randomize the remaining products after the first item matches and limit the total to 16
+        filteredProducts = filteredProducts.slice(0, 16);
+
+        // If no products match, exit or handle empty state
+        if (!filteredProducts.length) {
+          const productContainer = document.querySelector(".cart-recommendations-container");
+          productContainer.innerHTML = '<p>No products available for recommendation.</p>';
+          return;
+        }
+
+        // Inject filtered cross-sell products into the cart recommendations
+        const productContainer = document.querySelector(".cart-recommendations-container");
+        productContainer.innerHTML = filteredProducts.map(product => {
+          // Unique form ID
+          const formId = `product_form_${product.id}`;
+
+          return `
+            <ajax-cart-product-form class="mb-3 block">
+              <div class="bg-white rounded-md overflow-hidden pb-2">
+                <div class="block">
+                  <img src="${product.featured_image}" style="width: 160px; height: 180px; object-fit: cover;" alt="${product.title}"
+                       loading="lazy" class="block object-cover h-full w-full">
+                  <h3 class="font-bold text-sm pt-4 pb-1 px-3">${product.title.slice(0,30)}</h3>
+                </div>
+                <form id="${formId}" class="product-form px-3" method="post" action="/cart/add" accept-charset="UTF-8" enctype="multipart/form-data">
+                  <input type="hidden" name="form_type" value="product">
+                  <input type="hidden" name="utf8" value="✓">
+                  <input type="hidden" name="return_to" value="${product.url}">
+                  <div class="flex items-center gap-x-[2px] mb-2">
+                    <p class="product-recom__price text-base font-bold py-1 text-red-500">
+                      ${(product.discount_price).toLocaleString(shopCurrency, { style: 'currency', currency: shopCurrency })}
+                    </p>
+                    <p class="product-recom__price text-sm py-1 line-through font-bold">
+                      ${(product.price / 100).toLocaleString(shopCurrency, { style: 'currency', currency: shopCurrency })}
+                    </p> 
+                  </div> 
+                  
+                  <div class="relative">
+                    <select aria-label="size select" name="id" class="text-base w-full bg-primary-bg py-1 px-1 mb-1">
+                      ${product.variants
+                        .filter(variant => variant.available) // Only include available variants
+                        .map(variant => `
+                          <option value="${variant.id}" ${variantTitles.flat().includes(variant.title) ? 'selected' : ''}>
+                            ${variant.title}
+                          </option>
+                        `).join('')}
+                    </select>
+                    <div class="w-3 absolute right-1 top-[10px] pointer-events-none">
+                      <svg aria-hidden="true" width="10" height="10" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"></path>
+                      </svg>                                  
+                    </div>
+                  </div>
+                  <button class="popup_add Button Button_primary text-sm py-1 w-full mb-1 px-0" type="submit">
+                    {{ 'products.product.add_to_cart' | t }}
+                  </button>
+                  <input type="hidden" name="product_id" value="${product.id}">
+                  <input type="hidden" name="properties[_bsq]" value="[1]">
+                  <input type="hidden" name="properties[_col]" value="{{ collection.handle }}">
+                  <input type="hidden" name="properties[_cartrecomendation]" value="true"> 
+                  <input type="hidden" name="properties[_bsp]" value="[${product.discount}]">
+                </form>
+              </div>
+            </ajax-cart-product-form>
+          `;
+        }).join("");
+
+        // Add click listeners for the Add to Cart buttons
+        const forms = document.querySelectorAll(".product-form");
+        forms.forEach(form => {
+          form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+
+            // Submit the form via AJAX
+            fetch('/cart/add.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: new URLSearchParams(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.status === 200) {
+                // Trigger cart refresh
+                document.dispatchEvent(new Event('cart:refresh'));
+              }
+            })
+            .catch(error => console.error('Error adding to cart:', error));
+          });
+        });
+      }
+
+      // Extract variant titles from the cart
+      function getVariantTitlesFromCart(cart) {
+        const variantTitles = [];
+      
+        if (cart.items && cart.items.length > 0) {
+          for (let cartItem of cart.items) {
+            // Check for bundled item titles or variant titles
+            if (cartItem.properties?._Bundletitle) {
+              try {
+                // Ensure the JSON is properly formatted
+                let bundleTitle = cartItem.properties._Bundletitle.replace(/&quot;/g, '"');
+                variantTitles.push(JSON.parse(bundleTitle)); // Use all titles from _Bundletitle array
+              } catch (e) {
+                console.error('Error parsing _Bundletitle:', e);
+              }
+            } else {
+              variantTitles.push([cartItem.variant_title]); // Wrap single title in an array for consistency
+            }
+          }
+        }
+        return variantTitles;
+      }
+
+      // Centralized function to handle cart updates
+      function handleCartUpdate(cart) {
+        const variantTitles = getVariantTitlesFromCart(cart);
+        updateCartProducts(variantTitles);
+        
+        let crossSellData = JSON.parse(document.querySelector("[data-cross-sell-json]").innerHTML);
+        let filteredProducts = crossSellData.cross_prod_list.filter(prod => 
+          prod.variants.some(variant => variantTitles.flat().includes(variant.title) && variant.available)
+        );
+
+        // Toggle recommendation visibility based on availability
+        const cartRecomElement = document.querySelector("#shopify-section-cart-recomendations");
+        if (filteredProducts.length === 0) {
+          cartRecomElement.classList.remove("cart-recom-slidein");
+        } else {
+          cartRecomElement.classList.add("cart-recom-slidein");
+        }
+      }
+
+      // Initial call to update the recommendations based on cart items
+      fetch('/cart.js')
+        .then(response => response.json())
+        .then(cart => handleCartUpdate(cart));
+
+      // Listen for updates to the cart (product added or changed)
+      document.addEventListener("liquid-ajax-cart:request-end", (event) => {
+        const { cart } = event.detail;
+        handleCartUpdate(cart);
+      });
+
+      // Listen for cart refreshes to update recommendations
+      document.documentElement.addEventListener('cart:refresh', function () {
+        fetch('/cart.js')
+          .then(response => response.json())
+          .then(cart => handleCartUpdate(cart));
+      });
+    }
+  });
+</script>

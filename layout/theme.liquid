@@ -1,0 +1,262 @@
+<!doctype html>
+  <html class="no-js" lang="{{ request.locale.iso_code }}" dir="{{ settings.text_direction }}">
+        <head> 
+          <script id="CookieConsent" src="https://policy.app.cookieinformation.com/uc.js"
+            data-culture="DA" data-gcm-version="2.0" type="text/javascript"></script>
+          <meta charset="utf-8">
+          <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+          <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+          <meta name="theme-color" content="{{ settings.color_primary }}">
+          <link rel="preconnect" href="https://cdn.shopify.com">
+          <link rel="canonical" href="{{ canonical_url }}">
+          <link rel="canonical" href="{{ canonical_url | split: "?page=" | first }}">
+
+          <!-- Google tag (gtag.js) -->
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-KDEVLRF2HD"></script>
+
+          <!-- Google Tag Manager -->
+          <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-TMZ6Q7MT');</script>
+            <!-- End Google Tag Manager -->
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+          
+            gtag('config', 'G-KDEVLRF2HD');
+          </script>
+ 
+
+          <!-- NoIndex -->
+          {% if template contains 'search' %}
+            <meta name="robots" content="noindex">
+          {% endif %}
+          
+          <!-- NoIndex på Tags -->
+          {% if current_tags %}
+              <meta name="robots" content="noindex">
+          {% endif %}
+  
+          {% if settings.favicon != blank %}
+            <link rel="shortcut icon" href="{{ settings.favicon | image_url: width: 32, height: 32 }}" laoding="eager" type="image/png">
+          {% endif %}
+    
+          <title>
+            {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}
+          </title>
+      
+          {%- if page_description -%}
+            <meta name="description" content="{{ page_description | escape }}">
+          {%- endif -%}
+      
+          {% render 'head-meta' %} 
+
+
+
+          {{ 'base.css' | asset_url | stylesheet_tag }}
+          {{ 'output.css' | asset_url | stylesheet_tag }} 
+          {{ 'splide.min.css' | asset_url | stylesheet_tag }}
+          {{ 'master.css' | asset_url | stylesheet_tag }}
+          {{ 'trust.css' | asset_url | stylesheet_tag }}
+
+
+          
+          <script type="text/javascript" src="{{ 'menu.js' | asset_url }}" defer></script>
+          
+           
+          {% if template.directory == 'customers' %}
+            <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer=defer></script>
+          {% endif %}
+          <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" defer></script>
+          <script type="text/javascript" src="{{ 'main.js' | asset_url }}" defer></script>
+          <script type="text/javascript" src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
+          <script type="text/javascript" src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
+          <script type="text/javascript" src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+          <script type="text/javascript" src="{{ 'animations.js' | asset_url }}" defer="defer"></script> 
+          <script type="text/javascript" src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
+          <script type="application/json" data-ajax-cart-initial-state defer="defer">{{ cart | json }}</script>
+          <script type="module" defer="defer">import '{{ "ajax-cart.js" | asset_url }}';</script>
+        
+
+          
+          <link rel="stylesheet" href="https://use.typekit.net/ugz8did.css">
+
+
+          <link rel="stylesheet" href="{{ 'component-predictive-search.css' | asset_url }}" media="print"  onload="this.media='all'">
+  
+
+
+          <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-auto-scroll@0.5.3/dist/js/splide-extension-auto-scroll.min.js"></script>
+
+          {{ content_for_header }}
+          {% render 'cookie-consent' %}
+
+
+          <script type="text/javascript" defer>
+
+
+            // tab text 
+            let activeTitle = ' {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}';
+            let inactiveTitle = '(1) - Kan vi hjælpe dig?';
+            let titleInterval;
+          
+            document.title = activeTitle;
+          
+            window.addEventListener('blur', () => {
+              let toggle = true;
+              titleInterval = setInterval(() => {
+                document.title = toggle ? inactiveTitle : activeTitle;
+                toggle = !toggle;
+              }, 3000);
+            });
+          
+            window.addEventListener('focus', () => {
+              clearInterval(titleInterval);
+              document.title = activeTitle;
+            });
+            </script>
+        </head>
+        
+        <body id="{{ page_title | handle }}" class="bg-primary-bg relative overflow-x-hidden max-w-screen template-{{ template.name | handle }}">
+      <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TMZ6Q7MT"
+          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+          {% if page.metafields.custom.hide_header_menu.value != true %}
+            <div id="header" class="Header_section fixed w-full z-40 top-0">
+
+                <div class="header-outer"> 
+
+                  {% section 'announcment-countdown'%}
+         
+                  {% comment %} {% section 'announcment-slider'%} {% endcomment %}
+                  {% section 'topbar'%}
+      
+                  {% section 'main-header' %}  
+                  {%- section 'megamenu' -%}
+                  
+                </div>
+            </div>
+          {% endif %}
+  
+          {% section 'menu-drawer'%} <!-- Mobile menu -->
+  
+          <div class="main-section">
+            <main class="main-section bg-primary-bg {% unless template.name == 'index' or page.template_suffix == 'text-with-navigation' %}  {% endunless %}{% if template.name == 'index' %}frontpage bg-primary-bg{% endif %}" role="main" id="root">
+              {{ content_for_layout }} 
+              {%- liquid
+                if section.index > 2
+                  assign loading = "lazy"
+                else
+                  assign loading = "eager" 
+                endif
+              -%}
+              {% if page.metafields.custom.hide_footer.value != true %}
+              <footer class="flex flex-col">
+                {% section 'footer' %} 
+              </footer>
+              {% endif %}
+            </main>
+          </div>
+      
+      
+          {% unless template == 'cart' %} 
+            <button  id="cart-overlay" class="floating-cart" onclick="closeCart()"></button>
+            <div class="floating-cart relative">
+                <div class="flex w-full border-l border-border shadow-2xl ajax-cart-drawer max-w-[90vw] sm:max-w-[400px] translate-x-[105%] transition ease-in duration-300 fixed bottom-0 right-0 lg:max-w-[550px] h-full z-[999]" >
+                  {% section 'ajax-cart' %}
+                </div> 
+            </div>
+          {% endunless %}
+  
+          <div id="terms-modal" class="terms-modal hidden fixed z-[9999] left-0 top-0 w-full h-full overflow-auto bg-[#00000093]">
+            <div class="terms-modal-content bg-primary-bg flex flex-col gap-4 absolute bg-light-bg-500 py-12 px-20 m-auto top-1/3 left-0 right-0 border-primary-black-200 w-fit text-center rounded-sm">
+              <h3 class="text-4xl uppercase font-bold">{{ 'cart.general.terms_wraning_title' | t }}</h3>  
+              <p id="terms-warning">{{ 'cart.general.terms_warning' | t }}</p>
+              <button id="accept-terms" class="mt-3 flex items-center text-center justify-center gap-x-2 rounded-full bg-medium-green px-5 min-h-[54px] text-lg font-semibold text-white w-fit shadow hover:bg-primary-black mx-auto">{{ 'cart.general.warning_button' | t }}</button>
+            </div>
+          </div>
+        
+    
+    
+          <script src="https://a.klaviyo.com/media/js/onsite/onsite.js"></script>
+  
+          <script>
+            var klaviyo = klaviyo || [];
+            klaviyo.init({
+              account: "{{ 'klaviyo.account' | t }}",
+              list: "{{ 'klaviyo.newsletter_list_id' | t }}",
+              collection_urls: ["/collections/"],
+              platform: "shopify"
+            });
+            klaviyo.enable("backinstock",{ 
+            trigger: {
+              product_page_text: "{{ 'klaviyo.trigger.product_page_text' | t }}",
+              product_page_class: "{{ 'klaviyo.trigger.product_page_class' | t }}",
+              product_page_text_align: "klaviyo.{{ 'trigger.product_page_text_align' | t }}",
+              product_page_margin: "{{ 'klaviyo.trigger.product_page_margin' | t }}",
+              replace_anchor: "false",
+              collection_page_class: 'btn',    
+              collection_page_text_align: 'center',    
+              collection_page_width: '',    
+              collection_page_text: '',    
+              collection_page_padding: 'inherit'
+            },
+            modal: {
+              headline: "{{ 'klaviyo.modal.headline' | t }}",
+              body_content: "{{ 'klaviyo.modal.body_content' | t }}",
+              email_field_label: "{{ 'klaviyo.modal.email_field_label' | t }}",
+              button_label: "{{ 'klaviyo.modal.button_label' | t }}",
+              subscription_success_label: "{{ 'klaviyo.modal.subscription_success_label' | t }}",
+              newsletter_subscribe_label: "{{ 'klaviyo.modal.newsletter_subscribe_label' | t }}",
+              footer_content: "{{ 'klaviyo.modal.footer_content' | t }}",
+              drop_background_color: "{{ 'klaviyo.modal.drop_background_color' | t }}",
+              background_color: "{{ 'klaviyo.modal.background_color' | t }}",
+              text_color: "{{ 'klaviyo.modal.text_color' | t }}",
+              button_text_color: "{{ 'klaviyo.modal.button_text_color' | t }}",
+              button_background_color: "{{ 'klaviyo.modal.button_background_color' | t }}",
+              close_button_color: "{{ 'klaviyo.modal.close_button_color' | t }}",
+              error_background_color: "{{ 'klaviyo.modal.error_background_color' | t }}",
+              error_text_color: "{{ 'klaviyo.modal.error_text_color' | t }}",
+              success_background_color: "{{ 'klaviyo.modal.success_background_color' | t }}",
+              success_text_color: "{{ 'klaviyo.modal.success_text_color' | t }}"
+            }
+          });
+  
+          document.addEventListener('DOMContentLoaded', function() {
+            let klaviyoContainers = document.querySelectorAll('.klaviyo-product-container');
+            klaviyoContainers.forEach(function(klaviyoContainer) {
+              klaviyoContainer.style = '';
+            });
+            
+            let klaviyoButtons = document.querySelectorAll('.klaviyo-button-container');
+            klaviyoButtons.forEach(function(klaviyoButton) {
+              klaviyoButton.style = '';
+            });
+            
+            let klaviyoTriggers = document.querySelectorAll('.klaviyo-bis-trigger');
+            klaviyoTriggers.forEach(function(klaviyoTrigger) {
+              klaviyoTrigger.style = '';
+            }); 
+            
+          });
+        </script>
+        
+        <!-- Overlay -->
+        <div id="overlay" class="overlay fixed z-50 inset-0 bg-black/60 transition-opacity hidden" aria-hidden="true"></div>
+  
+
+        <script type="text/javascript" src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+        
+
+        <script src="https://partnertrackshopify.dk/js/register.js" async></script>
+
+    </body>
+  </html>
+
+

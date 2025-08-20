@@ -1,0 +1,55 @@
+{% assign image_with_text_section_list = product.metafields.custom.product_image_with_text_section.value.product_image_with_text_section_list.value %}
+{% for section_content in image_with_text_section_list %}
+  {% assign is_even = forloop.index | modulo: 2 %}
+  
+  {% capture image_col %}
+    <div class="image-col col-span-2 sm:col-span-1 lg:col-span-1 w-full h-full min-h-[65vh] {% if is_even != 0 %}order-[-1] sm:order-1{% endif %}">
+      {% if section_content.image != blank  %}
+        {% render 'media', media: section_content.image.value, lazyload: lazyload, class: "w-full h-full", alt: section_content.title, width: 1536 %}
+      {%  else %}
+        {{ 'image' | placeholder_svg_tag }} 
+      {% endif %}
+    </div> 
+  {% endcapture %}
+
+  {% capture text_col %}
+    <div class="text-col col-span-2 sm:col-span-1 flex min-h-[500px] items-center justify-center p-8">
+      <div class="text-container w-full sm:w-[80%]">
+        <h3 class="Heading text-4xl sm:text-8xl Heading font-bold">{{ section_content.title }}</h3>
+        <h3 class="font-bold text-xl py-8">{{ section_content.subtitle }}</h3>
+        <div>{{ section_content.text_content | metafield_tag | newline_to_br }}</div>
+        {% if section_content.button_link != blank %}
+          <a href="{{ section_content.button_link }}" class="Button Button_secondary mt-8">{{ section_content.button_text }}</a>
+        {% endif %}
+      </div>
+    </div>
+  {% endcapture %}
+
+  {% if image_with_text_section_list != blank %}
+      <section class="image-with-text-section">
+        <div class="column_container grid grid-cols-2">
+          {% if is_even == 0 %}
+            {{ image_col }}
+            {{ text_col }}
+          {% else %}
+            {{ text_col }}
+            {{ image_col }}
+          {% endif %}
+        </div>
+      </section>
+  {% endif %}
+{% endfor %}
+
+{% schema %}  
+  { 
+    "name": "Image with text - Meta",
+    "settings": [
+    ],
+    "presets": [
+      {
+        "name": "Image with text - Meta",
+        "category": "section"
+      }
+    ]
+  }
+{% endschema %}

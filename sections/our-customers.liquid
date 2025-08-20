@@ -1,0 +1,142 @@
+<section class="social_slider_section mt-12 mb-8 bg-primary-bg">
+  <header class="Section container mb-6">
+    <div class="flex flex-col text-center gap-y-2 pb-8 w-full">
+      <p class="text-lg/7 font-bold uppercase text-primary-orange">{{ section.settings.title }}</p>
+      <h3 class="Heading tracking-tight text-7xl font-bold text-primary-text">{{ section.settings.subtitle }}</h3>
+    </div>
+  </header>
+
+  <div class="splide" id="social_slider">
+    <div class="splide__track pl-4 h-full">
+      <ul class="splide__list flex gap-x-4 h-full">
+        {% for block in section.blocks %}
+          {% case block.type %}
+
+          {% when "social_image" %} 
+            <li class="splide__slide max-w-[450px] social_image">
+              <div class="overflow-hidden  h-[450px] lg:h-[550px]">
+                <a class="h-full" {% if block.settings.link %} href="{{ block.settings.link }}" {% endif %}>
+                  {% render 'media', media: block.settings.social_image, loading: 'lazy', class: "w-full h-full", alt: block.settings.quote, width: 832%}
+                  {% if block.settings.name != blank %}
+                    <div class="Bottom_Info px-4 py-2 bg-primary-bg">
+                      <p class="font-bold">{{ block.settings.name }}</p>
+                    </div>
+                  {% endif %}
+                </a>
+              </div>
+            </li>
+
+          {% when "quote_item" %}
+            <li class="splide__slide max-w-[450px] quote_item h-full block">
+              <div class="overflow-hidden">
+                <p class="quote_text flex justify-center items-center h-[450px] text-center max-w-full px-6" style="background: {{ block.settings.quote_bg }}; color: {{ block.settings.quote_color }};">
+                  <span class="qoute_symbol text-3xl sm:text-5xl" >"</span>
+                    <span class="text_inner text-3xl sm:text-6xl">{{ block.settings.quote }}</span>
+                  <span class="qoute_symbol text-3xl sm:text-5xl">"</span>
+                </p>
+
+                <div class="Bottom_Info px-4 py-2 bg-primary-bg">
+                  {% if block.settings.name != blank %}
+                    <p class="font-bold">{{ block.settings.name }}</p>
+                  {% endif %}
+                </div>
+              </div>
+            </li>
+
+          {% endcase %}
+        {% endfor %} 
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+
+<script src="{{ 'our-customers.js' | asset_url }}"></script> 
+
+{% schema %}
+  { 
+    "name": "Social slider section",
+    "class": "social_section shopify-section--spacingNormal",
+    "settings": [
+    {
+      "type": "checkbox",
+      "id": "staggered",
+      "label": "Staggered design",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title", 
+      "label": "Heading first",
+      "default": "This is a title"
+    },
+    {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Subtitle",
+        "default": "Real people wearing really good clothing."
+    }
+    ],
+    "blocks":[
+      {
+        "name": "Social image",
+        "type": "social_image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "social_image",
+            "label": "Insert social image",
+            "info": "Minimum image size 350x450px"
+          },
+          {
+            "type": "text",
+            "id": "name",
+            "label": "Name",
+            "default": "name"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          }
+        ]
+      },
+      {
+        "name": "Quote item",
+        "type": "quote_item",
+        "settings": [
+          {
+            "type": "text",
+            "id": "quote",
+            "label": "Quote"
+          },
+          {
+            "type": "text",
+            "id": "name",
+            "label": "Name",
+            "default": "name"
+          },
+          {
+            "type": "color",
+            "id": "quote_bg",
+            "label": "Quote Background"
+          },
+          {
+            "type": "color",
+            "id": "quote_color",
+            "label": "Quote font color"
+          }
+        ]
+      }
+    ],
+     
+  "presets": [
+    {
+      "category": "custom",
+      "name": "Social slider",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-login",
+      "settings": {
+        "title": "Login",
+        "background_image": "shopify:\/\/shop_images\/000055120012.jpg",
+        "subtitle": "Welcome back! Sign in to your account",
+        "title-reset": "Reset password",
+        "subtitle-reset": "Enter your email address and we will send you a link to reset your password"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

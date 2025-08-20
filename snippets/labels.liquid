@@ -1,0 +1,37 @@
+<div class="label_container absolute {{ class }} flex flex-row sm:flex-col md:flex-row z-[2] gap-1 md:gap-2 items-start lg:items-center">
+    {%- if product.available -%}
+        {%- if product.compare_at_price > product.price -%}
+    
+            {% if product.price_varies %}
+                {% assign price = product.price %}
+            {% else %}
+                {% assign price = product.price %}
+            {% endif %}
+    
+            {% assign compare_price = product.selected_or_first_available_variant.compare_at_price %}
+            {% assign discount_percentage = compare_price | minus: price | times: 100 | divided_by: compare_price %}
+
+             <span class="ProductItem__Label inline-flex items-center rounded-full bg-primary-orange px-3 py-2 text-sm font-semibold text-primary-bg " {% if compare_price == blank %}hidden{% endif %}">{% if compare_price > 0 %}{{ 'products.product.off' | t }} {{ discount_percentage | round }}%{% endif %}</span> 
+        {%- endif -%}
+    
+    {%- else -%}
+        {% if product.metafields.custom.coming_soon == blank %}
+            <span class="ProductItem__Label text-xs lg:text-sm bg-white px-2 py-2 md:px-2 md:py-2">{{ 'products.product.sold_out' | t }}</span>
+        {% else %}
+            <span class="ProductItem__Label text-xs lg:text-sm text-white bg-primary-purple px-2 py-2 md:px-2 md:py-2">{{ product.metafields.custom.coming_soon.value.label_text }}</span>
+        {% endif %}
+    {%- endif -%}
+
+    {% if product.metafields.custom.discount_label != blank %}
+        <span class="ProductItem__Label text-xs lg:text-sm text-white bg-primary-purple px-2 py-2 md:px-2 md:py-2">{{ product.metafields.custom.discount_label.value }}</span>
+    {% endif %}
+
+    {% if product.metafields.custom.labels != blank %}
+            <span class="ProductItem__Label inline-flex items-center rounded-full bg-medium-green px-3 py-2 text-sm font-semibold text-white">{{ product.metafields.custom.labels.value }}</span>
+    {% endif %}
+    
+    </div>
+    
+    
+    
+    

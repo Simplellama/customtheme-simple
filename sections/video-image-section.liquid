@@ -1,0 +1,233 @@
+<section class="px-4" >
+    <div class="grid grid-cols-12 gap-x-4">
+      <div href="{{ section.settings.link }}" class="col-span-6 containerh-full bg-[#f3f2eb]  w-full">
+        <div class="w-full relative flex items-center px-6 h-full py-4"> 
+        <div class="h-fit w-fit flex flex-col justify-center">
+            <div class=" h-fit flex flex-col gap-y-6 ">
+                <p class="text-lg ">{{ section.settings.subtitle }}</p>
+                <h3 class="Heading tracking-tight text-7xl/none font-normal">{{ section.settings.title }}</h3>
+                <div class="text-base/6">{{ section.settings.text }} </div>
+            </div>
+            <div class="flex flex-row gap-4 w-fit">
+            {% for block in section.blocks %}
+                {% if block.settings.button_link != blank %}
+                    <a href="{{ block.settings.button_link }}" class="mt-8
+                      {% if forloop.first %} 
+                        will-hide play-video-btn flex items-center w-full justify-center gap-x-2 whitespace-nowrap rounded-full min-h-[54px] border border-primary-black text-lg  text-btn-secondary  shadow-sm hover:border-primary-text
+                        
+                       {% else %} 
+                        first-btn flex items-center w-full justify-center gap-x-2 whitespace-nowrap min-h-[54px] text-lg text-white
+                      {% endif %} min-w-[190px]
+                        "> 
+                        {{ block.settings.button }}
+                    </a> 
+                    {% endif %}
+            {% endfor %}
+            </div> 
+        </div>
+        </div>
+      
+      </div>
+        <div id="hero" class="Hero relative  col-span-6 overflow-hidden">
+   
+
+            <div class="relative mx-auto z-[0] w-full h-full">
+                {% if section.settings.overlay %}<div class="bg-overlay absolute top-0 left-0 right-0 w-full h-full z-0 bg-black" style="opacity: 0.{{ section.settings.overlay_opacity }}"></div>{% endif %}
+                {% if section.settings.video_laptop != blank %}
+                <video
+                    id="video_block_hero"
+                    class="h-full w-full object-cover pointer-events-none hidden sm:block"
+                    preload="none"
+                    poster="{{ section.settings.background | image_url: width: 1280 }}"
+                    width="100%"
+                    height="auto"
+                    loop
+                    muted="true"  
+                    playsinline
+                >
+                    <source data-src="{{ section.settings.video_laptop.sources[0].url }}" type="application/x-mpegURL">
+                    <source data-src="{{ section.settings.video_laptop.sources[1].url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                {% else %}
+                <img class="w-full h-full object-cover relative hidden sm:block" src="{{ section.settings.background | image_url: width: 1280 }}">
+                {% endif %}
+                {% if section.settings.video_mobile != blank %}
+                <video
+                    id="video_block_mobile_hero"
+                    class="h-full w-full object-cover pointer-events-none block sm:hidden"
+                    preload="none"
+                    poster="{{ section.settings.mobile-background | image_url: width: 1280 }}"
+                    width="100%"
+                    height="auto"
+                    loop
+                    muted="true"
+                    playsinline 
+                >
+                    <source data-src="{{ section.settings.video_mobile.sources[0].url }}" type="application/x-mpegURL">
+                    <source data-src="{{ section.settings.video_mobile.sources[1].url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                {% else %}
+                <img class="w-full h-full object-cover relative block sm:hidden" src="{{ section.settings.mobile-background | image_url: width: 1280 }}">
+                {% endif %} 
+            </div>
+        </div>
+    </div>
+</section> 
+  
+  
+  <script defer>
+    document.addEventListener('DOMContentLoaded', function() {
+      let videos = document.querySelectorAll('video[id^="video_block_"], video[id^="video_block_mobile_"]');
+      videos.forEach(function(video) {
+        // Initialize a flag to track if the video was playing before pausing
+        video.wasPlaying = false;
+
+        let observer = new IntersectionObserver(function(entries) {
+          if (entries[0].isIntersecting === true) { 
+            // Load the video sources if not already loaded 
+            if (!video.hasAttribute('data-sources-loaded')) {
+              let sources = video.querySelectorAll('source');
+              sources.forEach(function(source) {
+                source.setAttribute('src', source.getAttribute('data-src'));
+              });
+              video.load(); 
+              video.setAttribute('data-sources-loaded', 'true');
+            }
+            // Resume playing if it was playing before
+            if (video.wasPlaying) {
+              video.play();
+              video.wasPlaying = false; // Reset the flag after playing
+            }
+          } else {
+            // If the video is playing, pause it and set the flag
+            if (!video.paused) {
+              video.wasPlaying = true;
+              video.pause();
+            }
+          }
+        }, { threshold: [0] });
+  
+        observer.observe(video);
+      });
+    });
+
+    // Consolidated JavaScript to handle play button clicks
+    document.addEventListener('DOMContentLoaded', function() {
+      const playButtons = document.querySelectorAll('.play-video-btn');
+      playButtons.forEach(function(playButton) {
+        playButton.addEventListener('click', function(event) {
+          event.preventDefault(); // Prevent default link behavior
+
+          // Hide all elements with the 'will-hide' class
+          const elementsToHide = document.querySelectorAll('.will-hide');
+          elementsToHide.forEach(el => el.style.display = 'none');
+
+          // Add 'position-changed' to 'change-position' element
+          const contentOverlay = document.querySelector('.change-position');
+          if (contentOverlay) {
+            contentOverlay.classList.add('position-changed');
+          }
+
+          // Hide the 'bg-overlay' element
+          const bgOverlay = document.querySelector('.bg-overlay');
+          if (bgOverlay) {
+            bgOverlay.style.display = 'none';
+          }
+
+          // Enable video controls, including volume, and unmute
+          const video = document.getElementById('video_block_hero'); 
+          if (video) {
+            video.controls = true;
+            video.muted = false; // Unmute the video
+            video.classList.remove('hidden', 'pointer-events-none'); // Enable visibility and interactions
+            const sources = video.querySelectorAll('source');
+            sources.forEach(source => {
+              source.setAttribute('src', 'https://smeltsauna.myshopify.com/cdn/shop/videos/c/vp/d01a8bb0bf4547a986b9ec3d275a642e/d01a8bb0bf4547a986b9ec3d275a642e.HD-1080p-7.2Mbps-39730883.mp4?v=0');
+            });
+            video.load();
+            video.play();
+          }
+        });
+      });
+    });
+  </script>
+    
+  {% schema %}
+  {
+    "name": "Video - image section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading" 
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Subheading"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": "Link"
+      },
+      {
+        "type": "image_picker",
+        "id": "background",
+        "label": "Background"
+      },
+      {
+        "type": "video",
+        "id": "video_laptop",
+        "label": "Video Laptop"
+      },
+      {
+        "type": "image_picker",
+        "id": "mobile-background",
+        "label": "Mobile Background" 
+      },
+      {
+        "type": "video",
+        "id": "video_mobile",
+        "label": "Video Mobile"
+      },
+    ],
+    "blocks": [
+      {
+        "type": "Button",
+        "name": "Button",
+        "settings": [
+          {
+            "type": "text",
+            "id": "button",
+            "label": "Button"
+          },
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Video - image section",
+        "category": "section",
+        "blocks": [
+          {
+            "type": "Button",
+            "settings": {}
+          }
+        ]
+      }
+    ]
+  }
+  {% endschema %}

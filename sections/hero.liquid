@@ -1,0 +1,237 @@
+<section id="hero" style="min-height: {{ section.settings.height }}vh;" class="overflow-hidden relative h-fit flex flex-col items-center justify-center">
+  <div class="relative flex flex-col items-center h-fit px-4 md:px-12 pb-12">
+    <div  class="container grid grid-cols-12 items-end gap-y-0 pb-2 sm:pb-6 w-full h-full {% if section.settings.button_link == blank %}cursor-default pointer-events-none{% endif %}">
+      <div class="col-span-12 lg:col-span-12 px-2 md:px-5 h-fit w-full flex flex-col "> 
+        <div class="Content_overlay h-full w-full flex justify-center flex-col gap-0 z-[2] py-12">
+          <div class="Section_header_text text-center md:max-w-2xl h-fit mx-auto flex flex-col w-full gap-6">
+            {% if section.settings.subtitle != blank %}<h2 class="text-base/4 sm:text-xl/7 font-bold uppercase text-primary-orange">{{ section.settings.subtitle }}</h2>{% endif %}
+            {% if section.settings.title != blank %}<h1 class="Heading tracking-tight font-bold text-6xl md:text-7xl/none text-primary-bg">{{ section.settings.title }}</h1>{% endif %}
+            {% if section.settings.text != blank %}<div class="text-secondary-bg font-light text-lg/7">{{ section.settings.text }}</div>{% endif %}
+            
+            {% if section.settings.button != blank %}<a href="{{ section.settings.button_link }}" class="z-[2] relative flex w-fit mx-auto items-center justify-between gap-x-2 rounded-full text-primary-black border border-primary-bg px-12 min-h-[50px] text-base bg-primary-bg hover:text-primary-bg hover:bg-transparent">
+              {{ section.settings.button }}
+            </a> 
+            {% endif %}
+          </div> 
+
+          
+            {% if template == 'password' %}<div class="klaviyo-form-YgwPXd max-w-[450px] mx-auto pt-4"></div>{% endif %}
+
+          <div class="flex flex-row justify-center mx-auto gap-2 w-full">
+            {% for block in section.blocks %}
+              {% if block.settings.button_link != blank %}
+                <button href="{{ block.settings.link }}" type="button" class="flex items-center justify-between gap-x-2 rounded-full text-primary-black border px-12 min-h-[54px] text-base bg-primary-bg hover:text-primary-bg hover:bg-transparent">
+                  {{ block.settings.button }}
+                </button>
+              {% endif %}
+            {% endfor %} 
+   
+          </div> 
+          {% if section.blocks.size > 0 %}
+            <div class="col-span-12 w-full mx-auto pt-16 max-w-[350px] sm:max-w-[80%] h-fit px-5 relative z-[2] hidden sm:block">
+               <ul class="flex flex-col sm:flex-row flex-wrap justify-center gap-y-3 gap-x-3 text-base text-secondary-bg">
+                 {% for block in section.blocks %}
+                 <li class="inline-flex gap-x-2 items-center rounded-full border border-white px-4 py-1 text-base font-light text-primary-text ">
+                   <a href="{{ block.settings.button_link }}" class="text-white text-sm/5 text-center font-light w-full h-full">{{ block.settings.button }}</a>
+                 </li>
+                 {% endfor %}
+        
+               </ul>
+             </div> 
+           {% endif %}
+        </div>
+      </div> 
+
+
+    </div> 
+ 
+
+
+    
+   
+  </div>
+  <div class="absolute top-0 left-0 right-0 mx-auto z-[0] w-full h-full">
+    <div class="bg-overlay absolute top-0 left-0 right-0 w-full h-full z-[1] bg-black opacity-20"></div>
+    {% if section.settings.video_laptop != blank %}
+      <video
+        id="video_block_hero"
+        class="h-full w-full object-cover pointer-events-none hidden sm:block brightness-110"
+        preload="none"
+        poster="{{ section.settings.background | image_url: width: 1280 }}"
+        width="100%"
+        height="auto"
+        loop
+        muted="true" 
+        playsinline
+      >
+        <source data-src="{{ section.settings.video_laptop.sources[0].url }}" type="application/x-mpegURL">
+        <source data-src="{{ section.settings.video_laptop.sources[1].url }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    {% else %}
+      <img class="w-full h-full object-cover object-left-bottom relative hidden sm:block brightness-110" src="{{ section.settings.background | image_url: width: 1536 }}">
+    {% endif %}
+    {% if section.settings.video_mobile != blank %}
+      <video
+        id="video_block_mobile_hero"
+        class="h-full w-full object-cover pointer-events-none block sm:hidden"
+        preload="none"
+        poster="{{ section.settings.mobile-background | image_url: width: 1280 }}"
+        width="100%"
+        height="auto"
+        loop
+        muted="true"
+        playsinline 
+      >
+        <source data-src="{{ section.settings.video_mobile.sources[0].url }}" type="application/x-mpegURL">
+        <source data-src="{{ section.settings.video_mobile.sources[1].url }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    {% else %}
+      <img class="w-full h-full object-cover relative block sm:hidden" src="{{ section.settings.mobile-background | image_url: width: 1536 }}">
+    {% endif %} 
+  </div>
+
+
+</section> 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+<script defer>
+  document.addEventListener('DOMContentLoaded', function() {
+    // GSAP animation for text, button, and pills
+    gsap.from(".Section_header_text > *", {
+      duration: 1,
+      opacity: 0,
+      y: 20,
+      stagger: 0.2,
+      ease: "power3.out"
+    });
+
+    gsap.from(".flex-row > button", {
+      duration: 0.5,
+      opacity: 0,
+      y: 10,
+      stagger: 0.1,
+      ease: "power3.out",
+      delay: 0.2
+    });
+
+    gsap.from(".flex-wrap > li", {
+      duration: 0.5,
+      opacity: 0,
+      y: 10,
+      stagger: 0.1,
+      ease: "power3.out",
+      delay: 0.5
+    });
+
+    // Video lazy loading
+    let videos = document.querySelectorAll('video[id^="video_block_"], video[id^="video_block_mobile_"]');
+    videos.forEach(function(video) {
+      let observer = new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting === true) {
+          // Load the video sources
+          let sources = video.querySelectorAll('source');
+          sources.forEach(function(source) {
+            source.setAttribute('src', source.getAttribute('data-src'));
+          });
+          video.load();
+          video.play();
+          observer.unobserve(video); // Stop observing once the video is loaded and played
+        }
+      }, { threshold: [0] });
+
+      observer.observe(video);
+    });
+  });
+</script>
+  
+{% schema %}
+{
+  "name": "Hero section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading" 
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Button"
+    },
+    {
+      "type": "image_picker",
+      "id": "background",
+      "label": "Background"
+    },
+    {
+      "type": "video",
+      "id": "video_laptop",
+      "label": "Video Laptop"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile-background",
+      "label": "Mobile Background" 
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Video Mobile"
+    },
+    {
+      "type": "text",
+      "id": "height",
+      "label": "Height",
+      "default": "65",
+      "info": "Height of the hero section in viewport height (vh)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button",
+          "label": "Button"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero section",
+      "category": "section",
+      "blocks": [
+        {
+          "type": "Button",
+          "settings": {}
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

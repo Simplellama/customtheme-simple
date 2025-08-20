@@ -1,0 +1,13 @@
+<ul class="flex gap-4 items-center">
+    {% if settings.social_youtube_link != blank %}
+        <li><a aria-label="Youtube" href="{{ settings.social_youtube_link }}" target="_blank">{% render 'icon', icon: 'youtube', fill: '#000' %}</a></li>
+    {% endif %}
+
+    {% if settings.social_facebook_link != blank %}
+        <li><a aria-label="Facebook" href="{{ settings.social_facebook_link }}" target="_blank">{% render 'icon', icon: 'facebook', fill: '#000' %}</a></li>
+    {% endif %}
+
+    {% if settings.social_instagram_link != blank %}
+        <li><a aria-label="Instagram" href="{{ settings.social_instagram_link }}" target="_blank">{% render 'icon', icon: 'instagram', fill: '#000' %}</a></li>
+    {% endif %}
+</ul>  

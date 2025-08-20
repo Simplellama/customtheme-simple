@@ -1,0 +1,175 @@
+{{ 'component-search.css' | asset_url | stylesheet_tag }}
+{{ 'component-facets.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'main-search.js' | asset_url }}" defer="defer"></script>
+
+{% paginate search.results by 24 %}
+  <div class="relative template-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %}">
+    <div class="template-search__header page-width  scroll-trigger animate--fade-in">
+
+      <div class="search_header pt-14 pb-14 flex flex-col justify-center bg-primary-bg">
+        <div class="px-2 sm:px-6">
+          <h1 class="Heading font-bold text-2xl pb-4 center">
+            {%- if search.performed -%}
+              {{- 'templates.search.title' | t -}}
+            {%- else -%}
+              {{- 'general.search.search' | t -}}
+            {%- endif -%}
+          </h1>
+        <div class="template-search__search">
+            <predictive-search data-loading-text="{{ 'general.accessibility.loading' | t }}">
+              <main-search>
+                <form action="{{ routes.search_url }}" method="get" role="search" class="search">
+                  <div class="field ">
+                    <input
+                      class="search__input field__input p-4 bg-primary-bg border-b border-border focus:outline-none w-full max-w-[500px] mx-auto"
+                      id="Search-In-Template"
+                      type="search"
+                      name="q"
+                      value="{{ search.terms | escape }}"
+                      placeholder="{{ 'general.search.search' | t }}"
+                      role="combobox"
+                      aria-expanded="false"
+                      aria-owns="predictive-search-results"
+                      aria-controls="predictive-search-results"
+                      aria-haspopup="listbox"
+                      aria-autocomplete="list"
+                      autocorrect="off"
+                      autocomplete="off"
+                      autocapitalize="off"
+                      spellcheck="false"
+                    >
+                    
+                    <input name="options[prefix]" type="hidden" value="last">
+                      <div class="predictive-search predictive-search--search-template left-0 top-20 sm:top-18 w-2 border border-border" tabindex="-1" data-predictive-search>
+                        {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
+                      </div>
+                      <span class="predictive-search-status hidden" role="status" aria-hidden="true"></span>
+                    <button type="reset" class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}" aria-label="{{ 'general.search.reset' | t }}">
+                      <svg class="icon icon-close" aria-hidden="true" focusable="false">
+                        <use xlink:href="#icon-reset">
+                      </svg>
+                    </button>
+                    <button type="submit" class="search__button field__button" aria-label="{{ 'general.search.search' | t }}">
+                      <svg class="icon icon-search" aria-hidden="true" focusable="false">
+                        <use xlink:href="#icon-search">
+                      </svg>
+                    </button>
+                  </div>
+                </form>
+              </main-search>
+            </predictive-search>
+          </div>
+        </div>
+      </div>
+    </div>
+    {%- if search.performed -%}
+   
+      <div class="facets-vertical flex flex-col px-0">
+        {%- if search.filters != empty -%}
+          <div class="px-6 collection-facets-header w-full py-6">
+          <aside
+            aria-labelledby="verticalTitle"
+            class="facets-wrapper w-full"
+            id="main-search-filters"
+            data-id="{{ section.id }}"
+          >
+            {% render 'facets',
+              results: search,
+              enable_filtering: true,
+              enable_sorting: true,
+              paginate: paginate
+            %}
+          </aside>
+        </div>
+
+        {%- endif -%}
+        <div class="product-grid-container" id="ProductGridContainer">
+          {%- if search.results.size == 0 and search.filters != empty -%}
+            <div
+              class="template-search__results collection collection--empty page-width"
+              id="product-grid"
+              data-id="{{ section.id }}"
+            >
+
+              <div class="title-wrapper center">
+                <h2 class="title title--primary">
+                  {{ 'templates.search.no_results' | t }}
+                  <br>
+                  {{ 'templates.search.use_fewer_filters' | t }}
+                </h2>
+              </div>
+            </div>
+          {%- else -%}
+            <div class="template-search__results collection" id="product-grid" data-id="{{ section.id }}">
+        
+              <ul class="product-grid facets-wrapper grid grid-cols-12 w-full gap-y-3 sm:gap-y-10 h-full {% if paginate.pages > 1 %}pb-6{% else %}pb-20{% endif %}" role="list">
+                {%- for item in search.results -%}
+                  {% assign lazy_load = false %}
+                  {%- if forloop.index > 2 -%}
+                    {%- assign lazy_load = true -%}
+                  {%- endif -%}
+
+                  <li class="grid__item scroll-trigger animate--slide-in col-span-6 md:col-span-4 lg:col-span-3  md:overflow-hidden h-full w-full relative" data-cascade style="--animation-order: {{ forloop.index }};">
+                    {%- case item.object_type -%}
+                      {%- when 'product' -%}
+                   
+                        {% render 'card-product',
+                          product: item,
+                          lazy_load: lazy_load,
+                        %}
+
+                      {%- when 'article' -%}
+                        {% render 'article-card',
+                          article: item,
+                          show_image: true,
+                          show_date: true,
+                          show_author: true,
+                          show_badge: true,
+                          media_aspect_ratio: 1,
+                          lazy_load: lazy_load
+                        %}
+
+                      {%- when 'page' -%}
+                        <div class="article-card-wrapper card-wrapper underline-links-hover">
+                          <div class="card card--card card--text ratio" style="--ratio-percent: 100%;">
+                            <div class="card__content">
+                              <div class="card__information">
+                                <h3 class="card__heading">
+                                  <a href="{{ item.url }}" class="full-unstyled-link">
+                                    {{ item.title | truncate: 50 | escape }}
+                                  </a>
+                                </h3>
+                              </div>
+                              <div class="card__badge">
+                                <span class="badge">
+                                  {{- 'templates.search.page' | t -}}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    {%- endcase -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+              {%- if paginate.pages > 1 -%}
+                {% render 'pagination', paginate: paginate %}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+{% endpaginate %}
+
+{% schema %}
+{
+  "name": "Main search",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+  ]
+}
+{% endschema %}

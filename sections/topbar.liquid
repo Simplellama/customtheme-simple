@@ -1,0 +1,117 @@
+{% if section.settings.hide != true %}
+<section class="z-[99999] bg-primary-black relative text-secondary-bg px-4 py-2">
+  <div class="flex items-center justify-between w-full ">
+      <ul id="news_list" class="!flex lg:flex-row  md:justify-between items-center">
+        {% for block in section.blocks %} 
+          <li role="announcment" class=" splide__slide w-full md:w-fit text-sm sm:text-base font-light text-center">{{ block.settings.title }}</li>
+        {% endfor %}
+      </ul>
+      <div class="w-fit">
+        <ul class="gap-x-10 items-center md:flex hidden">
+          {% for link in linklists.topbar.links %}
+            <li class="relative group">
+              <a href="{{ link.url }}" class="flex font-semibold gap-x-2 items-center whitespace-nowrap text-white text-sm sm:text-base/6 group-hover:text-primary-link"    {% if link.links.size > 0 %}data-menutop-id="{{ link.title | downcase }}"{%endif %}>
+                {{ link.title }}
+                {% if link.links.size > 0 %}
+                  {% render 'icon', icon: 'chevron-down', size: 12, fill: '#fff', class: 'transition-transform duration-300' %}
+                {% endif %}
+              </a>
+              {% if link.links.size > 0 %}
+                <ul class="hidden w-fit absolute bg-primary-black text-secondary-bg mt-[8px] py-2 -right-4 min-w-[220px]" data-submenu>
+                  {% for sublink in link.links %}
+                    <li>
+                      <a {% if sublink.title == 'Chat med os' %} onclick="GorgiasChat.open();" {% endif %} href="{{ sublink.url }}" class="block font-semibold px-4 py-2 text-sm sm:text-base/6 whitespace-nowrap">{{ sublink.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      </div>
+</section>
+ 
+{% endif %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('[data-menutop-id]').forEach(function(menu) {
+      menu.addEventListener('click', function(event) {
+        event.preventDefault();
+        const submenu = menu.nextElementSibling;
+        const icon = menu.querySelector('svg');
+        if (submenu && submenu.hasAttribute('data-submenu')) {
+          submenu.classList.toggle('hidden');
+          if (submenu.classList.contains('hidden')) {
+            icon.style.transform = 'rotate(0deg)';
+          } else {
+            icon.style.transform = 'rotate(180deg)';
+          }
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{ 
+  "name": "topbar",
+  "max_blocks": 5,
+  "settings": [
+    { 
+      "type": "checkbox",
+      "id": "hide",
+      "label": "Hide announcmentbar",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#000000" 
+    },
+    { 
+      "type": "color",
+      "id": "color",
+      "label": "Text color", 
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "News",
+      "type": "news",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "title",
+          "label": "Heading" 
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "icon"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "topbar",
+      "category": "section",
+      "blocks": [
+        {
+          "type": "news",
+          "settings": {}
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

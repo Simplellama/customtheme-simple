@@ -1,0 +1,49 @@
+{% comment %}
+Renders Build-your-bundle cart and its logic
+Accepts:
+- collection: {Object} Collection
+
+Usage:
+{% endcomment %}
+
+{{ 'build-your-bundle.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'build-your-bundle.js' | asset_url }}" defer="defer"></script>
+
+{% assign bundlePrice = collection.metafields.custom.byb_price %}
+{% assign cpp = 0 %}
+{% assign cpp = collection.metafields.custom.byb_bundpris %}
+{% assign quantity = collection.metafields.custom.byb_quantity %}
+{% assign mhkd = collection.metafields.custom.byb_max_cost_price | times: 8 | base64_encode | json %}
+
+
+{%- if collection and collection != empty -%}  
+    <build-your-bundle-cart class="byb-container hidden md:block fixed bottom-0 mx-auto left-0 right-0 z-[9] sm:min-w-[400px] w-[98vw] md:w-[50%] lg:w-[25%] {% if quantity <= 3 %} md:sticky md:top-[110px]{% else %} md:relative{% endif %} h-fit bg-primary-bg px-6 py-6 md:mb-8 border border-border rounded-md" id="BYB-Cart-{{ collection.id }}" data-collection="{{ collection.id }}" data-translations="{{ 'byb' | t }}">
+<script type="text/template" data-configuration-json>
+{ 
+    "collection": {{ collection.id }},  
+    "bundlePrice": {{ bundlePrice }}, 
+    "quantity":{{ quantity }},
+    "bundleName": {{ collection.title | json }},
+    "mhkd":{{ mhkd }},
+    "cpp": {{ cpp | json }}
+}
+</script>
+        <div class="md:hidden absolute rounded-t-md right-1 -top-8 w-fit px-4 py-2 bg-primary-black">
+            <button type="button" id="close-byb-cart" class="text-2xl flex items-center gap-2 z-20 text-white cursor-pointer">
+                <span class="text-sm flex items-center gap-2">{{ 'cart.general.close' | t }} {% render 'icon', icon: 'close', size: 15, fill: 'white' %}</span> 
+            </button>
+        </div>
+        <div class="byb-inner  flex flex-col align-top items-center ">
+            <h3 class="hidden md:block text-xl text-center font-bold mb-4">{{ 'byb.select' | t }} <span class="byb-qty Heading"></span> {{ 'byb.items' | t }} <br>{{ 'byb.to_your_bundle' | t }}</h3>
+            <div class="byb-products-container w-full border-t border-border pt-4">
+                <ul id="byb_product_list" class="byb-product-list w-full flex flex-col gap-2">
+
+                </ul>
+            </div>
+            <div id="byb_cart_details" class="mt-6 w-full border-t border-border pt-4">
+
+            </div>
+        </div>
+
+    </build-your-bundle-cart>
+{%- endif -%}

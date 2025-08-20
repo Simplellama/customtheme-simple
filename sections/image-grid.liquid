@@ -1,0 +1,210 @@
+{% capture banner %}
+<div class="image-grid-banner absolute left-0 right-0 bottom-0 Heading font-bold text-base z-[1]" style="background:{{ section.settings.background }}">
+  <div id="banner_grid_slider" class="banner_grid_slider splide p-2 font-bold">
+    <div class="splide__track">
+      <ul id="news_list" class="splide__list">
+        {% for block in section.blocks %} 
+          {% if block.settings.slider_title != blank %}<li class="splide__slide flex items-center gap-2 text-base Heading" style="color:{{ section.settings.color }};">{% render 'icon', icon: '', size: '12' %}{{ block.settings.slider_title }}</li>{% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div> 
+</div>
+{% endcapture%}
+
+{% assign col-span = 0 %}
+{% assign slider_active = false %}
+
+{% for block in section.blocks %}
+  {% assign col-span = 12 | divided_by: forloop.length | round %}
+  {% assign col-span-small = col-span | times: 2 | round %}
+    
+  {% if forloop.length > 5 %}
+    {% assign slider_active = true %}
+  {% endif %}
+{% endfor %}
+
+<section class="{{ section.id }}">
+  <div class="container {% if slider_active == true %} px-0 mx-0{% endif %} xlg:px-4 mx-auto w-full mt-4 sm:mt-14 mb-14 px-4">
+    {% if section.settings.title or section.settings.text %}
+      <div class="Section_header"> 
+        <h3>{{ section.settings.title }}</h3>
+        <p>{{ section.settings.text }}</p>
+      </div>
+    {% endif %}
+
+    {% if slider_active == true %}
+      <div id="image_grid_slider" class="image_grid_slider w-full splide">
+        <div class="splide__track w-full">
+          <ul class="splide__list w-full">
+            {% for block in section.blocks %}
+              <li class="splide__slide block{{ block.id }} w-[300px]">                         
+                <a href="{{ block.settings.link }}" class="col-span-{{ col-span-small }} lg:col-span-{{ col-span }} flex overflow-hidden relative lg:group flex-col w-full text-left block-id-{{ block.id }}">
+                  <div class="rounded-md relative overflow-hidden 
+                    {% if section.settings.imageType == 'semitall' %}h-[360px]
+                    {% elsif section.settings.imageType == 'rectangle' %}h-[200px] 
+                    {% elsif section.settings.imageType == 'square' %}  h-[210px] lg:h-[330px]
+                    {% elsif section.settings.imageType == 'tall' %}  h-[450px]
+                    {% endif %}
+                  ">
+                    {% if block.settings.banner == true %}
+                        {{ banner }}
+                    {% endif %}
+                    {% render 'media', media: block.settings.image, loading: 'lazy', class: "w-full h-full", alt: block.settings.title, width: 832 %}
+                  </div>
+                  <div class="relative transition-all z-[2] ease-in-out origin-left duration-50 flex items-start lg:items-center flex-col w-full py-5 lg:bg-white px-0 lg:px-6 z-2 rounded-md group-hover:w-[90%] group-hover:border-border group-hover:translate-x-2 group-hover:-translate-y-20">
+                    <div class="min-h-[60px] relative grid grid-cols-2 lg:bg-white w-full">
+                      <h3 class="col-span-2 text-4xl font-semibold">{{ block.settings.title }}</h3>
+                      <p class="col-span-2 text-base">{{ block.settings.text }}</p>
+                    </div>
+                    {% if block.settings.button_text != blank %}<span class="Button Button_secondary lg:Button_primary rounded-sm border relative text-lg w-full mt-3 max-w-[200px] lg:max-w-[150px] lg:absolute z-[-1] lg:-bottom-8 lg:opacity-0 lg:transition-all lg:ease-in-out lg:origin-center lg:duration-80 lg:text-sm lg:left-6  lg:group-hover:opacity-100 lg:group-hover:-bottom-4 ">{{ block.settings.button_text }}</span>{% endif %}
+                  </div>
+                </a>
+              </li>
+            {% endfor %}
+          </ul> 
+        </div>
+      </div>
+    {% else %}
+      <div class="w-full">
+        <div class="grid gap-3 sm:gap-4 grid-cols-12">
+          {% for block in section.blocks %} 
+            <a href="{{ block.settings.link }}" class="col-span-{{ col-span-small }} lg:col-span-{{ col-span }} flex overflow-hidden relative group flex-col w-full text-left block-id-{{ block.id }} ">
+              <div class="rounded-md relative overflow-hidden bg-primary-bg--600
+                {% if section.settings.imageType == 'semitall' %}h-[380px] md:h-[450px]
+                {% elsif section.settings.imageType == 'rectangle' %}h-[200px] sm:h-[380px]
+                {% elsif section.settings.imageType == 'square' %}  h-[230px] sm:h-[260px] md:h-[350px] lg:h-[330px]
+                {% elsif section.settings.imageType == 'tall' %}  h-[450px] 
+                {% endif %}
+              ">
+                {% if block.settings.banner %}
+                    {{ banner }}
+                {% endif %}
+                {% render 'media', media: block.settings.image, loading: 'lazy', class: "w-full h-full", alt: block.settings.title, width: 500 %}
+              </div>
+              <div class="relative lg:transition-all lg:z-[2] ease-in-out origin-left duration-50 flex justify-between lg:items-center flex-col w-full py-5 lg:bg-white px-0 lg:px-6 lg:z-2 lg:rounded-md lg:group-hover:w-[90%] lg:group-hover:border-border lg:group-hover:translate-x-2 lg:group-hover:-translate-y-20">
+                <div class="relative gap-y-2 grid grid-cols-2 mb-5 w-full">
+                  <h3 class="col-span-2 text-xl sm:text-2xl md:text-3xl lg:text-2xl xlg:text-3xl font-semibold">{{ block.settings.title }}</h3>
+                  <p class="col-span-2 text-sm sm:text-base">{{ block.settings.text }}</p>
+                </div>
+                {% if block.settings.button_text != blank %}<span class="relative opacity-100 lg:absolute lg:z-[-1] lg:-bottom-8 lg:opacity-0 lg:transition-all lg:ease-in-out lg:origin-center lg:duration-80 text-sm lg:left-6 mt-0 w-[150px] Button Button_primary lg:rounded-sm border lg:group-hover:opacity-100 lg:group-hover:-bottom-4 ">{{ block.settings.button_text }}</span>{% endif %}
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script src="{{ 'image-grid-slider.js' | asset_url }}" async></script>
+
+{% schema %}
+{
+    "name": "Image grid",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "text",
+            "id": "text",
+            "label": "Text"
+        },
+        {
+            "type": "color",
+            "id": "background",
+            "label": "Announcment Background"
+        },
+        {
+            "type": "color",
+            "id": "color",
+            "label": "Announcment Text Color"
+        },
+        {
+            "type": "select",
+            "id": "imageType",
+            "label": "Image type",
+            "default": "semitall",
+            "options": [
+                {
+                    "value": "rectangle",
+                    "label": "Rectangle"
+                },
+                {
+                    "value": "square",
+                    "label": "Square"
+                },
+                {
+                    "value": "semitall",
+                    "label": "Semi Tall"
+                },
+                {
+                    "value": "tall",
+                    "label": "Tall"
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "image_block",
+            "name": "Image Block",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title"
+                },
+                {
+                    "type": "text",
+                    "id": "text",
+                    "label": "Text"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
+                  "type": "text",
+                  "id": "button_text",
+                  "label": "Button text",
+                  "default": "Explore now"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Link"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "banner",
+                    "label": "Banner",
+                    "default": false
+                },
+                {
+                    "type": "text",
+                    "id": "slider_title",
+                    "label": "Slider Title"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Image grid",
+            "category": "section",
+            "blocks": [
+              {
+                "type": "image_block",
+                "settings": {
+                }
+              }
+            ]
+        }
+    ]
+} 
+{% endschema %}

@@ -1,0 +1,65 @@
+
+
+<section class="product-recommendations py-16" data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=8&intent=related">
+  
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <div class=" ">
+      <div class="Section_header px-2 sm:px-6">
+        <div class="Section_header__inner flex flex-col sm:flex-row gap-4 items-start sm:items-center pb-8">
+          <h3 class="font-regular text-left text-xl">{{ section.settings.title }}</h3>
+        </div>
+      </div>
+      
+      <div class="">
+        <div class="splide" id="product-recommendations_slider">
+          <div class="splide__track">
+            <ul class="splide__list">
+              {%- for product in recommendations.products -%} 
+                {% if product.metafields.seo.hidden == 1 %}
+                  {% continue %}
+                {% endif %}
+                {%- if product.available -%}
+                  <li class="splide__slide"> 
+                    {%- if product.available and forloop.index <= 4 -%}
+                      {% render 'card-product', product: product, lazy_load: 'eager' %}
+                    {% else %}
+                      {% render 'card-product', product: product, lazy_load: 'lazy' %}
+                    {% endif %}
+                  </li>
+                {%- endif  -%}
+              {% endfor %}
+          </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+
+
+<script src="{{ 'product-recomendations.js' | asset_url }}" defer></script> 
+
+
+{% schema %} 
+{
+  "name": "Product recommendations",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured collection Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product recommendations",
+      "category": "Collection"
+    }
+  ]
+}
+
+{% endschema %}
+
+

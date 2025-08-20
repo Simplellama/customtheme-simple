@@ -1,0 +1,36 @@
+{% assign title = collection.metafields.custom.collection_seo_title %}
+{% assign subtitle = collection.metafields.custom.collection_seo_subtitle %}
+{% assign text = collection.metafields.custom.bottom_description %}
+{% if text != blank %}
+<section class="Collection-text pb-48">
+  <div class="flex flex-col gap-4 max-w-[1000px] px-6 pt-10 pb-10">
+    <div class="flex flex-col">
+      <h2 class="font-regular text-2xl">{{ title }}</h2>
+      {% if subtitle != blank %}<h3 class="font-regular text-base">{{ subtitle }}</h3>{% endif %}
+    </div>
+    <div data-description data-height-limit="300" class="Collection_description Rte">
+      <div class="Collection_description__text max-w-[1000px]">
+        {{ text | metafield_tag }}
+      </div>
+    </div>
+    <button type="button" class="Button Button_secondary read-more-btn link" style="display: none;">{{ 'collections.general.read_more' | t }}</button>
+    <button type="button" class="Button Button_secondary read-less-btn link" style="display: none;">{{ 'collections.general.read_less' | t }}</button>
+  </div>
+</section>
+
+<script src="{{ 'collection-bottom.js' | asset_url }}" defer="defer"></script> 
+{{ 'collection-bottom.css' | asset_url | stylesheet_tag }}
+{% endif %}
+{% schema %}
+  {
+    "name": "Collection bottom",
+    "settings": [
+    ],
+    "presets": [
+      {
+        "name": "Collection bottom",
+        "category": "Collection"
+      }
+    ]
+  }
+{% endschema %}

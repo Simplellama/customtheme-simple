@@ -1,0 +1,100 @@
+{% assign videoList = product.metafields.custom.product_form_videoes.value %}
+{% if videoList != blank %}
+<script>
+  let videoUrls = [
+    {% for video in videoList.product_form_video.value %}
+      {
+        "source0": "{{ video.video.value.sources[0].url }}",
+        "source1": "{{ video.video.value.sources[1].url }}"
+      },
+    {% endfor %}
+  ];
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const videos = document.querySelectorAll('.video_list_container video');
+    let currentVideoIndex = 0;
+
+    function playNextVideo() {
+      if (videos.length > 0) {
+        videos.forEach((video, index) => {
+          if (index !== currentVideoIndex) {
+            video.pause();
+            video.currentTime = 0;
+          }
+        });
+        videos[currentVideoIndex].play();
+        videos[currentVideoIndex].addEventListener('ended', function() {
+          currentVideoIndex = (currentVideoIndex + 1) % videos.length;
+          playNextVideo();
+        }, { once: true });
+      }
+    }
+
+    playNextVideo();
+  });
+</script>
+
+<div class="video_list_container mt-2 mb-4">
+  {% assign lazyload = false %}
+  
+    {% if videoList != blank %}
+        <h3 class="font-semibold text-lg/5 pb-4">Smelt sauna oplevelser</h3>
+    {% endif %}
+
+  <div class="splide" id="prod_video_thumb_slider">
+    <div class="splide__track">
+      <ul class="splide__list flex gap-x-2">
+        {% for video in videoList.product_form_video.value %}
+
+          {% if video.video_image_thumb != blank %}
+            <li class="splide__slide cursor-pointer">
+              <a href="#" class="video-link flex justify-center flex-col relative group product-video-btn-pop-{{ forloop.index }}" data-video-url="{{ video.video.value.video }}">
+             
+                <video class="rounded-md pointer-events-none overflow-hidden" data-poster="{{ video.video.value.preview_image | image_url: width: 100  }}" webkit-playsinline  autoplay  playsinline controls="false" width="100px" height="140" muted="true" preload="true" >
+                  <source src="{{ video.video.value.sources[0].url }}" type="application/x-mpegURL">
+                  <source src="{{ video.video.value.sources[1].url }}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+{% comment %} 
+                {% if video.popup_richtext_cannot_be_combined_with_video == blank %}
+                    <div class="absolute w-fit h-fit pointer-events-none top-[40%] left-0 z-10 right-0 mx-auto opacity-80 origin-center group-hover:opacity-100 group-hover:scale-110">
+                    {% render 'icon', icon: 'play', size: 16, fill: '#f3f3ed' %}
+                  </div>
+                {% endif %} {% endcomment %}
+              </a>
+            </li> 
+          {% endif %}
+        {% endfor %}
+      </ul> 
+    </div>
+  </div>
+
+  {% assign vidCount = 0 %}
+  {% for video in videoList.product_form_video.value %}
+    {% assign vidCount = vidCount | plus: 1 %}
+    <div class="video-popup product-video-pop-{{ forloop.index }}  bg-white rounded-md z-[99] hidden max-h-[500px] sm:max-h-none w-[300px] {% if video.popup_richtext_cannot_be_combined_with_video != blank %}p-12 {% endif %} sm:w-full sm:max-w-[400px] h-fit fixed bottom-4 right-4  mx-auto">
+      <div class="absolute -top-8 right-1 py-2 px-4 w-fit bg-white rounded-t-md">
+        <button data-index="{{ forloop.index }}" aria-label="close" type="button" id="close-nav" class="close-button closePopupProdVideo text-2xl flex items-center gap-2 z-20 text-primary-black cursor-pointer">
+          <span class="text-sm flex items-center gap-2">{{ 'cart.general.close' | t }} {% render 'icon', icon: 'close', size: 15, fill: 'black' %}</span> 
+        </button> 
+      </div>
+      {% if video.popup_richtext_cannot_be_combined_with_video == blank %}
+      <video class="rounded-md overflow-hidden lazyvideo" data-poster="{{ video.video.value.preview_image | image_url: width: 500  }}" webkit-playsinline playsinline controls width="100%" height="auto" muted="true" preload="none" loading="lazy" id="video-{{ forloop.index }}">
+        <source src="" type="application/x-mpegURL">
+        <source src="" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      {% else %}
+        <div class="video-popup-content">{{ video.popup_richtext_cannot_be_combined_with_video | metafield_tag | newline_to_br  }}</div>
+      {% endif %}
+    </div>
+  {% endfor %}
+  <div class="popup-overlay z-[98] hidden w-full h-full fixed top-0 left-0 right-0 bg-black opacity-60" onclick="closePopup()"></div>
+</div>
+
+
+<script src="{{ 'video-thumbs-popup.js' | asset_url }}" defer="defer"></script>
+{% if vidCount > 3 %}<script type="load" d-src="{{ 'video-product-thumbs.js' | asset_url }}"></script>{% endif %}
+
+
+{% endif %}

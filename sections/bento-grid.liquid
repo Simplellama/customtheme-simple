@@ -1,0 +1,185 @@
+<div id="bundle-content" class="{{ section.id }} pt-24 pb-44 bg-secondary-bg-400 mx-0 sm:mx-4 mb-6">
+  <div class="mx-auto container flex flex-col gap-y-8 px-0 sm:px-4">
+    <div class="flex flex-col text-center gap-y-2 pb-4 sm:pb-8 w-full">
+      <p class="text-lg/7 font-bold uppercase text-primary-orange">{{ section.settings.title }}</p>
+      <h3 class="Heading tracking-tight text-7xl font-bold text-primary-text">{{ section.settings.subtitle }}</h3>
+    </div>
+    <div class="splide" id="bento-grid-slider">
+      <div class="splide__track">
+        <ul class="splide__list">
+          {% unless product.tags contains 'bundle_basic' %}
+          {% for item in product.metafields.custom.bundle_basic_items.value.bundle_basic.value %}
+            <li class="splide__slide relative ">
+              
+              <div class="absolute inset-px "></div>
+              <div class="relative flex h-full flex-col overflow-hidden bg-white rounded-lg">
+                {% if item.img != blank %} 
+                  <div class="h-52 w-full bg-secondary-bg">
+                    <img class="h-full w-full object-cover" src="{{ item.img | image_url: width: 400 }}" alt="{{ item.title }}">
+                  </div>
+                {% endif %}
+                <div class="px-8 pt-8 pb-6 bg-white h-fit text-center">
+                  {% if item.title != blank %}<h3 class="Heading font-semibold text-3xl tracking-tight">{{ item.title }}</h3>{% endif %}
+                  {% if item.subtitle != blank %}<p class="text-base/5 pt-4 font-normal">{{ item.subtitle }}</p> {% endif %}
+                  {% if item.desc != blank %}<p class="mt-2 max-w-lg text-sm/6 text-gray-600">{{ item.desc }}</p>{% endif %}
+                </div>
+               
+              </div>
+              
+            </li>
+            {% endfor %} 
+          {% endunless %}
+          {% for block in section.blocks %}
+          <li class="splide__slide relative ">
+            <div class="absolute inset-px "></div>
+            <div class="relative flex h-full flex-col overflow-hidden bg-white rounded-lg">
+              {% if block.settings.image != blank %} 
+                <div class="h-52 w-full bg-secondary-bg">
+                  <img class="h-full w-full object-cover" src="{{ block.settings.image | image_url: width: 400 }}" alt="{{ block.settings.title }}">
+                </div>
+              {% endif %}
+              <div class="px-8 pt-8 pb-6 bg-white h-fit text-center">
+                {% if block.settings.title != blank %}<h3 class="Heading font-semibold text-3xl tracking-tight">{{ block.settings.title }}</h3>{% endif %}
+                {% if block.settings.subtitle != blank %}<p class="text-base/5 pt-4 font-normal">{{ block.settings.subtitle }}</p> {% endif %}
+                {% if block.settings.desc != blank %}<p class="mt-2 max-w-lg text-sm/6 text-gray-600">{{ block.settings.desc }}</p>{% endif %}
+              </div>
+             
+            </div>
+            
+          </li>
+          {% endfor %}
+          
+         </ul>
+        </div>
+        <div class="splide__arrows">
+          <button class="splide__arrow splide__arrow--prev">{% render 'icon', icon: 'arrow-left', size: 10, class: '-mt-[2px]' %}</button>
+          <span class="splide__slide-count !font-light !text-sm"></span>
+          <button class="splide__arrow splide__arrow--next">{% render 'icon', icon: 'arrow-right', size: 10, class: '-mt-[2px]' %}</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .{{ section.id }} .splide__arrows {
+    position: absolute;
+    bottom: -65px;
+    height: fit-content;
+    width: fit-content;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .{{ section.id }} .splide__slide-count {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .{{ section.id }} .splide__slide {
+    border: 1px solid transparent;
+  }
+{% comment %} 
+  #{{ section.id }} .is-active {
+    border-color: #bfbebe;
+  } {% endcomment %}
+
+
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const splide = new Splide('#bento-grid-slider', {
+      type   : 'loop',
+      perPage: 5,
+      perMove: 1,
+      pagination: false,
+      gap    : '1rem',
+      focus: 'center',
+      breakpoints: {
+        1024: {
+          perPage: 3,
+        },
+        640: {
+          perPage: 1,
+          gap    : '0.5rem',
+          padding: {
+            left: '2rem',
+            right: '2rem',
+          },
+        },
+      },
+    });
+
+    const slideCount = document.querySelector('.splide__slide-count');
+    splide.on('mounted', function () {
+      slideCount.textContent = `${splide.index + 1} / ${splide.length}`;
+    });
+    splide.on('move', function () {
+      slideCount.textContent = `${splide.index + 1} / ${splide.length}`;
+    });
+
+    splide.mount();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Bento grid section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading" 
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bento grid section",
+      "category": "section",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {}
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

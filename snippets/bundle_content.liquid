@@ -1,0 +1,864 @@
+<!-- bundle_content.liquid -->
+{% if product.metafields.custom.bundle_items.value != blank or product.tags contains 'bundle_basic' %}
+
+  <div class="flex gap-x-2 items-center justify-between mt-4 mb-3 pr-4">
+    <span class="text-base">Pakken indholder:</span>
+    {% if product.metafields.custom.bundle_items != blank %}
+      <span class="text-xs">({% if product.tags contains 'bundle_basic' %}{{ product.metafields.custom.bundle_items.value.count }}{% else %} {{ product.metafields.custom.bundle_items.value.count | plus: 4 }}{% endif %} produkter) </span>
+    {% endif %}
+  </div>
+  <div class="relative">
+    <div class="bundle-card-slider bundle-card-slider-{{ product_nr }} {% if product.tags contains 'bundle_basic' %}parent-basic-slider{% endif %} splide pt-4 pb-2 mb-5 bg-white rounded-l-md border-y border-l border-border bg-opacity-80 backdrop-blur-sm relative">
+      <div class="splide__track">
+        <ul class="splide__list gap-[2px]">
+          <!-- Toggle Button Slide -->
+          {% unless product.tags contains 'bundle_basic' %}
+          <li class="splide__slide bundle-item cursor-pointer group h-fit">
+            <div class="flex items-center justify-center flex-col">
+              <div class="w-16 h-16 border border-primary-text group flex items-center justify-center cursor-pointer toggle-basic-items hover:border-primary-orange">
+                <div class="basic-items grid grid-cols-2 w-full h-full overflow-hidden relative bg-secondary-bg-400">
+                  <!-- Use the direct metaobject reference -->
+                  {% if product.metafields.custom.bundle_basic_items %}
+                    {% assign basic_items = product.metafields.custom.bundle_basic_items.value.bundle_basic.value %}
+
+                    {% for prod_item in basic_items %}
+                      <div class="basic-item w-full h-full border border-border bg-secondary-bg flex items-center justify-center">
+                        <img src="{{ prod_item.img | img_url: '250x' }}" class="w-5 h-5 object-cover" alt="{{ prod_item.title }}">
+                      </div>
+                    {% endfor %}
+      
+                  {% endif %}
+                </div>
+              </div>
+              <p class="text-xs text-center py-2 bg-white w-full">{% unless product.tags contains 'bundle_basic' %}Basic pakken{% else %}Udvid{% endunless %}</p>
+            </div>
+          </li>
+          {% endunless %}
+          
+          <!-- Exclude 'plus' for basic package -->
+          {% unless product.tags contains 'bundle_basic' %}
+            <!-- This is the divider between basic items and bundle items -->
+            <li class="splide__slide flex items-center plus">
+              <span class="text-2xl font-semibold -mt-2 text-center w-full !h-[1px] bg-gray-200"></span>
+            </li>
+          {% endunless %}
+
+          <!-- Bundle Items from metafield -->
+          {% for item in product.metafields.custom.bundle_items.value %}
+            <li class="splide__slide bg-secondary-bg-400 min-w-[95px] {% if product.tags contains 'bundle_basic' %}parent-basic-items{% endif %}">
+              <div class="flex items-center justify-center flex-col h-full">
+                <div class="w-16 h-16">
+                  <img src="{{ item.img | img_url: '250x' }}" alt="Logo" class="w-full h-full object-cover">
+                </div>
+                <p class="text-xs text-center py-2 bg-white w-full flex-grow flex items-center justify-center min-h-[40px]">{{ item.title }}</p>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <!-- Progress bar container -->
+      <div class="splide-progress-container">
+        <div class="splide-progress-bar"></div>
+      </div>
+    </div>
+    <div class="flex justify-end items-center px-4">
+      <button class=" flex  items-center text-center cursor-pointer justify-center gap-x-1 rounded-full  px-3 py-2 text-xs font-semibold text-primary-black w-fit border border-primary-black hover:underline  expand-btn" data-expanded="false">
+        Udvid og sammelign {% render 'icon', icon: 'chevron-down', size: 10, fill: '#252521' %}
+      </button>
+    </div>
+  </div>
+  
+{% endif %}
+
+<script defer>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Extract the basic bundle items data from the current product
+    window.basicBundleItems = [];
+    
+    {% if product.metafields.custom.bundle_basic_items %}
+      {% for item in product.metafields.custom.bundle_basic_items.bundle_basic.value %}
+        window.basicBundleItems.push({
+          img: "{{ item.img | img_url: '250x' }}",
+          title: "{{ item.title | escape }}"
+        });
+      {% endfor %}
+    {% endif %}
+    
+    function initializeSplide(slider, disableDrag = false) {
+      // Destroy existing instance if it exists
+      if (slider.sliderInstance) {
+        slider.sliderInstance.destroy();
+        slider.sliderInstance = null;
+      }
+      
+      const cardSlider = new Splide(slider, { 
+        type: 'slide',
+        autoWidth: true,
+        pagination: false,
+        arrows: true,
+        padding: { right: '15px', left: '15px' },
+        gap: '3px', 
+        drag: disableDrag ? false : 'free', // Disable drag when expanded
+        snap: false,  
+        omitEnd: true,
+        speed: 400
+      });
+      
+      // Create reference to progress bar for direct access
+      const progressBar = slider.querySelector('.splide-progress-bar');
+      
+      // Create a universal update function that works with any event
+      const updateProgress = function() {
+        if (!progressBar) return;
+        
+        // Get slider dimensions and elements
+        const Components = cardSlider.Components;
+        const track = Components.Elements.track;
+        const list = Components.Elements.list;
+        
+        // Try to get the actual track position for smoother updates during drag
+        if (track && track.style.transform) {
+          const transformValue = track.style.transform.match(/translateX\(([^)]+)\)/);
+          if (transformValue && transformValue[1]) {
+            const currentPos = parseFloat(transformValue[1]);
+            const totalWidth = list.scrollWidth - slider.offsetWidth + (cardSlider.options.padding.left + cardSlider.options.padding.right);
+            
+            // Ensure arrows stay active
+            ensureArrowsFunctional(slider); 
+            
+            // If we're at the maximum scroll position (end of content)
+            if (Math.abs(currentPos) >= totalWidth - 30) {
+              progressBar.style.width = '100%';
+              
+              // Enable back arrow explicitly when at end
+              const prevArrow = slider.querySelector('.splide__arrow--prev');
+              if (prevArrow) prevArrow.disabled = false;
+              
+              return;
+            }
+            
+            let percentage = Math.min(Math.abs(currentPos) / totalWidth * 100, 100);
+            progressBar.style.width = Math.max(5, percentage) + '%';
+            return;
+          }
+        }
+        
+        // Fallback to index-based calculation
+        const end = Components.Controller.getEnd() + 1;
+        const currentIndex = cardSlider.index;
+        const percentage = Math.min(((currentIndex + 1) / end) * 100, 100);
+        progressBar.style.width = Math.max(5, percentage) + '%';
+      };
+      
+      // Function to ensure arrows remain functional
+      function ensureArrowsFunctional(slider) {
+        const prevArrow = slider.querySelector('.splide__arrow--prev');
+        const nextArrow = slider.querySelector('.splide__arrow--next');
+        
+        if (prevArrow) {
+          prevArrow.disabled = false;
+          prevArrow.style.pointerEvents = 'auto';
+        }
+        
+        if (nextArrow) {
+          nextArrow.disabled = false;
+          nextArrow.style.pointerEvents = 'auto';
+        }
+      }
+      
+      // Mount the slider before adding event listeners
+      cardSlider.mount();
+      
+      // Force initial update
+      setTimeout(updateProgress, 100);
+      
+      // Handle arrow state after slider moves
+      cardSlider.on('moved', function() {
+        ensureArrowsFunctional(slider);
+        updateProgress();
+      });
+      
+      // Add listeners for ALL events that might change position
+      ['move', 'drag', 'dragged', 'scroll', 'scrolled', 'shifted', 'resize', 'resized'].forEach(event => {
+        cardSlider.on(event, updateProgress);
+      });
+      
+      // Add special handling for the arrows
+      const prevArrow = slider.querySelector('.splide__arrow--prev');
+      const nextArrow = slider.querySelector('.splide__arrow--next');
+      
+      if (prevArrow) {
+        prevArrow.addEventListener('click', function() {
+          // Ensure slider can always go backward
+          if (cardSlider.index > 0) {
+            cardSlider.go('-');
+          } else {
+            cardSlider.go(0); // Just to refresh position
+          }
+          setTimeout(updateProgress, 50);
+        });
+      }
+      
+      if (nextArrow) {
+        nextArrow.addEventListener('click', function() {
+          const Components = cardSlider.Components;
+          const canShift = cardSlider.index < Components.Controller.getEnd();
+          
+          // Only go forward if we're not at the end
+          if (canShift) {
+            cardSlider.go('+');
+          } else {
+            // Update progress to 100% if we hit the end arrow
+            progressBar.style.width = '100%';
+          }
+          
+          setTimeout(updateProgress, 50);
+        });
+      }
+      
+      // Store the slider instance
+      slider.sliderInstance = cardSlider;
+    }
+    
+    function resetSliderPosition(slider) {
+      // Reset position of slider to initial state
+      if (slider.sliderInstance && typeof slider.sliderInstance.go === 'function') {
+        slider.sliderInstance.go(0); // Go to first slide
+        
+        // Reset any transform styles on the track element
+        const track = slider.querySelector('.splide__track > ul');
+        if (track) {
+          // Force immediate reset without transition
+          track.style.transition = 'none';
+          track.style.transform = 'translateX(0)';
+          
+          // Allow browser to apply the immediate change before re-enabling transitions
+          setTimeout(() => {
+            track.style.transition = '';
+          }, 10);
+        }
+        
+        // Reset progress bar
+        const progressBar = slider.querySelector('.splide-progress-bar');
+        if (progressBar) {
+          progressBar.style.width = '5%';
+        }
+      }
+    }
+
+    function unfoldParentBasicItems(slider) {
+      const sliderList = slider.querySelector('.splide__list');
+      
+      // If already in grid view (flexMode), revert to slider view
+      if (slider.dataset.flexMode === "true") {
+        foldParentBasicItems(slider);
+        return;
+      }
+      
+      // Otherwise, switch to grid view
+      if (slider.sliderInstance) {
+        slider.sliderInstance.destroy(true);
+        slider.sliderInstance = null;
+      }
+      
+      // Explicitly disable dragging in grid view
+      sliderList.style.pointerEvents = 'auto';
+      sliderList.querySelectorAll('li').forEach(item => {
+        item.style.touchAction = 'auto';
+        item.style.userSelect = 'auto';
+        item.setAttribute('draggable', 'false');
+      });
+      
+      // Make all items visible in grid mode - including parent-basic-items
+      sliderList.querySelectorAll('.parent-basic-items, li').forEach(el => {
+        el.style.display = 'block'; // Ensure all items are visible
+      });
+      
+      // Update image container size
+      sliderList.querySelectorAll('li:not(.bundle-item):not(.plus)').forEach(el => {
+        const imgContainer = el.querySelector('div.w-16.h-16');
+        if (imgContainer) {
+          imgContainer.classList.remove('w-16', 'h-16');
+          imgContainer.classList.add('w-full', 'h-24');
+        }
+      });
+      
+      sliderList.style.display = 'grid';
+      sliderList.style.gridTemplateColumns = 'repeat(3, 1fr)';
+      sliderList.style.flexWrap = 'wrap';
+      sliderList.style.overflowX = 'auto';
+      sliderList.style.paddingLeft = '15px';
+      sliderList.style.paddingRight = '15px';
+      
+      // Add borders to all items when expanded
+      sliderList.querySelectorAll('li:not(.plus)').forEach(el => {
+        el.classList.add('border', 'border-border', 'overflow-hidden');
+      });
+      
+      const arrows = slider.querySelector('.splide__arrows');
+      if (arrows) {
+        arrows.style.display = 'none';
+      } 
+      
+      // Hide progress bar in grid mode
+      const progressContainer = slider.querySelector('.splide-progress-container');
+      if (progressContainer) {
+        progressContainer.style.display = 'none';
+      }
+      
+      // Update slider state
+      slider.dataset.flexMode = "true";
+    }
+    
+    function foldParentBasicItems(slider) {
+      const sliderList = slider.querySelector('.splide__list');
+      
+      // Reset dragging behavior when collapsing
+      sliderList.style.pointerEvents = '';
+      sliderList.querySelectorAll('li').forEach(item => {
+        item.style.touchAction = '';
+        item.style.userSelect = '';
+        item.removeAttribute('draggable');
+      });
+      
+      // Reset image container sizes back to original
+      sliderList.querySelectorAll('.parent-basic-items').forEach(el => {
+        const imgContainer = el.querySelector('div.w-full.h-24');
+        if (imgContainer) {
+          imgContainer.classList.remove('w-full', 'h-24');
+          imgContainer.classList.add('w-16', 'h-16');
+        }
+      });
+      
+      // Remove all custom styles
+      sliderList.removeAttribute('style');
+      
+      // Reset display of items
+      sliderList.querySelectorAll('.parent-basic-items').forEach(el => {
+        el.style.display = '';
+      });
+      
+      // Remove borders when collapsing
+      sliderList.querySelectorAll('li').forEach(el => {
+        el.classList.remove('border', 'border-border', 'overflow-hidden');
+      });
+      
+      // Show progress bar in slider mode
+      const progressContainer = slider.querySelector('.splide-progress-container');
+      if (progressContainer) {
+        progressContainer.style.display = 'block';
+      }
+      
+      // Reinitialize Splide
+      initializeSplide(slider);
+      
+      // Update slider state
+      slider.dataset.flexMode = "false";
+    }
+
+    document.querySelectorAll('[class*="bundle-card-slider-"]').forEach(function (slider) {
+      const uniqueClass = Array.from(slider.classList).find(cls => cls.startsWith('bundle-card-slider-'));
+      const productNr = uniqueClass ? uniqueClass.replace('bundle-card-slider-', '') : 'unknown';
+      slider.dataset.productNr = productNr;
+      console.log("Processing slider for product number:", productNr);
+      
+      const sliderList = slider.querySelector('.splide__list');
+      if (!sliderList) {
+        console.error("No slider list found in slider:", slider);
+        return;
+      }
+      
+      // Locate the toggle button.
+      const toggleButton = sliderList.querySelector('.toggle-basic-items');
+      if (!toggleButton) {
+        console.warn("Toggle button not found in sliderList:", sliderList);
+      }
+      
+      // Capture the toggle slide element.
+      const toggleLi = toggleButton ? toggleButton.closest('li') : null;
+      
+      // Set initial mode (slider mode).
+      slider.dataset.flexMode = "false";
+      
+      if (toggleButton && !toggleButton.dataset.listenerAttached) {
+        toggleButton.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log("Toggle clicked for product", productNr);
+          
+          // Insert basic items if not already inserted.
+          const existingBasicItems = slider.querySelectorAll('.basic-items-container');
+          if (existingBasicItems.length === 0 && !sliderList.querySelector('.parent-basic-items')) {
+            // Extract basic item data directly from the toggle button DOM
+            const basicItemElements = toggleLi ? toggleLi.querySelectorAll('.basic-item') : [];
+            const basicItems = [];
+            
+            // First collect data from the grid in the toggle button
+            basicItemElements.forEach(function(itemElem) {
+              const img = itemElem.querySelector('img');
+              if (img && img.src) {
+                basicItems.push({
+                  img: img.src,
+                  title: img.alt || 'Basic pakke item'
+                });
+              }
+            });
+            
+            // Insert basic items from toggle button items
+            if (basicItems.length > 0) {
+              console.log(`Inserting ${basicItems.length} basic items from toggle button`);
+              const plusElement = sliderList.querySelector('.plus');
+              
+              for (let i = 0; i < basicItems.length; i++) {
+                const item = basicItems[i];
+                const li = document.createElement('li');
+                li.className = "basic-items-container splide__slide bg-secondary-bg border border-border overflow-hidden";
+                li.innerHTML = `
+                  <div class="flex items-center justify-center flex-col h-full">
+                    <div class="w-full h-24">
+                      <img src="${item.img}" alt="Logo" class="w-full h-full object-cover">
+                    </div>
+                    <p class="text-xs text-center py-2 bg-white w-full flex-grow flex items-center justify-center min-h-[40px]">${item.title}</p>
+                  </div> 
+                `;
+                
+                if (plusElement) {
+                  sliderList.insertBefore(li, plusElement);
+                } else {
+                  const firstRegularItem = sliderList.querySelector('li:not(.bundle-item)');
+                  if (firstRegularItem) {
+                    sliderList.insertBefore(li, firstRegularItem);
+                  } else {
+                    sliderList.appendChild(li);
+                  }
+                }
+              }
+            } 
+            // Use window.basicBundleItems as fallback if items weren't found in the DOM
+            else if (window.basicBundleItems && window.basicBundleItems.length) {
+              console.log(`Inserting ${window.basicBundleItems.length} basic items from product metafield`);
+              const plusElement = sliderList.querySelector('.plus');
+              
+              for (let i = 0; i < window.basicBundleItems.length; i++) {
+                const item = window.basicBundleItems[i];
+                const li = document.createElement('li');
+                li.className = "basic-items-container splide__slide bg-secondary-bg border border-border overflow-hidden";
+                li.innerHTML = `
+                  <div class="flex items-center justify-center flex-col h-full">
+                    <div class="w-full h-24">
+                      <img src="${item.img}" alt="Logo" class="w-full h-full object-cover">
+                    </div>
+                    <p class="text-xs text-center py-2 bg-white w-full flex-grow flex items-center justify-center min-h-[40px]">${item.title}</p>
+                  </div> 
+                `;
+                
+                if (plusElement) {
+                  sliderList.insertBefore(li, plusElement);
+                } else {
+                  const firstRegularItem = sliderList.querySelector('li:not(.bundle-item)');
+                  if (firstRegularItem) {
+                    sliderList.insertBefore(li, firstRegularItem);
+                  } else {
+                    sliderList.appendChild(li);
+                  }
+                }
+              }
+            } else {
+              console.warn("No basic items found for this product");
+            }
+          }
+          
+          // Toggle between slider mode and flex mode.
+          const expandBtn = slider.parentNode.querySelector('.expand-btn');
+          if (slider.dataset.flexMode !== "true") {
+            // Switch to flex mode: 
+            if (slider.sliderInstance) {
+              slider.sliderInstance.destroy(true);
+              slider.sliderInstance = null;
+            }
+            
+            // Remove slider-specific class and apply flex styles.
+            sliderList.classList.remove('splide__list');
+            sliderList.style.display = 'grid';
+            sliderList.style.gridTemplateColumns = 'repeat(3, 1fr)';
+            sliderList.style.flexWrap = 'wrap';
+            sliderList.style.overflowX = 'auto';
+            sliderList.style.paddingLeft = '15px';
+            sliderList.style.paddingRight = '15px';
+            
+            // Make ALL items visible in grid mode, including basic items containers
+            sliderList.querySelectorAll('li').forEach(el => {
+              // Make all items visible except the toggle button itself when expanded
+              if (!el.classList.contains('bundle-item')) {
+                el.style.display = 'block';
+              }
+            });
+            
+            // Update all image containers to the larger size
+            sliderList.querySelectorAll('li:not(.bundle-item):not(.plus)').forEach(el => {
+              const imgContainer = el.querySelector('div.w-16.h-16');
+              if (imgContainer) {
+                imgContainer.classList.remove('w-16', 'h-16');
+                imgContainer.classList.add('w-full', 'h-24');
+              }
+            });
+            
+            // Add borders to all items when expanded
+            sliderList.querySelectorAll('li:not(.plus)').forEach(el => {
+              el.classList.add('border', 'border-border', 'overflow-hidden');
+            });
+            
+            const arrows = slider.querySelector('.splide__arrows');
+            if (arrows) {
+              arrows.style.display = 'none';
+            }
+            
+            // Move the toggle slide (expand button) to the end.
+            if (toggleLi) {
+              sliderList.appendChild(toggleLi);
+            }
+            
+            // Hide individual .basic-item elements.
+            const basicItemElems = toggleLi ? toggleLi.querySelectorAll('.basic-item') : [];
+            basicItemElems.forEach(el => {
+              el.style.display = 'none';
+            });
+            
+            // Hide individual .bundle-item elements if present.
+            const bundleItemElems = sliderList.querySelectorAll('.bundle-item');
+            bundleItemElems.forEach(el => {
+              el.style.display = 'none';
+            });
+            
+            // Update overlay text to show "-" and "Vis mindre".
+            const overlay = toggleLi ? toggleLi.querySelector('.basic-items > div:not(.basic-item)') : null;
+            if (overlay) {
+              overlay.style.display = 'flex';
+              const overlaySpans = overlay.querySelectorAll('span');
+              if (overlaySpans.length >= 2) {
+                overlaySpans[0].textContent = '-';
+                overlaySpans[1].textContent = 'Vis mindre';
+              }
+            }
+            
+            // Make the .plus element full width.
+            const plusElem = slider.querySelector('.plus');
+            if (plusElem) {
+              plusElem.style.gridColumn = 'span 3';
+            }
+            
+            // Hide the toggle button title.
+            const toggleTitle = toggleLi ? toggleLi.querySelector('p.text-xs') : null;
+            if (toggleTitle) {
+              toggleTitle.style.display = 'none';
+            }
+            
+            if (expandBtn) {
+              expandBtn.textContent = 'Luk';
+              expandBtn.dataset.expanded = "true";
+            }
+            
+            // Update flex mode BEFORE running the drag disabling code
+            slider.dataset.flexMode = "true";
+            
+            // Disable any drag functionality when in expanded mode
+            sliderList.style.pointerEvents = 'auto'; // Enable clicks but not drag
+            sliderList.querySelectorAll('li').forEach(item => {
+              item.style.touchAction = 'auto'; // Prevent touch events from being interpreted as drag
+              item.style.userSelect = 'auto'; // Allow text selection
+              item.setAttribute('draggable', 'false');
+            });
+            
+            console.log("Switched to flex mode for product", productNr);
+          } else {
+            // Switch back to slider mode:
+            sliderList.removeAttribute('style');
+            sliderList.classList.add('splide__list');
+
+            // Reset all image containers to the original size
+            sliderList.querySelectorAll('li:not(.bundle-item):not(.plus)').forEach(el => {
+              const imgContainer = el.querySelector('div.w-full.h-24');
+              if (imgContainer) {
+                imgContainer.classList.remove('w-full', 'h-24');
+                imgContainer.classList.add('w-16', 'h-16');
+              }
+            });
+
+            // Remove borders when collapsing
+            sliderList.querySelectorAll('li').forEach(el => {
+              el.classList.remove('border', 'border-border', 'overflow-hidden');
+            });
+
+            // Reinsert the toggle button at the beginning
+            if (toggleLi) {
+              sliderList.insertBefore(toggleLi, sliderList.firstChild);
+            }
+
+            // Show individual .basic-item elements
+            const basicItemElems = toggleLi ? toggleLi.querySelectorAll('.basic-item') : [];
+            basicItemElems.forEach(el => {
+              el.style.display = '';
+            });
+
+            // Show individual .bundle-item elements
+            const bundleItemElems = sliderList.querySelectorAll('.bundle-item');
+            bundleItemElems.forEach(el => {
+              el.style.display = '';
+            });
+
+            // Remove dynamically added basic items
+            slider.querySelectorAll('.basic-items-container').forEach(el => {
+              el.remove();
+            });
+
+            // Reset overlay text
+            const overlay = toggleLi ? toggleLi.querySelector('.basic-items > div:not(.basic-item)') : null;
+            if (overlay) {
+              overlay.style.display = '';
+              const overlaySpans = overlay.querySelectorAll('span');
+              if (overlaySpans.length >= 2) {
+                overlaySpans[0].textContent = '+'; 
+                overlaySpans[1].textContent = 'Udvid';
+              }
+            }
+
+            // Reset the .plus element style
+            const plusElem = slider.querySelector('.plus');
+            if (plusElem) {
+              plusElem.style.gridColumn = '';
+            }
+
+            // Show the toggle button title
+            const toggleTitle = toggleLi ? toggleLi.querySelector('p.text-xs') : null;
+            if (toggleTitle) {
+              toggleTitle.style.display = '';
+            }
+
+            // Reset expand button text
+            if (expandBtn) {
+              expandBtn.textContent = 'Udvid og sammelign';
+              expandBtn.dataset.expanded = "false";
+            }
+
+            // Reinitialize Splide
+            initializeSplide(slider);
+
+            // Update flex mode before running the drag enabling code
+            slider.dataset.flexMode = "false";
+            
+            // Reset drag functionality
+            sliderList.style.pointerEvents = '';
+            sliderList.querySelectorAll('li').forEach(item => {
+              item.style.touchAction = '';
+              item.style.userSelect = '';
+              item.removeAttribute('draggable');
+            });
+
+            console.log("Switched back to slider mode for product", productNr);
+          }
+
+          // Ensure arrows are hidden in flex mode
+          if (slider.dataset.flexMode === "true") {
+            const arrows = slider.querySelector('.splide__arrows');
+            if (arrows) {
+              arrows.style.display = 'none';
+            }
+          }
+        });
+        toggleButton.dataset.listenerAttached = "true";
+      }
+
+      // Find the expand button from the slider's parent container.
+      const expandBtn = slider.parentNode.querySelector('.expand-btn');
+      if (expandBtn && !expandBtn.dataset.listenerAttached) {
+        expandBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log("Expand button clicked for product", productNr);
+           
+          // Get current state
+          const currentExpanded = expandBtn.dataset.expanded === "true";
+          
+          if (!currentExpanded) {
+            // EXPANDING: First reset slider position before expanding
+            if (slider.sliderInstance) {
+              resetSliderPosition(slider);
+            }
+            
+            // Update button first
+            expandBtn.textContent = 'Luk';
+            expandBtn.dataset.expanded = "true";
+            
+            // Hide progress bar
+            const progressContainer = slider.querySelector('.splide-progress-container');
+            if (progressContainer) {
+              progressContainer.style.display = 'none';
+            }
+            
+            // Small delay to ensure slider reset completes before expansion
+            setTimeout(() => {
+              // Ensure slider instance is destroyed before expanding
+              if (slider.sliderInstance) {
+                slider.sliderInstance.destroy();
+                slider.sliderInstance = null;
+              }
+              
+              // Make sure all items are visible in expanded view
+              sliderList.querySelectorAll('li').forEach(el => {
+                if (!el.classList.contains('bundle-item')) {
+                  el.style.display = 'block';
+                }
+              });
+              
+              // If we have a parent-basic-items, use unfold function
+              if (sliderList.querySelector('.parent-basic-items')) {
+                unfoldParentBasicItems(slider);
+              } else if (toggleButton) {
+                // Otherwise use the toggle button click handler
+                toggleButton.click();
+              }
+              
+              // Add expanded class to help with styling
+              slider.classList.add('expanded-no-drag');
+            }, 50);
+          } else {
+            // COLLAPSING: Update button first
+            expandBtn.textContent = 'Udvid og sammelign';
+            expandBtn.innerHTML = `Udvid og sammelign {% render 'icon', icon: 'chevron-down', size: 10, fill: '#252521' %}`;
+            expandBtn.dataset.expanded = "false";
+            
+            // Show progress bar
+            const progressContainer = slider.querySelector('.splide-progress-container');
+            if (progressContainer) {
+              progressContainer.style.display = 'block';
+            }
+            
+            // Handle collapse action
+            if (sliderList.querySelector('.parent-basic-items')) {
+              foldParentBasicItems(slider);
+            } else if (toggleButton) {
+              // Re-trigger toggle button to restore state
+              toggleButton.click();
+            }
+            
+            // Remove expanded class
+            slider.classList.remove('expanded-no-drag');
+            
+            // Always reinitialize slider with drag enabled when collapsing
+            setTimeout(() => {
+              if (slider.dataset.flexMode !== "true") {
+                initializeSplide(slider, false);
+              }
+            }, 50);
+          }
+        });
+        expandBtn.dataset.listenerAttached = "true";
+      }
+      
+      // Initialize Splide for this slider initially with drag enabled
+      initializeSplide(slider, false);
+    });
+  });
+</script>
+
+<style>
+  /* Progress bar styles */
+  .splide-progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 4px; /* Slightly taller for better visibility */
+    background-color: #e2e2e2;
+    overflow: hidden; /* Ensure the bar stays within container */
+  }
+  
+  .splide-progress-bar {
+    height: 100%;
+    width: 0; /* Start with no progress */
+    background-color: #ea6b41; /* More visible blue color */
+    transition: width 0.3s ease;
+    min-width: 5%; /* Minimum width to be visible */
+  }
+
+  .Featured_collection .bundle-card-slider .splide__arrow:disabled {
+    display: flex;
+  }
+
+  /* Fix disabled arrow styling */
+  .bundle-card-slider .splide__arrow[disabled] {
+    opacity: 0.7 !important;
+    cursor: pointer !important;
+  }
+  
+  /* Always display arrows */
+  .bundle-card-slider .splide__arrow--prev,
+  .bundle-card-slider .splide__arrow--next {
+    display: flex !important;
+  }
+
+  /* Hide progress bar when bundle content is in expanded mode */
+  .bundle-card-slider[data-flex-mode="true"] .splide-progress-container {
+    display: none !important;
+  }
+
+  /* Disable dragging in expanded mode */
+  .bundle-card-slider.expanded-no-drag {
+    user-select: none;
+  }
+  
+  .bundle-card-slider.expanded-no-drag .splide__track {
+    overflow-x: hidden !important;
+  }
+  
+  .bundle-card-slider[data-flex-mode="true"] ul {
+    -webkit-user-drag: none !important;
+    user-select: none !important;
+    touch-action: none !important;
+    overflow-x: hidden !important;
+    gap: 12px !important;
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+  }
+  
+  /* Remove margin-right when slider is expanded */
+  .bundle-card-slider[data-flex-mode="true"] .splide__slide,
+  .bundle-card-slider.expanded-no-drag .splide__slide {
+    margin-right: 0 !important;
+  }
+  
+  /* Remove margin-right specifically for the last slide when expanded */
+  .bundle-card-slider[data-flex-mode="true"] .splide__slide:last-child,
+  .bundle-card-slider.expanded-no-drag .splide__slide:last-child {
+    margin-right: 0 !important;
+  }
+  
+  /* Add border styles for expanded mode */
+  .bundle-card-slider[data-flex-mode="true"] .splide__slide {
+    border: 1px solid rgb(217 217 217/var(--tw-border-opacity)) !important;
+  }
+
+  /* Fix for plus divider visibility in expanded mode - only use span for line */
+  .bundle-card-slider[data-flex-mode="true"] .plus {
+    border: none !important; 
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-color: transparent !important;
+  }
+  
+  .bundle-card-slider[data-flex-mode="true"] .plus span {
+    opacity: 1 !important;
+    height: 3px !important; /* Single thicker line */
+    background-color: #e5e5e5 !important;
+    display: block !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    border-radius: 2px !important; /* Slightly rounded edges */
+  }
+  
+  /* Expanded mode item display fix */
+  .bundle-card-slider[data-flex-mode="true"] li:not(.bundle-item):not(.plus) {
+    display: block !important;
+  }
+</style>

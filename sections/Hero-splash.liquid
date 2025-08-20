@@ -1,0 +1,94 @@
+<div id="hero-splash" class="p-8 h-screen flex flex-col justify-between p-4 z-[9999999] hidden relative" style="background: {{ section.settings.background }}">
+    <div class="logo max-w-screen-md">
+        <img class="w-full" src="{{ section.settings.logo | image_url: width: '350px' }}"/>
+    </div>
+    <div class="[&>p]:text-white [&>p]:text-3xl md:[&>p]:text-7xl flex flex-col items-start md:items-end ">
+        {{ section.settings.richtext }}
+        
+    </div>
+</div> 
+<script>
+  window.onload = function() {
+    const heroSplashElement = document.querySelector('#hero-splash');
+    let isScrolling = false;
+    let hasScrolledToHero = false; // Flag to track if we've already scrolled to the hero
+
+    // Function to scroll to the hero element
+    function scrollToHero() {
+      const heroElement = document.querySelector('#hero');
+      if (heroElement && !hasScrolledToHero) {
+        isScrolling = true;
+        heroElement.scrollIntoView({ behavior: 'smooth' });
+        hasScrolledToHero = true; // Ensure we only scroll to the hero once
+
+        // After scrolling, remove the hero-splash from the DOM and set a cookie
+        setTimeout(function() {
+          heroSplashElement.remove();
+          document.cookie = 'hero-splash=hidden; path=/; expires=' + new Date(new Date().getTime() + 86400 * 1000).toUTCString();
+          document.body.style.overflow = 'auto'; // Enable scrolling
+          isScrolling = false;
+        }, 1000); // Adjust this delay as needed
+      }
+    }
+
+    // Immediately remove the hero-splash if the cookie is set
+    if (document.cookie.split(';').some((item) => item.trim().startsWith('hero-splash=hidden'))) {
+      heroSplashElement.remove();
+      document.body.style.overflow = 'auto'; // Ensure the body is scrollable
+    } else {
+      heroSplashElement.classList.remove('hidden');
+      document.body.style.overflow = 'hidden'; // Disable scroll initially
+
+      // Set a timeout to automatically scroll to the hero after a delay
+      const autoScrollTimeout = setTimeout(scrollToHero, 5000); // Adjust delay as needed
+
+      // Listen for the first user scroll event to trigger the scroll to hero
+      const scrollListener = function() {
+        clearTimeout(autoScrollTimeout); // Cancel the automatic scroll if the user scrolls
+        scrollToHero();
+        // After the first scroll, remove this event listener to prevent repeated scrolls
+        window.removeEventListener('wheel', scrollListener);
+      };
+
+      window.addEventListener('wheel', scrollListener);
+    }
+  };
+</script>
+
+{% schema %}
+{
+  "name": "Hero Splash",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Splash Settings"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background Color"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "richtext",
+      "id": "richtext",
+      "label": "Rich Text"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon",
+      "label": "Icon"
+    } 
+  ],
+    "presets": [
+        {
+        "name": "Hero Splash",
+        "category": "Hero"
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,112 @@
+{% if product %}
+    {% assign pagelock_data = product.metafields.custom.page_lock.value %}
+{% endif %} 
+
+{% if collection %}
+    {% assign pagelock_data = collection.metafields.custom.page_lock.value %}
+{% endif %} 
+
+{% if pagelock_data != blank %}
+<div id="page-lock-popup" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50 pointer-events-auto">
+    <div class="bg-white flex flex-col items-center justify-center max-w-[550px] w-full gap-y-8 px-10 py-10 rounded-lg shadow-lg text-left">
+        <div class="">
+            <h3 class="form-heading Heading text-2xl font-bold mb-4">{{ pagelock_data.title }}</h3>
+            <div class="mx-auto w-fit klaviyo-form-{{ pagelock_data.klaviyo_form_id }}"></div>
+            
+        </div>
+    </div> 
+</div>
+ 
+<script defer>
+    // Function to set a localStorage item
+    function setPageUnlock(value) {
+        localStorage.setItem("pageUnlocked", value);
+    }
+      
+    function getPageUnlock() {
+        return localStorage.getItem("pageUnlocked");
+    }
+      
+    document.addEventListener("DOMContentLoaded", function () { 
+        try {
+            const predefinedCode = "{{ pagelock_data.code }}"; 
+            const pageLockPopup = document.getElementById("page-lock-popup");
+            const mainSection = document.querySelector(".main-section");
+            const body = document.body;
+
+            // Always show the popup and form, ignoring cookie consent
+            if (mainSection) {
+                mainSection.classList.add("pointer-events-none");
+            }
+            body.classList.add("body-no-scroll");
+            pageLockPopup.classList.remove("hidden");
+
+            // Use MutationObserver to detect when the Klaviyo form is added
+            const observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    mutation.addedNodes.forEach(function (node) {
+                        if (node.nodeType === 1 && node.matches("form")) {
+                            const formButton = node.querySelector("button[type='submit']");
+                            if (formButton) {
+                                formButton.addEventListener("click", function () {
+                                    // Dispatch custom event
+                                    const event = new CustomEvent("klaviyoForms", {
+                                        detail: {
+                                            type: 'submit',
+                                            formId: '{{ pagelock_data.klaviyo_form_id }}',
+                                            companyId: 'T2TJtR', 
+                                            metaData: { 
+                                                email: 'mail@teeshoppen.dk',
+                                                // additional fields  
+                                            } 
+                                        }
+                                    });
+                                    window.dispatchEvent(event);
+                                });
+                            }
+                        }
+                    });
+                });
+            });
+
+            // Start observing the Klaviyo form container for changes
+            const klaviyoFormContainer = document.querySelector("#page-lock-popup .klaviyo-form-{{ pagelock_data.klaviyo_form_id }}");
+            if (klaviyoFormContainer) {
+                observer.observe(klaviyoFormContainer, { childList: true, subtree: true });
+            }
+        } catch (error) {
+            console.error("An error occurred in the page-lock script:", error);
+        }
+    });
+
+    // Custom event listener for "klaviyoForms"
+    window.addEventListener("klaviyoForms", function(e) { 
+        try { 
+            if (e.detail.type == 'submit') {
+                // Set a localStorage item to remember that the form has been submitted
+                setPageUnlock("{{ pagelock_data.code }}");
+
+                // Hide the popup and unlock the page
+                const pageLockPopup = document.getElementById("page-lock-popup");
+                const mainSection = document.querySelector(".main-section");
+                const body = document.body;
+                if (mainSection) {
+                    mainSection.classList.remove("pointer-events-none");
+                }
+                body.classList.remove("body-no-scroll");
+                pageLockPopup.classList.add("hidden");
+            }
+        } catch (error) {
+            console.error("An error occurred while handling the Klaviyo form submission:", error);
+        }
+    });
+
+    // Handle CORS and rate limiting errors
+    window.addEventListener("error", function(event) {
+        if (event.message.includes("CORS policy") || event.message.includes("Too Many Requests")) {
+            console.error("An error occurred:", event.message);
+            alert("An error occurred while submitting the form. Please try again later.");
+        }
+    });
+</script>
+{% endif %}

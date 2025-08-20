@@ -1,0 +1,144 @@
+<section class="Collection_tabs">
+    <div class="container bg-primary-bg py-8 px-2 md:px-16 relative">
+        <div class="Section_header mb-8">
+            <h3 class="text-6xl md:text-8xl font-semibold max-w-[450px]">{{ section.settings.title }}</h3>
+        </div>
+        <div class="relative">
+            <ul class="mb-8 flex list-none flex-row flex-wrap border-b-0 pl-0">
+                {% assign tabCount = 0 %}
+                {% for block in section.blocks %}
+                    {%- if block.type == 'title' -%}
+                        {% assign tabCount = tabCount | plus: 1 %}
+                        <li class="border-r border-black last:border-none first:ml-0  text-center  first:pl-0  ">
+                            <a href="javascript:void(0)" class="Heading text-xl block min-w-[110px] sm:min-w-[150px] w-full py-2 {% if forloop.first %}font-bold{%  endif %}" data-tab-index="{{ tabCount }}">{{ block.settings.title }}</a>
+                        </li>
+                    {%- endif -%}
+                {% endfor %}
+            </ul>
+
+            <!-- Tabs content -->
+            <div class="mb-6 py-6 border-y border-border">
+                {% assign currentIndex = 0 %}
+                {% for block in section.blocks %}
+                    {%- if block.type == 'title' -%}
+                        {% if currentIndex > 0 %}
+                            <div class="tab-content justify-between w-full flex" id="tabs-{{ currentIndex }}">
+                                <div class="splide col-splide-tab w-full">
+                                    <div class="splide__track">
+                                        <ul class="splide__list tabs">
+                                            {{ tabContent }}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <a href="{{ tabLink }}" class="Button Button_secondary  text-base absolute right-2 sm:right-0 top-0">{{ tabLinkText }}</a>
+                            </div>
+                        {%- endif -%}
+                        {% assign currentIndex = currentIndex | plus: 1 %}
+                        {% assign tabContent = "" %}
+                        {% assign tabLink = block.settings.link %}
+                        {% assign tabLinkText = block.settings.link_text %}
+                    {%- endif -%}
+                    {%- if block.type == 'tab' -%}
+                        {% capture tabContent %}
+                            {{ tabContent }}
+                            <li class="px-4 text-center border-r last:border-none min-w-[135px] splide__slide">
+                                <a class="flex flex-col gap-4 group" href="{{ block.settings.link }}">
+                                    {% if block.settings.image %}
+                                        <img class="bg-white rounded-md border border-transparent group-hover:border-primary-black" width="135" height="135" alt="{{ block.settings.link_text }}" src="{{ block.settings.image | img_url: '135x' }}"/>
+                                    {% endif %}
+                                    {{ block.settings.content }}
+                                </a>
+                            </li>
+                        {% endcapture %}
+                    {%- endif -%}
+                {% endfor %}
+                {% if currentIndex > 0 %}
+                    <div class="tab-content justify-between " id="tabs-{{ currentIndex }}">
+                        <div class="splide col-splide-tab w-full">
+                            <div class="splide__track ">
+                                <ul class="splide__list tabs w-full">
+                                    {{ tabContent }}
+                                </ul>
+                            </div>
+                        </div>
+                        <a href="{{ tabLink }}" class="Button Button_secondary text-base absolute right-0 top-0">{{ tabLinkText }}</a>
+                    </div>
+                {%- endif -%}
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="{{ 'collection-tabs.js' | asset_url }}" defer="defer"></script> 
+
+{% schema %}
+{
+    "name": "Collection tabs",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "title",
+            "name": "Title",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Collection Link"
+                },
+                {
+                    "type": "text",
+                    "id": "link_text",
+                    "label": "Collection Link Text"
+                }
+
+            ] 
+        },
+        {
+            "type": "tab",
+            "name": "Tab",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
+                    "type": "richtext",
+                    "id": "content",
+                    "label": "Content"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Link"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Collection tabs",
+            "category": "section",
+            "blocks": [
+              {
+                "type": "tab",
+                "settings": {
+                }
+              }
+            ]
+        }
+    ]
+}
+
+{% endschema %}

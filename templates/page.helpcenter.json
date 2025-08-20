@@ -1,0 +1,72 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs_B98Y7g": {
+      "type": "breadcrumbs",
+      "disabled": true,
+      "settings": {}
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {}
+    },
+    "information_section_hXpVYR": {
+      "type": "information-section",
+      "blocks": {
+        "feature_9MhKzF": {
+          "type": "feature",
+          "settings": {
+            "title": "Chat med os",
+            "richtext": "",
+            "button_text": "Åben chat",
+            "link": "#"
+          }
+        },
+        "feature_VQhkbk": {
+          "type": "feature",
+          "settings": {
+            "title": "Skriv til os",
+            "richtext": "",
+            "button_text": "Support@smeltsauna.dk",
+            "link": "mailto:Support@smeltsauna.dk"
+          }
+        },
+        "feature_3WPwc9": {
+          "type": "feature",
+          "settings": {
+            "title": "Ring til os",
+            "richtext": "",
+            "button_text": "+45 28 25 89 53",
+            "link": "tel:+4571905836"
+          }
+        }
+      },
+      "block_order": [
+        "feature_9MhKzF",
+        "feature_VQhkbk",
+        "feature_3WPwc9"
+      ],
+      "settings": {
+        "title": "Har du nogle spørgsmål?",
+        "subtitle": "Kundeservice & information",
+        "url": "shopify://pages/faq-ofte-stillede-sporgsmal",
+        "link_text": "Ofte stillede spørgsmål",
+        "background": "shopify://shop_images/dorinel-panaite-g_5q3-ktg1s-unsplash.jpg"
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs_B98Y7g",
+    "main",
+    "information_section_hXpVYR"
+  ]
+}

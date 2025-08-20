@@ -1,0 +1,19 @@
+{% assign faqList = product.metafields.custom.product_faq.value.product_faq_list.value %}
+{% if faqList != blank %}
+  <div class="faq py-4 md:py-4">
+    <ul class="accordion_product flex flex-col gap-y-2" itemscope itemtype="http://schema.org/FAQPage">
+
+      {% for faq in faqList %}
+        <li class="py-2 select-none" itemprop="mainEntity" itemscope itemtype="http://schema.org/Question">
+            <h3 class="question heading cursor-pointer flex justify-start gap-x-6" itemprop="name">
+            <span class="flex items-center gap-2 text-base">{{ faq.title }}</span>
+            {% render 'icon', icon: 'arrow-down', class: 'acc-icon', size: 15, fill: '#000' %}
+          </h3>
+          <div class="answer py-4 hidden" itemprop="acceptedAnswer" itemscope itemtype="http://schema.org/Answer">
+            <div itemprop="text" class="[&:p]:text-base">{{ faq.answer | metafield_tag }}</div>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}

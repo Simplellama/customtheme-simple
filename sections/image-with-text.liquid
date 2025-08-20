@@ -1,0 +1,190 @@
+{% capture image_col %}
+  <div class="image-col h-[300px] sm:h-[650px] col-span-2 sm:col-span-1 w-full overflow-hidden {% if section.settings.layout == 'image-right' %}order-[-1] sm:order-1{% endif %}">
+    {% if section.settings.video_laptop != blank %}
+      <video
+        id="video_block_block"
+        class="h-full w-full object-cover pointer-events-none hidden sm:block"
+        preload="none"
+        poster="{{ section.settings.background | image_url: width: 1280 }}"
+        width="100%"
+        height="auto"
+        loop
+        muted="true" 
+        playsinline
+      >
+        <source data-src="{{ section.settings.video_laptop.sources[0].url }}" type="application/x-mpegURL">
+        <source data-src="{{ section.settings.video_laptop.sources[1].url }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    {% else %}
+      {% if section.settings.image %}
+        {{ section.settings.image | image_url: width: 1000 | image_tag: alt: section.settings.title, class: 'w-full h-full object-cover overflow-hidden', loading: 'lazy' }}
+      {% else %}
+        {{ 'image' | placeholder_svg_tag }}
+      {% endif %}
+    {% endif %}
+    {% if section.settings.video_mobile != blank %}
+      <video
+        id="video_block_mobile_block"
+        class="h-full w-full object-cover pointer-events-none block sm:hidden"
+        preload="none"
+        poster="{{ section.settings.mobile-background | image_url: width: 1280 }}"
+        width="100%"
+        height="auto"
+        loop
+        muted="true"
+        playsinline 
+      >
+        <source data-src="{{ section.settings.video_mobile.sources[0].url }}" type="application/x-mpegURL">
+        <source data-src="{{ section.settings.video_mobile.sources[1].url }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    {% else %}
+      <img class="w-full h-full object-cover relative block sm:hidden" src="{{ section.settings.mobile-background | image_url: width: 1280 }}">
+    {% endif %}
+  </div>
+{% endcapture %}
+
+{% capture text_col %}
+  <div class="text-col col-span-2 sm:col-span-1 flex items-center justify-center {% if section.settings.bg_textbox == true %} bg-secondary-bg {% endif %} py-6 px-4">
+    <div class="text-container flex flex-col gap-y-4 w-full max-w-full sm:max-w-[85%]">
+      <div class="flex flex-col gap-y-2 pb-4 w-full">
+        <p class="text-lg/7 font-bold uppercase text-primary-orange">{{ section.settings.subtitle }}</p>
+        <h3 class="Heading tracking-tight text-5xl/tight sm:text-7xl/tight font-bold text-primary-text">{{ section.settings.title }}</h3>
+      </div>
+      <div class="richtext-image-with-text [&>*]:text-base/6 sm:[&>*]:text-lg">{{ section.settings.content }}</div>
+      {% if section.settings.button_link != blank %}
+        <a type="button" class=" flex items-center mt-4 text-center justify-center gap-x-2 rounded-full  px-8 min-h-[45px] text-base font-semibold text-white w-fit bg-primary-black hover:bg-medium-green" href="{{ section.settings.button_link }}">
+          {{ section.settings.button }}
+          {% comment %} {% render 'icon', icon: 'arrow-right', size: 10, class: '', fill: '#fff' %} {% endcomment %}
+        </a> 
+      {% endif %}
+    </div>
+  </div>
+{% endcapture %}
+
+<section class="image-with-text-section container pb-6  mx-auto">
+  <div class="column_container grid grid-cols-2 sm:grid-cols-2 gap-x-6">
+    {% if section.settings.layout == 'image-left' %} 
+      {{ image_col }}
+      {{ text_col }}
+    {% else %}
+      {{ text_col }}
+      {{ image_col }}
+    {% endif %}
+  </div>
+</section>  
+
+
+<script defer>
+  document.addEventListener('DOMContentLoaded', function() {
+    let videos = document.querySelectorAll('video[id^="video_block_"], video[id^="video_block_mobile_"]');
+    videos.forEach(function(video) {
+      let observer = new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting === true) {
+          // Load the video sources
+          let sources = video.querySelectorAll('source');
+          sources.forEach(function(source) {
+            source.setAttribute('src', source.getAttribute('data-src'));
+          });
+          video.load();
+          video.play();
+          observer.unobserve(video); // Stop observing once the video is loaded and played
+        }
+      }, { threshold: [0] });
+
+      observer.observe(video);
+    });
+  });
+</script>
+  
+
+{% schema %}
+{
+  "name": "Image with text section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "This is a heading"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading",
+      "default": "This is a subheading"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_textbox",
+      "label": "Show background Textbox",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "background",
+      "label": "Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile-background",
+      "label": "Mobile Background Image"
+    },
+    {
+      "type": "video",
+      "id": "video_laptop",
+      "label": "Laptop Video"
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Mobile Video"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Button",
+      "default": "Read more"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "default": "image-left",
+      "options": [
+        {
+          "value": "image-left",
+          "label": "Image left"
+        },
+        {
+          "value": "image-right",
+          "label": "Image right"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text section",
+      "category": "section"
+    }
+  ]
+}
+{% endschema %}

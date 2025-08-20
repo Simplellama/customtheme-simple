@@ -1,0 +1,425 @@
+<div class="product-page container relative" data-page="product" data-section-id="{{ section.id }}" data-klaviyo-handle='{{ product.handle }}' data-component="product" data-enable-history-state="true" itemscope itemtype="http://schema.org/Product">
+
+  {%- assign current_variant = product.selected_or_first_available_variant -%}
+  {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+  {% assign videos = product.media | where: 'media_type', 'video' %}
+  {% assign totalMedia = product.media.size %}
+
+  {% assign nonVideos = product.media | where_exp: 'media', 'media.media_type != "video"' %}
+  <div id="product-section" class="flex flex-col mt-0 w-full">
+    <div class="hidden md:block mt-5 mb-5 w-fit">{% render 'breadcrumbs' %}</div>
+    <div class="relative grid grid-cols-12 gap-6  w-full">
+      <div class="Product_galleri bg-primary-bg sm:bg-transparent col-span-12 md:col-span-8 lg:pr-12 relative md:sticky md:top-[100px] md:pt-0 !padding-top h-fit w-full pb-0">
+        
+        <div id="" class="Product_galleri justify-start col-span-2 w-full flex flex-col">
+    
+          <div id="product_slider" class="splide relative h-fit w-full ">
+        
+            <div class="flex flex-col gap-y-2 relative">
+              <div class="splide__track">
+                  <ul id="Product_galleri" class="splide__list relative grid grid-cols-2 ">
+                    {% for media in videos %}
+                      {% unless media.alt == 'bundle-image' %}
+                        <li class="splide__slide h-full bg-secondary-bg max-w-none inline-block">
+                          {% render 'product-media', media: media, lazyload: lazyload %}
+                        </li>
+                      {% endunless %}
+                    {% endfor %}
+
+                    {% comment %} Display second image first {% endcomment %}
+                    {% assign second_media = nonVideos[1] %}
+                    {% if second_media %}
+                      {% unless second_media.alt == 'bundle-image' or second_media.media_type == 'video' %}
+                        <li class="splide__slide overflow-hidden bg-secondary-bg">
+                          <a href="{{ second_media | image_url: width: 1536 }}">
+                            {% render 'product-media', media: second_media, lazyload: true %}
+                          </a>
+                        </li>
+                      {% endunless %}
+                    {% endif %}
+
+                    {% comment %} Display first image second {% endcomment %}
+                    {% assign first_media = nonVideos[0] %}
+                    {% if first_media %}
+                      {% unless first_media.alt == 'bundle-image' or first_media.media_type == 'video' %}
+                        <li class="splide__slide overflow-hidden bg-secondary-bg">
+                          <a href="{{ first_media | image_url: width: 1536 }}">
+                            {% render 'product-media', media: first_media, lazyload: false %}
+                          </a>
+                        </li>
+                      {% endunless %}
+                    {% endif %}
+
+                    {% comment %} Display remaining images {% endcomment %}
+                    {% for media in nonVideos offset:2 %}
+                      {% unless media.alt == 'bundle-image' %}
+                        {% unless media.media_type == 'video' %}
+                          <li class="splide__slide overflow-hidden bg-secondary-bg">
+                            <a href="{{ media | image_url: width: 1536 }}">
+                              {% render 'product-media', media: media, lazyload: true %}
+                            </a>
+                          </li>
+                        {% endunless %}
+                      {% endunless %}
+                    {% endfor %}
+                  </ul> 
+              </div>
+              {% if product.media.size > 1 %}
+                <div id="thumbnail-slider" class="splide h-fit w-full ">
+                  <div class="splide__track">
+                    <ul class="splide__list">
+                      {% for media in videos %}
+                        {% unless media.alt == 'bundle-image' %}
+                          <li class="splide__slide bg-secondary-bg w-full">
+                            {% render 'product-media', media: media, thumbnail: true, lazyload: lazyload %}
+                          </li>
+                        {% endunless %}
+                      {% endfor %}
+
+                      {% comment %} Display second image first in thumbnails {% endcomment %}
+                      {% if second_media %}
+                        {% unless second_media.alt == 'bundle-image' or second_media.media_type == 'video' %}
+                          <li class="splide__slide bg-secondary-bg w-full">
+                            {% render 'product-media', media: second_media, thumbnail: true, lazyload: true %}
+                          </li>
+                        {% endunless %}
+                      {% endif %}
+
+                      {% comment %} Display first image second in thumbnails {% endcomment %}
+                      {% if first_media %}
+                        {% unless first_media.alt == 'bundle-image' or first_media.media_type == 'video' %}
+                          <li class="splide__slide bg-secondary-bg w-full">
+                            {% render 'product-media', media: first_media, thumbnail: true, lazyload: false %}
+                          </li>
+                        {% endunless %}
+                      {% endif %}
+
+                      {% comment %} Display remaining thumbnails {% endcomment %}
+                      {% for media in nonVideos offset:2 %}
+                        {% unless media.alt == 'bundle-image' %}
+                          {% unless media.media_type == 'video' %}
+                            <li class="splide__slide bg-secondary-bg w-full">
+                              {% render 'product-media', media: media, thumbnail: true, lazyload: true %}
+                            </li>
+                          {% endunless %}
+                        {% endunless %}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <div class="splide-progress-bar mt-2 h-[5px] bg-primary-red" style="width: 0%;"></div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+        <div id="Product_info" class="Product_info lg:pr-16 relative col-span-12 md:col-span-4 flex flex-col gap-y-2 items-start h-fit w-full mt-3 sm:mt-0">
+          <div class="flex flex-col w-full">
+ 
+            <div class="flex flex-col justify-between">
+       
+              <div class="flex flex-col w-full min-h-full">
+
+                <div class="flex flex-col justify-between w-full  md:pt-0 pb-2">
+                  <div class="flex flex-col w-full gap-2"> 
+                    <h1 class="Heading text-xl md:text-5xl text-left flex flex-col mb-2">
+                      <span class="flex gap-x-2 items-center Heading font-bold text-3xl md:text-4xl text-left ">{% if product.metafields.custom.product_title == blank %} {{ product.title }} {% else %}{{ product.metafields.custom.product_title }}<span class="Heading text-2xl font-thin">- {{ product.metafields.custom.product_subtitle }}{% endif %}</span></span>
+                    </h1>
+
+
+                    <div class="Price flex w-full items-center mb-3 border-b pb-4 border-border">
+                
+                      {% render 'price-snippet' variant: current_variant, product: product %}
+                      {% render 'labels' class: 'relative' %}
+                    </div>
+                    <!-- Anyday PriceWidget  -->
+<script src="https://my.anyday.io/price-widget/anyday-price-widget.js" type="module" async></script>
+<anyday-price-widget style="display: flex;margin: 0px 0 10px 0px;color:#000;" currency="DKK" price-selector=".price span[data-product-price]" token="e604dff4bc9a4b47ac80e411d5f709f4" price-format-locale="da-DK" locale="da-DK" theme="light" shop-name="smeltsauna.dk" custom-css=""></anyday-price-widget>
+<!-- Anyday PriceWidget, End  -->
+
+                    {% if product.description != blank %}
+                      <div class="text-base font-light font-regular [&>*]:text-base/5   pb-2">
+                        {{ product.description }}
+                      </div>
+                    {% endif %}
+                  </div>
+  
+                </div>
+    
+         
+          
+    
+                {% for block in section.blocks %} 
+                  {%- case block.type -%}
+                    {% when 'usp-list' %}
+                      {% render 'usp-list' %}
+
+                    {% when 'bundle-contains' %}
+                      {% render 'bundle-contains' %}
+
+                    {% when 'colors' %}
+                      {% render 'colors' %}
+                      {% render 'booking-form' %}
+    
+                    {% when 'add-to-cart-form' %}
+                      {% render 'add-to-cart-form' %}
+    
+                    {% when 'product-faq' %}
+                      {% render 'product-faq' %}
+    
+                    {% when 'video-thumbs' %}
+                      {% render 'video-thumbs' %}
+
+                    {% when 'acc-items' %}
+                      {% render 'acc-items' %}
+      
+                    {% when 'payment-icons' %}
+                      {% render 'payment-icons', class: 'pt-2' %}
+
+                      <!--<anyday-price-widget                   
+                        theme="light"                                 
+                        currency="DKK"
+                        class="mt-3"
+                        price="{{ product.price | money }}"
+                        price-format-locale="en-UK"
+                        locale="da-DK"
+                        token="69b39b2169414d7d904e99a81cc4cbf2"
+                        fully-clickable="true"
+                        container-breakpoint="350"                 
+                        debug="info" >
+                    </anyday-price-widget>-->
+      
+                    {% when '@app' %}
+                      {% render block %}
+      
+                  {% endcase %} 
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+         
+        </div> 
+      </div>
+    </div>
+
+    {% unless product == empty %} 
+      <script type="application/json" data-product-json>
+        {{ product | json }}
+      </script>
+    {% endunless %} 
+</div>
+{% render 'add-to-cart-sticky' %}
+{% render 'page-lock' %}
+
+
+<script src="{{ 'product-splide-sliders.js' | asset_url }}" defer></script>
+<script type="text/javascript" src="{{ 'simple-lightbox.js' | asset_url }}" defer="defer"></script>
+<link rel="stylesheet" type="text/css" href="{{ 'simple-lightbox.css' | asset_url }}">
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const gallery = document.getElementById('product_images');
+    if (gallery) {
+        new SimpleLightbox('#product_images a', {
+            history: true,
+            alertError: false,
+            additionalHtml: false,
+            loop: true,
+            overlayOpacity: 1,
+            doubleTapZoom: 2,
+            fadeSpeed: 50,
+            animationSpeed: 50,
+            swipeClose: false,
+            enableZoom: true
+        });
+    }
+});
+</script>
+
+
+<style>
+  #product_slider .splide__arrows {
+    position: absolute;
+    right: 0px;
+    left: unset;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: fit-content;
+    top: 40%;
+    padding: 0 20px 0 20px;
+
+  }
+
+
+  #product_slider .splide-progress-bar {
+    transition: width 400ms ease;
+  }
+
+  #product_slider .splide__arrow {
+    background: var(--primary-bg); 
+    border: solid 2px var(--primary-text);
+  }
+
+  #product_slider .splide__arrow svg {
+    fill: var(--primary-text);
+  }
+
+  #thumbnail-slider .splide__arrow {
+    height: 100%;
+    background: none; 
+    border: none;
+    border-radius: 0;
+  }
+
+  #thumbnail-slider .splide__arrow--next:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -1px;
+    bottom: 0;
+    height: 100%;
+    width: 60px;
+    background: -webkit-gradient(linear, right top, left top, from(var(--primary-bg)), to(transparent));
+    background: linear-gradient(to left, var(--primary-bg), transparent);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  #thumbnail-slider .splide__arrows .splide__arrow--prev {
+    left: 0 !important;
+    position: unset;
+  }
+
+  #thumbnail-slider .splide__arrows .splide__arrow--next {
+    right: 0 !important;
+    position: unset;
+  }
+
+  #thumbnail-slider .splide__arrows {
+    padding: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    display: flex;
+  }
+
+  #thumbnail-slider .splide__arrow--prev::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -1px;
+    bottom: 0;
+    height: auto;
+    width: 50px;
+    background: -webkit-gradient(linear, left top, right top, from(var(--primary-bg)), to(transparent));
+    background: linear-gradient(to right, var(--primary-bg), transparent);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  #thumbnail-slider .splide__arrow svg {
+    fill: var(--primary-text);
+    width: 2em;
+    height: 2em;
+    background: var(--primary-bg);
+    border-radius: 100%;
+    padding: 0.5em;
+    border: solid 2px var(--primary-text);
+  }
+
+  #thumbnail-slider .splide__arrow--prev svg {
+    left: 15px;
+    position: absolute;
+  }
+
+  #thumbnail-slider .splide__arrow--next svg {
+    right: 15px;
+    position: absolute;
+  }
+  
+</style>
+
+{% schema %}
+  {
+    "name": "Product pages",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_share_buttons",
+        "label": "Show social sharing buttons",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "background",
+        "label": "Background image"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "@app"
+      },
+      {
+        "type": "colors",
+        "name": "Colors",
+        "settings": []
+      },
+      {
+        "type": "add-to-cart-form",
+        "name": "Add to Cart Form",
+        "settings": []
+      },
+      {
+        "type": "add-to-cart-mulitpack",
+        "name": "Add to Cart Multi Pack",
+        "settings": []
+      },
+      {
+        "type": "product-faq",
+        "name": "Product FAQ",
+        "settings": []
+      },
+      {
+        "type": "video-thumbs",
+        "name": "Video Thumbs",
+        "settings": []
+      },
+      {
+        "type": "payment-icons",
+        "name": "Payment Icons",
+        "settings": []
+      },
+      {
+        "type": "usp-list",
+        "name": "usp-list",
+        "settings": []
+      },
+      {
+        "type": "bundle-contains",
+        "name": "Bundle Contains",
+        "settings": []
+      },
+      {
+        "type": "product-information",
+        "name": "Product Information",
+        "settings": []
+      },
+      {
+        "type": "acc-items",
+        "name": "Acc Items",
+        "settings": []
+      }
+
+      
+    ],
+    "presets": [
+      {
+        "name": "App wrapper"
+      }
+    ]
+  }
+{% endschema %}

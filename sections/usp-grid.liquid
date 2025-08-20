@@ -1,0 +1,132 @@
+{% if collection.template_suffix == "build-your-bundle" %}
+  {% assign bundle = true %}
+{% endif %}
+
+<div class="usp-grid flex sm:justify-between sm:gap-x-8 {% if section.settings.large-padding == true %}pt-24 pb-36 {% else %} pt-8 md:pt-20 pb-16 md:pb-24{% endif %} border border-b-border bg-primary-bg">
+  <div class="container">
+    <div class="flex {% unless section.settings.headerTop == true %}flex-col xlg:flex-row xlg:items-center{% else %}flex-col{% endunless %}  justify-between gap-y-1 sm:gap-8 lg:gap-x-10 w-full">
+      
+      {% if section.settings.title != blank %}
+        <div class="w-full xlg:max-w-[25vw] min-w-[25vw] mb-8">
+          <h2 class="font-bold text-4xl sm:text-6xl mb-2">{{ section.settings.title }}</h2>
+          <p class="font-bold text-2xl">{% if bundle %}<span class="bundle-qty"></span> {{ 'byb.for' | t }} <span class="bundle-price"></span> {% else %}{{ section.settings.text }}{% endif %}</p>
+          <p class="pt-2">{{ section.settings.desc }}</p>
+        </div>
+      {% endif %}
+
+
+      <div class="flex w-full flex-row gap-y-4 lg:content-center md:gap-y-4 flex-wrap xlg:flex-nowrap {% if block_count == 3 %}justify-between{% endif %} sm:justify-start  {% if section.settings.cards == true %}items-stretch  text-center relative py-2 md:py-4 rounded-md-8 rounded-md {% else %}items-start w-full md:w-fit{% endif %}">
+        {% for block in section.blocks %}
+          {% assign block_count = forloop.length %}
+
+          <div class="flex flex-col gap-x-2 items-center w-full {% if block_count == 2 %}max-w-[45%]{% endif %} sm:max-w-[47%] md:max-w-[25%] lg:min-w-[165px] {% if block_count == 3 %}max-w-[33%] lg:max-w-[30%]  {% else %} lg:max-w-[22%] {% endif %} text-center relative {% if section.settings.cards == true %}border border-white bg-primary-bg--400 py-8 sm:mx-2 rounded-md{% endif %}">
+            {% if block.settings.hideCount == false %}<div class="text-sm font-bold md:text-lg bg-primary-black w-[6px] h-[6px] sm:w-2 sm:h-2 rounded-full flex items-center justify-center text-white absolute -top-2 left-0 p-4">{{ forloop.index }}</div>{% endif %}
+            <div class="mb-2"> 
+              <img width="28" height="28" class="w-24 h-24 sm:w-28 sm:h-28 bg-white rounded-md p-2 {% if block.settings.small-icon %}p-8{% endif %}" src="{{ block.settings.icon | image_url: width: 150 }}">
+            </div>
+            <div class="flex text-center items-center max-w-[100%] flex-col gap-y-1 mt-2 px-4 sm:px-4 [&>p]:md:text-base  [&>p]:text-sm">
+              <h3 class="font-bold text-lg md:text-2xl ">{% if forloop.last and bundle %}{{ 'byb.mix' | t }} <span class="bundle-qty Heading font-bold"></span> {{  'byb.products' | t }} {% else %}{{ block.settings.title }}{% endif %}</h3>
+              <p class="text-base">{% if forloop.last and bundle %}{{ 'byb.get_them_for_only' | t }} <span class=" text-sm md:text-base bundle-price"></span>{% else %}{{ block.settings.text }}{% endif %}</p>
+            </div>
+            {% if block.settings.button != blank %}
+                <a href="{{ block.settings.button_link }}" class="Button Button_primary text-sm sm:text-base py-1 px-4  mt-4">{{ block.settings.button }}</a>
+            {% endif %}
+          </div>
+        {% endfor %} 
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %} 
+  {
+    "name": "USP Grid",
+    "settings": [
+      {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+      },
+      {
+          "type": "text",
+          "id": "desc",
+          "label": "Description"
+      },
+      {
+          "type": "richtext",
+          "id": "text", 
+          "label": "Text"
+      },
+      {
+          "type": "checkbox",
+          "id": "large-padding",
+          "label": "Large padding",
+          "default": false
+      },
+      {
+          "type": "checkbox",
+          "id": "cards",
+          "label": "Style it with cards",
+          "default": false
+      },
+      {
+          "type": "checkbox",
+          "id": "headerTop",
+          "label": "Header on top",
+          "default": false
+      }
+    ],
+    "blocks": [
+      {
+          "type": "usp",
+          "name": "USP",
+          "settings": [
+              {
+                  "type": "image_picker",
+                  "id": "icon",
+                  "label": "Icon"
+              },
+              {
+                  "type": "text",
+                  "id": "title",
+                  "label": "Title"
+              },
+              {
+                  "type": "richtext",
+                  "id": "text",
+                  "label": "Text"
+              },
+              {
+                  "type": "checkbox",
+                  "id": "hideCount",
+                  "label": "Hide Count",
+                  "default": false
+              },
+              {
+                  "type": "url",
+                  "id": "button_link",
+                  "label": "Button link"
+              },
+              {
+                  "type": "text",
+                  "id": "button",
+                  "label": "Button text"
+              },
+              {
+                  "type": "checkbox",
+                  "id": "small-icon",
+                  "label": "Small Icon",
+                  "default": false
+              }
+          ]
+        }
+      ],
+      "presets": [{
+      "name": "USP Grid",
+      "blocks": [
+          {
+              "type": "usp"
+          }
+      ]
+  }]
+  }
+{% endschema %}

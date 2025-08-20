@@ -1,0 +1,237 @@
+<div class="bg-white">
+  <div class="relative z-[999] lg:hidden">
+    <div id="backdrop" class="fixed inset-0 bg-black bg-opacity-25 h-screen"></div>
+    <div id="mobile-menu-drawer" class="fixed opacity-0 inset-0 z-40 flex bg-white max-w-xs">
+      <div class="absolute top-2 right-2 px-4 py-4 w-fit z-[99]">
+        <button aria-label="close nav" type="button" id="close-nav" class="close-nav text-2xl flex items-center gap-2 cursor-pointer">
+          <span class="text-sm flex items-center text-primary-black">Close</span>
+        </button>
+      </div>
+      <div class="relative flex pt-6 w-full flex-col overflow-y-auto overflow-x-hidden bg-white">
+        <!-- Links -->
+        <div class="relative">
+          <div id="tabs-1-panel-2" class="tab-menu-panel space-y-12 px-0 pb-4" aria-labelledby="tabs-1-tab-2" role="tabpanel" tabindex="0">
+            <div class="grid grid-cols-1 items-start gap-x-6 gap-y-10">
+              <div class="grid grid-cols-1 gap-y-10">
+                <div>
+
+                  <!-- List of top-level parent links with children -->
+                  <ul role="list" aria-labelledby="mobile-featured-heading-1">
+                    
+                    <!-- Hide the "All" menu button (first item) -->
+                    <li class="hidden">
+                      <button class=" font-bold Heading text-xl mb-4 w-full text-left flex justify-between items-center" data-parent-title="{{ linklists.mobile-menu.links.first.title }}" data-tab-target="1">
+                        {{ linklists.mobile-menu.links.first.title }}
+                      </button>
+                    </li>
+
+                    <!-- Parent links that should have children -->
+                    {% for link in linklists.mobile-menu.links %}
+                      {% if link.links.size > 0 %}
+                        <li class="top-tab w-full mb-2">
+                          <button class="block Heading text-xl px-4 gap-2 py-1 w-full text-left flex justify-between items-center" data-parent-title="{{ link.title }}" data-tab-target="{{ forloop.index }}">
+                            {{ link.title }}
+                          </button>
+                        </li>
+
+                        <!-- Use the current link's children instead of allCategories -->
+                        <ul class="child-menu hidden pl-2 pb-6" data-tab-content="{{ forloop.index }}">
+                          {% for child_link in link.links %}
+                            <li class="child-toggle w-full">
+                              {% if child_link.links.size > 0 %}
+                                <!-- Child with grandchildren (toggle grandchild) -->
+                                <button class="block text-xl px-6 py-3 text-left w-full grandchild-toggle" data-child-tab-target="{{ forloop.parent.index }}-{{ forloop.index }}">
+                                  {{ child_link.title }}
+                                </button>
+                                
+                                <!-- Grandchild links -->
+                                <ul class="grandchild-menu hidden pl-3 pt-2 pb-6" data-grandchild-tab-content="{{ forloop.parent.index }}-{{ forloop.index }}">
+                                  {% for grandchild_link in child_link.links %}
+                                    <li class="pl-6">
+                                      <a class="block text-xl mb-4 py-1" href="{{ grandchild_link.url }}" data-parent-title="{{ link.title }}">
+                                        {{ grandchild_link.title }}
+                                      </a>
+                                    </li>
+                                  {% endfor %}
+                                </ul>
+                              {% else %}
+                                <!-- Regular child link (no grandchildren) -->
+                                <a class="block text-xl px-6 py-3 text-left w-full" href="{{ child_link.url }}" data-parent-title="{{ link.title }}">
+                                  {{ child_link.title }}
+                                </a>
+                              {% endif %}
+                            </li>
+                          {% endfor %}
+                        </ul>
+      
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+
+                  <!-- Separate list for standalone parent links -->
+                  <ul class="mt-8" role="list" aria-labelledby="mobile-featured-heading-2">
+                    {% for link in linklists.mobile-menu.links  %}
+                      {% if link.links.size == 0 %}
+                        <li class="w-full mb-4">
+                          <a class="block Heading text-xl px-4 gap-2 py-1 w-full" href="{{ link.url }}">
+                            {{ link.title }}
+                          </a>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% if shop.customer_accounts_enabled %}
+          <div class="space-y-4 px-4 py-4">
+            <div class="flow-root">
+              <a href="/account/register" class="-m-2 block p-2 text-base">Create an account</a>
+            </div>
+            <div class="flow-root">
+              <a class="flex flex-row gap-x-1 text-base" aria-label="account" href="{{ routes.account_url }}">
+                <span>Login</span>
+              </a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #mobile-menu-drawer {
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  .menu-open {
+    transform: translateX(0)!important;
+    opacity: 1 !important;
+  }
+
+  .child-menu,
+  .grandchild-menu {
+    display: none;
+  }
+
+  .child-menu.open,
+  .grandchild-menu.open {
+    display: block;
+  }
+
+  #backdrop {
+    transition: opacity 0.3s ease-in-out;
+    display: none;
+  }
+
+  .backdrop-visible {
+    display: block !important;
+  }
+
+  .top-tab {
+    margin-bottom: 16px;
+  }
+
+</style>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const backdrop = document.getElementById('backdrop');
+    const mobileMenuDrawer = document.getElementById('mobile-menu-drawer');
+    const closeNav = document.getElementById('close-nav');
+    const openNav = document.getElementById('open-nav');
+    const tabs = document.querySelectorAll('.top-tab button');
+    const childMenus = document.querySelectorAll('.child-menu');
+    const grandchildToggles = document.querySelectorAll('.grandchild-toggle');
+    const grandchildMenus = document.querySelectorAll('.grandchild-menu');
+
+    function handleResize() {
+      if (window.innerWidth < 1024) {
+        openNav.addEventListener('click', openMenu);
+        closeNav.addEventListener('click', closeMenu);
+
+        // Handle the opening of the parent topic (parent links with children)
+        tabs.forEach(tab => {
+          tab.addEventListener('click', toggleChildMenu);
+        });
+
+        // Handle opening of grandchild menus (inside child links)
+        grandchildToggles.forEach(toggle => {
+          toggle.addEventListener('click', toggleGrandchildMenu);
+        });
+      } else {
+        openNav.removeEventListener('click', openMenu);
+        closeNav.removeEventListener('click', closeMenu);
+        tabs.forEach(tab => {
+          tab.removeEventListener('click', toggleChildMenu);
+        });
+        grandchildToggles.forEach(toggle => {
+          toggle.removeEventListener('click', toggleGrandchildMenu);
+        });
+      }
+    }
+
+    function openMenu() {
+      mobileMenuDrawer.classList.add('menu-open');
+      backdrop.classList.add('backdrop-visible');
+      document.body.classList.add('body-no-scroll');
+    }
+
+    function closeMenu() {
+      mobileMenuDrawer.classList.remove('menu-open');
+      backdrop.classList.remove('backdrop-visible');
+      document.body.classList.remove('body-no-scroll');
+    }
+
+    function toggleChildMenu(event) {
+      const target = event.currentTarget.getAttribute('data-tab-target');
+      childMenus.forEach(menu => {
+        if (menu.getAttribute('data-tab-content') === target) {
+          menu.classList.toggle('open');
+        } else {
+          menu.classList.remove('open');
+        }
+      });
+    }
+
+    function toggleGrandchildMenu(event) {
+      const target = event.currentTarget.getAttribute('data-child-tab-target');
+      grandchildMenus.forEach(menu => {
+        if (menu.getAttribute('data-grandchild-tab-content') === target) {
+          menu.classList.toggle('open');
+        } else {
+          menu.classList.remove('open');
+        }
+      });
+    }
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    // Handle inserting filter into URL for child and grandchild links
+    const childLinks = document.querySelectorAll('a[data-parent-title]');
+    childLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        const parentTitle = link.getAttribute('data-parent-title');
+        if (parentTitle.toLowerCase() !== 'shop all' && parentTitle.toLowerCase() !== 'brands' && parentTitle.toLowerCase() !== 'shop alle') {
+          e.preventDefault(); // Prevent immediate navigation
+          const url = new URL(link.href, window.location.origin);
+
+          // Append filter to URL using parent title
+          url.searchParams.set('filter.p.m.custom.age_groups', parentTitle);
+
+          // Redirect to the new URL with the filter applied
+          window.location.href = url.href;
+        }
+      });
+    });
+  });
+</script>

@@ -1,0 +1,305 @@
+<div class="account">
+    <div class="min-h-[70vh] flex flex-col justify-center">
+
+        <div class="flex container  flex-wrap w-full justify-between items-center mb-8 mt-14">
+            <div class="flex gap-2 items-center">
+                {% comment %} <div class="border border-black p-2 rounded-full">{% render 'icon', icon: 'login', size: 30, stroke: '#000' %}</div> {% endcomment %}
+                <div class="">
+                    <h1 class="Heading font-bold text-3xl">
+                        {% if customer.default_address.first_name != blank %}
+                            {{ 'customer.account.title_name' | t }} 
+                        {% else %}
+                            {{ 'customer.account.title' | t }}
+                        {% endif %} 
+                    </h1>
+                    <span>{{ customer.default_address.first_name }} {{ customer.default_address.last_name }}</span>
+                </div>
+            </div>
+            <a class="Button Button_primary mt-4 flex items-center gap-x-2" href="{{ routes.account_logout_url }}">
+                 {{ 'customer.account.logout' | t }} {% comment %}{% render 'icon', icon: 'log-out', size: 15, stroke: '#000' %} {% endcomment %}
+            </a> 
+        </div>
+   
+
+        <div class="container grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <div class="{%- if customer.orders.size > 0 -%}col-span-2 md:col-span-4 lg:col-span-6 {% else %}col-span-2 {% endif %} w-full flex flex-col border border-border p-12">
+                <h2 class="Heading text-4xl font-bold mb-4">{{ 'customer.orders.title' | t }}</h2>
+
+                {%- paginate customer.orders by 20 -%}
+                {%- if customer.orders.size > 0 -%}
+                    <div class="overflow-x-auto">
+                        <table class="orders table-fixed w-full">
+                            <caption class="hidden">{{ 'customer.orders.title' | t }}</caption>
+                            <thead>
+                                <tr class="space-x-4 flex">
+                                    <th class="text-left w-full min-w-[170px]">{{ 'customer.orders.order_number' | t }}</th>
+                                    <th class="text-left w-full min-w-[170px]">{{ 'customer.orders.date' | t }}</th>
+                                    <th class="text-left w-full min-w-[170px]">{{ 'customer.orders.payment_status' | t }}</th>
+                                    <th class="text-left w-full min-w-[170px]">{{ 'customer.orders.fulfillment_status' | t }}</th>
+                                    <th class="text-left w-full min-w-[170px]">{{ 'customer.orders.total' | t }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {%- for order in customer.orders -%}
+                                <tr class="space-x-4 flex">
+                                    <td class="orders__number w-full min-w-[170px]" data-label="{{ 'customer.orders.order_number' | t }}">
+                                        <a class="Button Button_primary w-fit text-base" href="{{ order.customer_url }}">{{ 'customer.orders.view_order' | t }} - {{ order.name }}</a>
+                                    </td>
+                                    <td class="orders__date w-full min-w-[170px]" data-label="{{ 'customer.orders.date' | t }}">
+                                        {{- order.created_at | time_tag: format: 'date' -}}
+                                    </td>
+                                    <td class="orders__pay w-full min-w-[170px]" data-label="{{ 'customer.orders.payment_status' | t }}">
+                                        {{- order.financial_status_label -}}
+                                    </td>
+                                    <td class="orders__fulfil w-full min-w-[170px]" data-label="{{ 'customer.orders.fulfillment_status' | t }}">
+                                        {{- order.fulfillment_status_label -}}
+                                    </td>
+                                    <td class="orders__total w-full min-w-[170px]" data-label="{{ 'customer.orders.total' | t }}">
+                                        {{- order.total_price | money_with_currency -}}
+                                    </td>
+                                </tr>
+                                {%- endfor -%}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                {%- else -%} 
+                    <p class="mb-8">{{ 'customer.orders.none' | t }}</p>
+                {%- endif -%}
+        
+                {%- if paginate.pages > 1 -%}
+                    {% render 'pagination', paginate: paginate %}
+                {%- endif -%}
+                {%- endpaginate -%}
+              
+            </div>
+
+            <div class="{%- if customer.orders.size > 0 -%}col-span-2 md:col-span-2 lg:col-span-3 {% else %}col-span-2 {% endif %} w-full border border-border p-12">
+                {% comment %} <h3 class="Heading text-4xl font-bold mb-4 flex gap-x-2 items-center">{{ 'customer.addresses.title' | t }} {% render 'icon', icon: 'address', size: 33, stroke: '#000' %}</h3> {% endcomment %}
+                <div class="">
+             
+                        <div class="adress_details flex flex-col gap-y-2 h-full">
+                            {% assign isEditMode = false %}
+                            <p class="flex justify-between border-b border-border"><span class="font-bold Heading">{{ 'customer.addresses.name' | t }}:</span> {{ customer.default_address.first_name }} {{ customer.default_address.last_name }}</p>
+                            <p class="flex justify-between border-b border-border"><span class="font-bold Heading">{{ 'customer.addresses.address1' | t }}:</span> {{ customer.default_address.address1 }}</p>
+    
+                            {% if customer.default_address.address2 != blank %}
+                                <p class="flex justify-between border-b border-border"><span class="font-bold Heading">{{ 'customer.addresses.address2' | t }}:</span> {{ customer.default_address.address2 }}</p>
+                            {% endif %}
+    
+                            <p class="flex justify-between border-b border-border"><span class="font-bold Heading">{{ 'customer.addresses.city' | t }}:</span> {{ customer.default_address.city }}, {% if customer.default_address.province_code %}{{ customer.default_address.province_code }}{% endif %}, {{ customer.default_address.country_code }}</p>
+                            <p class="flex justify-between border-b border-border"><span class="font-bold Heading">{{ 'customer.addresses.zip' | t }}:</span> {{ customer.default_address.zip_code }}</p>
+                            <p class="flex justify-between border-b border-border"><span class="font-bold Heading">{{ 'customer.addresses.phone' | t }}:</span> {{ customer.phone }}</p>
+
+                             <a class="Button Button_primary flex items-center gap-x-2 mt-4" href="#" id="editAddressButton">
+                                {{ 'customer.addresses.edit' | t }} 
+                            </a> 
+                        </div>
+  
+                    
+
+                    <div class="edit-form w-full hidden">
+                       
+                            <!-- Edit Address Form -->
+                            {% for address in customer.addresses %}
+                                <!-- address details -->
+                                {% form 'customer_address', address, class: 'flex flex-col w-full justify-between gap-y-2' %}
+        
+                                    <div class="flex justify-between w-full">
+                                        <label class="Heading font-bold w-full" for="address[first_name]">{{ 'customer.addresses.first_name' | t }}:</label>
+                                        <input class="w-full text-right border border-border px-2 py-1" type="text" name="address[first_name]" value="{{ address.first_name }}">
+                                    </div>
+                                    
+                                    <div class="flex justify-between w-full">
+                                        <label class="Heading font-bold w-full" for="address[last_name]">{{ 'customer.addresses.last_name' | t }}</label>
+                                        <input class="w-full text-right border border-border px-2 py-1" type="text" name="address[last_name]" value="{{ address.last_name }}">
+                                    </div>
+                                    
+                                    <div class="flex justify-between w-full">
+                                        <label class="Heading font-bold w-full" for="address[company]">{{ 'customer.addresses.company' | t }}</label>
+                                        <input class="w-full text-right border border-border px-2 py-1" type="text" name="address[company]" value="{{ address.company }}">
+                                    </div>
+                                    
+                                    <div class="flex justify-between w-full">
+                                        <label class="Heading font-bold w-full" for="address[address1]">{{ 'customer.addresses.address1' | t }}</label>
+                                        <input class="w-full text-right border border-border px-2 py-1" type="text" name="address[address1]" value="{{ address.address1 }}">
+                                    </div>
+                                    
+                                    <div class="flex justify-between w-full">
+                                        <label class="Heading font-bold w-full" for="address[address2]">{{ 'customer.addresses.address2' | t }}</label>
+                                        <input class="w-full text-right border border-border px-2 py-1" type="text" name="address[address2]" value="{{ address.address2 }}">
+                                    </div>
+                                    
+                                    <div class="flex justify-between w-full">
+                                        <label class="Heading font-bold w-full" for="address[city]">{{ 'customer.addresses.city' | t }}</label>
+                                        <input class="w-full text-right border border-border px-2 py-1 px-2 py-1" type="text" name="address[city]" value="{{ address.city }}">
+                                    </div>
+                                    
+                                    <div class="flex justify-between w-full">
+                                        <label class="Heading font-bold w-full" for="address[country]">{{ 'customer.addresses.country' | t }}</label>
+                                        <input class="w-full text-right border border-border px-2 py-1" type="text" name="address[country]" value="{{ address.country }}">
+                                    </div>
+                                    
+                                    <div class="flex justify-between w-full">
+                                        <label class="Heading font-bold w-full" for="address[province]">{{ 'customer.addresses.province' | t }}</label>
+                                        <input class="w-full text-right border border-border px-2 py-1" type="text" name="address[province]" value="{{ address.province }}">
+                                    </div>
+                                    
+                                    <div class="flex justify-between w-full">
+                                        <label class="Heading font-bold w-full" for="address[zip]">{{ 'customer.addresses.zip' | t }}</label>
+                                        <input class="w-full text-right border border-border px-2 py-1" type="text" name="address[zip]" value="{{ address.zip }}">
+                                    </div>
+                                    
+                                    <div class="flex justify-between w-full">
+                                        <label class="Heading font-bold w-full" for="address[phone]">{{ 'customer.addresses.phone' | t }}</label>
+                                        <input class="w-full text-right border border-border px-2 py-1" type="tel" name="address[phone]" value="{{ address.phone }}">
+                                    </div>
+        
+
+                                    <button class="Button Button_" type="submit">{{ 'customer.addresses.update' | t }}</button>
+                                {% endform %}
+                            {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="{%- if customer.orders.size > 0 -%}col-span-2 md:col-span-2 lg:col-span-3 {% else %}col-span-2 {% endif %} w-full p-12 border border-border">
+                 <h3 class="Heading text-4xl font-bold flex gap-2 items-center mb-4">{{ 'customer.account.details' | t }} {% comment %}{% render 'icon', icon: 'key-hole', size: 35, stroke: '#000' %}{% endcomment %}</h3> 
+                <div class="flex flex-col gap-y-2 h-full">
+                    <p class="flex justify-between border-b border-border"><span class="font-bold Heading">{{ 'customer.addresses.name' | t }}:</span> {{ customer.default_address.first_name }} {{ customer.default_address.last_name }}</p>
+                    <p class="flex justify-between border-b border-border"><span class="font-bold Heading">{{ 'customer.login.email' | t }}:</span> {{ customer.email }}</p>
+{% comment %}        
+                    <a class="Button Button_primary flex ga-x-2 mt-4" href="{{ routes.account_recover_url }}">
+                        {{ 'customer.recover_password.title' | t }} 
+                    </a> {% endcomment %}
+ 
+                </div>
+            </div>
+            <div class="col-span-4 container mb-20 border border-border">
+                <div class="flex flex-col gap-y-2 pt-12 mb-6">
+                    <h3 class="Heading font-bold text-3xl">Signup to our newsletter</h3>
+                    <p>To get birthday gifts, know about collection drops and much more</p>
+                </div>
+                <div class="mt-6 klaviyo-form-Wi7AF2"></div>
+                   
+            </div>
+        </div>
+
+    
+    </div>
+
+
+
+</div>
+
+<style>
+    .child-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .child-title {
+        margin-bottom: 7px;
+    }
+
+    .child-entry {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .child-name { 
+        padding: 5px 10px;
+        min-width: 200px;
+    }
+
+    .child-birthday {
+        padding: 5px 10px;
+        min-width: 200px;
+    }
+    
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const container = document.getElementById("childrenContainer");
+        const addChildButton = document.getElementById("addChildButton");
+        let childCounter = 1; // Counter for child number
+    
+        addChildButton.addEventListener("click", function() {
+            // Create a div to hold the input fields for one child
+            const childDiv = document.createElement("div");
+            childDiv.classList.add("child-entry");
+            childDiv.style.marginBottom = "10px";
+    
+            // Create and add a title for the child entry
+            const childTitle = document.createElement("h3");
+            childTitle.textContent = `Child ${childCounter}`; // Initial title
+            childDiv.appendChild(childTitle);
+            childTitle.classList.add("child-title", "Heading");
+    
+            // Create and append the name input field
+            const nameInput = document.createElement("input");
+            nameInput.setAttribute("type", "text");
+            nameInput.setAttribute("placeholder", "Child's Name");
+            nameInput.classList.add("child-name", "input-name"); // Added class for styling
+            childDiv.appendChild(nameInput);
+    
+            // Update the title when a name is entered
+            nameInput.addEventListener("input", function() {
+                childTitle.textContent = nameInput.value ? nameInput.value : `Child ${childCounter}`;
+            });
+    
+            // Create and append the birthday input field
+            const birthdayInput = document.createElement("input");
+            birthdayInput.setAttribute("type", "date");
+            birthdayInput.setAttribute("placeholder", "Child's Birthday");
+            birthdayInput.classList.add("child-birthday", "input-birthday"); // Added class for styling
+            childDiv.appendChild(birthdayInput);
+    
+            // Append the div to the container
+            container.appendChild(childDiv);
+    
+            // Increment the child counter for the next addition
+            childCounter++;
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const editAddressButton = document.getElementById("editAddressButton");
+        let isEditMode = false;
+
+        editAddressButton.addEventListener("click", function(e) {
+            e.preventDefault();
+
+            // Toggle between view mode and edit mode
+            const addressDetails = document.querySelectorAll(".adress_details");
+            const editForm = document.querySelectorAll(".edit-form");
+
+            if (!isEditMode) {
+                // Switch from view mode to edit mode
+                addressDetails.forEach(element => { 
+                    element.style.display = "none";
+                });
+                editForm.forEach(element => {
+                    element.style.display = "flex";
+                });
+                editAddressButton.style.display= "none";
+            } else {
+                // Switch from edit mode to view mode
+                addressDetails.forEach(element => {
+                    element.style.display = "flex";
+                });
+                editForm.forEach(element => {
+                    element.style.display = "none";
+                });
+                editAddressButton.textContent = "{{ 'customer.addresses.edit' | t }}";
+            }
+
+            isEditMode = !isEditMode;
+        });
+    });
+</script>
+

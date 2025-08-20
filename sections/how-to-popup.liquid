@@ -1,0 +1,53 @@
+<div href="#" class="how-to-section fixed z-30 right-5 bottom-2 text-center">
+    <div class="close-icon absolute w-4 h-4 text-white bg-primary-black border border-primary-black rounded-full flex items-center justify-center text-[8px] font-bold top-0 right-5 cursor-pointer z-30">{% render 'icon', icon: 'close', size: 6, fill: 'white' %}</div>
+    <div class="how-to-gif cursor-pointer hover:filter-grayscale-50 w-[120px]">
+        {% render 'media', media: section.settings.gif, loading: 'lazy', class: "w-50 h-50 rounded-full relative z-10", width: 150 %}
+        <p class="font-bold text-white text-sm bg-primary-black border border-primary-black py-1 mt-[-20px] w-fit mx-auto px-2 relative z-20 rounded-sm">{{ section.settings.title }}</p>
+    </div>
+</div>
+
+{% if section.settings.video_popup != blank %}
+<div id="popup-container" class="hidden fixed z-50 top-0 left-0 w-full h-full">
+    <div id="popup-overlay" class="absolute top-0 left-0 w-full h-full bg-black opacity-80"></div>
+        <div id="popup-video" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <video controls muted webkit-playsinline playsinline preload="metadata" loading="lazy" class="z-10 max-w-90vw w-1280px overflow-hidden rounded-15px">
+                <source src="{{ section.settings.video_popup | media_tag }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <a href="#" id="close-btn" class="absolute top-5 right-5 text-2xl flex items-center gap-2 z-20 text-primary-black cursor-pointer">
+                <span class="text-sm flex items-center gap-2">{{ 'cart.general.close' | t }} {% render 'icon', icon: 'close', size: 15, fill: 'black' %}</span> 
+            </a>
+    </div>
+</div>
+{% endif %}
+
+<script src="{{ 'how-to-popup.js' | asset_url }}" defer="defer"></script> 
+
+{% schema %}
+{
+    "name": "How to video",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "gif",
+            "label": "GIF"
+        }, 
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "video",
+            "id": "video_popup",
+            "label": "Video Popup"
+        }
+    ],
+    "presets": [
+        {
+            "name": "How to video",
+            "category": "Video"
+        }
+    ]
+}
+{% endschema %}

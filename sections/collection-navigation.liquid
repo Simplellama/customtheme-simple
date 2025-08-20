@@ -1,0 +1,121 @@
+{% assign items_length = 0 %}
+{% for object in collection.metafields.custom.collection_navigation.value %}
+  {% assign items_length = forloop.length %}
+{% endfor %}
+
+{% unless collection.template_suffix == "build-your-bundle" %}
+  <section class="bg-primary-bg">
+    <div class="collection_navigation container flex flex-nowrap w-full pr-0 pl-0 sm:pl-4 flex-col md:flex-row justify-between md:items-center gap-x-6 pt-8 {% if collection.metafields.custom.countdown.value == blank %} pb-16 md:pb-20{% else %}pb-10{% endif %} Heading">
+      {% if section.settings.title != blank %}
+        <div class="w-full md:w-fit pl-4 md:pl-auto"> 
+          <h1 class="Heading text-4xl md:text-6xl font-bold sm:whitespace-nowrap  md:mb-0">{{ section.settings.title }}</h1>
+        </div>
+      {% endif %}
+      {% if collection.metafields.custom.collection_navigation.value != blank %}
+
+        
+        {% assign lazyload = 'eager' %}
+        {%- if forloop.index > 4 -%}
+          {%- assign lazyload = 'lazy' -%}
+        {%- endif -%}
+        
+
+        <div id="collection_nav_slider" class="{% if items_length > 4 %}splide{% endif %} w-full mt-8 md:mt-0 md:max-w-[75vw]">
+          <div class="splide__track"> 
+            <ul class="splide__list {% if items_length > 9 %}justify-start{% elsif items_length <= 4 %} justify-around sm:justify-start md:justify-end {% else %} justify-end {% endif %}">
+              {% for object in collection.metafields.custom.collection_navigation.value %}
+  
+                <li class="splide__slide flex justify-center w-full max-w-[86px] md:max-w-[110px] px-0 sm:px-2 relative text-right border-border md:border-r last:border-none">
+                  <a class="relative flex flex-col items-center gap-2 group w-full" href="{{ object.collectionn.value.url }}">
+                    {% if object.show_label.value %}
+                      <span class="ProductItem__Label absolute  px-2 py-1 text-white text-xs flex gap-2 items-center top-0 right-0 font-semibold">
+                        {% if object.show_label.value contains 'Bestseller 🏅' %}{{ 'collections.collections.bestseller' | t }}
+                        {% elsif object.show_label.value contains 'New in 🎉' %}{{ 'collections.collections.new_in' | t }}
+                        {% elsif object.show_label.value contains 'Selling out ⏱' %}{{ 'collections.collections.selling_out' | t }}
+                        {% elsif object.show_label.value contains 'Package Deal' %}{{ 'collections.collections.package_deal' | t }}
+                        {% elsif object.show_label.value contains 'Sale' %}{{ 'collections.collections.sale' | t }}
+                        {% endif %}
+                      </span>
+                    {% endif %}
+  
+                    {% if object.collection_icon_image.value %}
+                        <img class="rounded-md bg-white border border-transparent group-hover:border-primary-black transition-all duration-100 ease w-[80px]" width="80" height="80" loading="{{ lazyload }}" src="{{ object.collection_icon_image.value | image_url: width: 80 }}" alt="subcollection - {{ object.collection_title.value }}"/>
+                    {% endif %}
+                    {% if object.collection_title.value %}
+                        <h3 class="Heading text-center text-sm w-full">{{ object.collection_title.value }}</h3>
+                    {% endif %}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+  
+    
+  <style>
+    .collection_navigation .splide__arrow--next {
+      right: -0.8rem;
+    }
+    .splide__arrow--prev {
+      left: -0.8rem;
+    }
+  </style>
+    
+  
+  
+  <script src="{{ 'collection-navigation-slider.js' | asset_url }}" defer></script> 
+  
+  {% endunless %}
+  
+  {% schema %}
+  {
+    "name": "Collection navigation",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "tab",
+        "name": "Tab",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collection navigation",
+        "category": "section",
+        "blocks": [
+          {
+            "type": "tab",
+            "settings": {
+            }
+          }
+        ]
+      }
+    ]
+  }
+  {% endschema %}
+  

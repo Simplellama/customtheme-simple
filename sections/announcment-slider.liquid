@@ -1,0 +1,76 @@
+{% if section.settings.hide != true %}
+<section class="news_slider_section z-[9999] bg-primary-black text-secondary-bg">
+  <div id="news_slider" class="container splide py-2 w-full">
+    <div class="splide__track">
+      <ul id="news_list" class="splide__list !flex lg:flex-row  md:justify-between items-center">
+        {% for block in section.blocks %} 
+          <li role="announcment" class="splide__slide w-full md:w-fit text-sm sm:text-base font-light text-center">{{ block.settings.title }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div> 
+</section>
+<script src="{{ 'announcment-slider.js' | asset_url }}" defer></script>
+{% endif %}
+
+{% schema %}
+{ 
+  "name": "Announcement slider",
+  "max_blocks": 5,
+  "settings": [
+    { 
+      "type": "checkbox",
+      "id": "hide",
+      "label": "Hide announcmentbar",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#000000" 
+    },
+    { 
+      "type": "color",
+      "id": "color",
+      "label": "Text color", 
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "News",
+      "type": "news",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "title",
+          "label": "Heading" 
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "icon"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement slider",
+      "category": "section",
+      "blocks": [
+        {
+          "type": "news",
+          "settings": {}
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,148 @@
+<section class="login-section">
+  <div class="container relative flex items-start justify-center h-full min-h-[55vh] py-8">
+    <div class="content-box p-2 sm:p-8 sm:p-12 min-h-[600px] w-full flex flex-col items-center justify-center h-fit">
+      <div class="content-box-inner w-full max-w-[600px] flex flex-col gap-8">
+        <div class="Section_header flex gap-2 items-start justify-start ">
+          <div class="login-header text-left flex flex-col gap-4 ">
+            <h3 class="Heading font-bold text-6xl">{{ section.settings.title }}</h3>
+            <h3 class="Heading">{{ section.settings.subtitle }}</h3> 
+          </div>            
+          <div class="Section_header__inner reset-header hidden login-header text-center flex flex-col gap-2 ">
+            <h3 class="Heading font-heading text-4xl">{{ section.settings.title-reset }}</h3>
+            <h3 class="text-base">{{ section.settings.subtitle-reset }}</h3> 
+          </div>      
+        </div>
+        <div class="flex flex-col items-start justify-start w-full"> 
+          {% form 'create_customer', class: 'w-full flex flex-col gap-y-2' %}
+            {{ form.errors | default_errors }} 
+                    
+            <div class="first-name">
+                <input class="w-full p-2 rounded-sm overflow-hidden" type="text" name="customer[first_name]" placeholder="{{ 'customer.addresses.first_name' | t }}">
+            </div>
+            
+            <div class="last-name">
+                <input class="w-full p-2 rounded-sm overflow-hidden" type="text" name="customer[last_name]" placeholder="{{ 'customer.addresses.last_name' | t }}">
+            </div>
+            
+            <div class="email">
+                <input class="w-full p-2 rounded-sm overflow-hidden" type="email" name="customer[email]" placeholder="{{ 'customer.login.email' | t }}">
+            </div>
+            
+            <div class="password">
+                <input class="w-full p-2 rounded-sm overflow-hidden" type="password" name="customer[password]" placeholder="{{ 'customer.activate_account.password' | t }}">
+            </div>
+          
+            <!-- Container for dynamically added child information -->
+            <div id="childrenContainer"></div>
+          
+            <!-- Button to add child information -->
+            <button type="button" id="addChildButton" class="Button Button_primary w-fit mt-4">Add Child</button>
+          
+            <button class="g-recaptcha Button Button_primary w-full mt-8 submit"  
+                data-sitekey="reCAPTCHA_site_key" 
+                data-callback='onSubmit' 
+                value="Create"
+                data-action='submit'
+                type="submit">{{ 'customer.activate_account.submit' | t }}
+            </button>
+          {% endform %}
+
+          <div class="w-full flex text-base flex-col justify-between mt-4">
+              <button id="back-to-login" class="hidden w-fit flex mx-auto items-center gap-1">{% render 'icon', icon: 'arrow-right', size: 10, fill: "black", class: 'rotate-180 mt-[1px]'%}{{ 'customer.activate_account.back_to_login' | t }}</button>
+          </div>
+        </div> 
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const container = document.getElementById("childrenContainer");
+      const addChildButton = document.getElementById("addChildButton");
+      let childCounter = 1;
+  
+      addChildButton.addEventListener("click", function() {
+          const childDiv = document.createElement("div");
+          childDiv.classList.add("child-entry", "flex", "flex-col", "gap-y-2");
+          childDiv.style.marginBottom = "10px";
+  
+          const nameInput = document.createElement("input");
+          nameInput.setAttribute("type", "text");
+          nameInput.setAttribute("placeholder", "Child's Name");
+          nameInput.setAttribute("name", `customer[child][${childCounter}][Name]`);
+          nameInput.classList.add("w-full", "p-2", "overflow-hidden");
+          childDiv.appendChild(nameInput);
+  
+          const birthdayInput = document.createElement("input");
+          birthdayInput.setAttribute("type", "date");
+          birthdayInput.setAttribute("placeholder", "Child's Birthday");
+          birthdayInput.setAttribute("name", `customer[child][${childCounter}][Birthday]`);
+          birthdayInput.classList.add("w-full", "p-2", "overflow-hidden");
+          childDiv.appendChild(birthdayInput);
+  
+          container.appendChild(childDiv);
+  
+          childCounter++;
+      });
+  });
+  </script>
+
+<script>
+  document.getElementById('forgot-password-link').addEventListener('click', function(event) {
+    event.preventDefault();
+    document.querySelector('.login-form').classList.add('hidden');
+    document.querySelector('.reset-form').classList.remove('hidden');
+    document.getElementById('forgot-password-link').classList.add('hidden');
+    document.getElementById('back-to-login').classList.remove('hidden');
+    document.querySelector('.login-header').classList.add('hidden');
+    document.querySelector('.reset-header').classList.remove('hidden');
+  });
+    
+  document.getElementById('back-to-login').addEventListener('click', function(event) {
+    event.preventDefault();
+    document.querySelector('.login-form').classList.remove('hidden');
+    document.querySelector('.reset-form').classList.add('hidden');
+    document.getElementById('forgot-password-link').classList.remove('hidden');
+    document.getElementById('back-to-login').classList.add('hidden');
+    document.querySelector('.login-header').classList.remove('hidden');
+    document.querySelector('.reset-header').classList.add('hidden');
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Register account"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading",
+      "default": "Create your account"
+    },
+    {
+      "type": "text",
+      "id": "title-reset",
+      "label": "Heading",
+      "default": "Reset password"
+    },
+    {
+      "type": "text",
+      "id": "subtitle-reset",
+      "label": "Subheading",
+      "default": "Enter your email address and we will send you a link to reset your password"
+    }
+  ]
+}
+{% endschema %}
+
+
+
+
+

@@ -1,0 +1,157 @@
+{% assign collection_videos = collection.metafields.custom.collection_intro_video_list.value %}
+{% capture byb %}{% if collection.template_suffix == "build-your-bundle" %}true{% else %}false{% endif %}{% endcapture %}
+<section class="min-h-screen  px-4">
+  <div class="flex justify-between items-center w-full  h-fit bg-secondary-bg ">
+    <div class="flex flex-col gap-6 w-[90%]  h-full  px-6 pt-10 pb-10">
+        <h1 class="font-bold text-2xl md:text-7xl max-w-[80%] min-w-[300px]"> {{ collection.title }} </h1>
+        {% if collection.description != blank %}<div class="[&>*]:text-lg w-full [&>*]:font-text max-w-[90%]"> {{ collection.description }} </div>{% endif %}
+    </div>
+    <div class="w-full h-full overflow-hidden">
+      {% if collection.image != blank %} 
+        {{ collection.image | image_url: width: 1024 | image_tag: loading: loading, widths: '150w,200w,300w,352w,500w,832w,1024w,1200w,1536w,1920w,2560w', class: 'h-auto w-full object-cover object-center max-h-[400px]'  }}
+      {% endif %}
+    </div>
+  </div>
+  <div class="collection_container px-0">
+
+    {%- paginate collection.products by products_per_page -%}
+
+      {{ 'component-facets.css' | asset_url | stylesheet_tag }}
+      <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+
+      <div class="px-6 collection-facets-header w-full py-6">
+
+  
+          <div class="facets-wrapper w-full" id="main-collection-filters w-full">
+            {% render 'facets',
+              results: collection,
+              enable_filtering: true,
+              enable_sorting: true,   
+              paginate: paginate 
+            %}
+          </div>
+
+      </div>
+
+
+      <div class="product-grid-container " id="ProductGridContainer" data-cascade >
+          <div class="collection flex {% if byb == 'true' %} flex-row gap-x-8 {% else %} flex-col  {% endif %}">
+            {% assign videoLink = video_content.collection_link.value.url %}
+            {% for video_content in collection_videos %}
+              {% if video_content.collection_link.value.url != blank %} 
+                {% assign videoLink = video_content.collection_link.value.url %}
+              {% elsif video_content.product_link.value.url != blank %}
+                {% assign videoLink = video_content.product_link.value.url %}
+              {% elsif video_content.page_link.value.url != blank %}
+                {% assign videoLink = video_content.page_link.value.url %}
+              {% else %}
+                {% assign videoLink = video_content.button_link %}
+              {% endif %}
+            {%  endfor %}
+            <ul
+              id="product-grid"
+              data-id="{{ section.id }}"
+              class=" page-width product-grid gap-x-6 gap-y-12 facets-wrapper grid grid-cols-12 w-full h-full {% if paginate.pages > 1 %} pb-6{% else %} pb-20{% endif %}"
+            >
+              
+
+              {% assign sorted_products = collection.products %}
+              {% assign available_products = sorted_products | where: 'available', true %}
+              {% assign unavailable_products = sorted_products | where: 'available', false %}
+              {% assign sorted_products = available_products | concat: unavailable_products %}
+
+              {%- for product in sorted_products -%}
+                  {% if product.metafields.seo.hidden == 1 %}
+                      {% continue %}
+                  {% endif %}
+                  
+                  {% assign lazyload = false %}
+                  {%- if forloop.index > 2 -%}
+                    {%- assign lazyload = true -%}
+                  {%- endif -%}
+      
+                  
+                  <li data-product-id="{{ product.id }}" class="grid__item {% if section.settings.rows_per_page == "3" %} col-span-12 md:col-span-3 lg:col-span-3 lg:col-span-4 {% elsif section.settings.rows_per_page == "4" %} col-span-6 md:col-span-3 {% endif %} {% if forloop.index > 8 %} scroll-trigger animate--slide-in {% endif %} "  >
+                    {% render 'card-product',product: product, lazyload: lazyload, byb: byb, col_count: section.settings.rows_per_page  %} 
+                  </li> 
+              {%- endfor -%}
+
+            </ul>
+        
+            {% if byb == "true" %}
+              <div class="block">
+                {% render 'build-your-bundle-cart' %}
+                <div class="bundlecart_button md:hidden fixed flex items-center justify-between right-0 left-0 bottom-0 z-[8] w-full pb-5 pt-4 bg-primary-green">
+                  <button type="button" id="open-byb-cart" class="flex flex-row justify-around items-center text-white cursor-pointer w-full h-full gap-x-2 px-2">
+                    <span class="Heading font-bold w-fit text-white text-base flex flex-row gap-x-2">{{ 'byb.selected_bundle_items' | t }} <span class="bundle-count text-base Heading font-bold">0</span> / <span class="bundle-qty Heading font-bold "></span> </span>
+                    <span class="text-sm Heading font-bold border border-border flex items-center bundle_icon bg-white text-primary-black rounded-md py-1 px-5 gap-1"><img width="25" height="25" loading="eager" src="https://teeshoppen-group.myshopify.com/cdn/shop/files/bundle_150x.svg" alt="Bundle" /> {{ 'byb.open_bundle' | t }}</span> 
+                  </button>
+                </div>
+              </div>
+            {% endif %} 
+     
+          </div> 
+          <div class="loading-overlay gradient"></div>
+          {%- if paginate.pages > 1 -%}
+            {% render 'pagination', paginate: paginate, anchor: '' %}
+          {%- endif -%}
+      </div>
+    {% endpaginate %}
+  </div>
+
+</section>
+{% render 'page-lock' %}
+
+
+<script defer>
+  document.addEventListener('DOMContentLoaded', function() {
+    let video = document.getElementById('myVideo');
+    if(video) {
+    let observer = new IntersectionObserver(function(entries) {
+      if(entries[0].isIntersecting === true)
+        video.play();
+      else
+        video.pause();
+    }, { threshold: [0] });
+
+    observer.observe(video);
+    }
+  });
+
+</script>
+
+{% schema %}
+{
+  "name": "Collection page",
+  "class": "collection_page",
+  "settings": [
+      {
+          "type": "image_picker",
+          "id": "background",
+          "label": "Background"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_bundle_quick_add",
+        "default": false,
+        "label": "Enable bundle quick add (disable normal quick add)"
+      },
+      {
+        "type": "select",
+        "id": "rows_per_page",
+        "label": "Rows per page",
+        "default": "3",
+        "options": [
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          }
+        ]
+      }
+  ]
+}
+{% endschema %}

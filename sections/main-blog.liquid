@@ -1,0 +1,26 @@
+{%- paginate blog.articles by 30 -%}
+  <div class="main-blog max-w-screen-pageMaxWidth mx-auto w-full my-12 px-4">
+
+    <div class="blog-articles w-full gap-x-6 gap-y-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+      {%- for article in blog.articles -%}
+        <div class="scroll-trigger col-span animate--slide-in" data-cascade >
+          {%- render 'article-card', article: article -%} 
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      {%- render 'pagination', paginate: paginate -%}
+    {%- endif -%}
+  </div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Main blog",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+  ]
+}
+{% endschema %}

@@ -1,0 +1,306 @@
+{% assign upsellprodList = shop.metaobjects.free_shipping_upsell.unlock-free-shipping.unisex_products %} 
+{% assign upsellprodListUni = shop.metaobjects.free_shipping_upsell.unlock-free-shipping.unisex_products %} 
+{% assign upsellprodListWoman = shop.metaobjects.free_shipping_upsell.unlock-free-shipping.product_list_woman %} 
+{% assign upsellprodListMen = shop.metaobjects.free_shipping_upsell.unlock-free-shipping.product_list_men %} 
+{% assign freeshipping = false %}
+
+<div data-ajax-cart-section class="flex flex-col items-center w-full bg-primary-bg relative h-full">
+    <div class="flex flex-col w-full px-8 h-full">
+
+        {% for line_item in cart.items %}
+            {% assign menCount = 0 %}
+            {% assign womenCount = 0 %}
+            {% assign unisexCount = 0 %}
+            {% assign girlsCount = 0 %}
+            {% assign boysCount = 0 %}
+
+            {% for line_item in cart.items %}
+                {% assign gender = line_item.product.metafields.PIM.Gender_Gender.value | downcase %}
+                {% if gender == 'men' %}
+                    {% assign menCount = menCount | plus: line_item.quantity %}
+                {% elsif gender == 'woman' %}
+                    {% assign womenCount = womenCount | plus: line_item.quantity %}
+                {% elsif gender == 'unisex' %}
+                    {% assign unisexCount = unisexCount | plus: line_item.quantity %}
+                {% elsif gender == 'girls' %}
+                    {% assign girlsCount = girlsCount | plus: line_item.quantity %}
+                {% elsif gender == 'boys' %}
+                    {% assign boysCount = boysCount | plus: line_item.quantity %}
+                {% endif %} 
+            {% endfor %} 
+
+            {% assign mostUsedGender = '' %}
+            {% assign maxCount = 0 %}
+
+            {% if menCount > maxCount %}
+                {% assign mostUsedGender = 'men' %}
+                {% assign maxCount = menCount %}
+            {% endif %}
+
+            {% if womenCount > maxCount %}
+                {% assign mostUsedGender = 'woman' %}
+                {% assign maxCount = womenCount %}
+            {% endif %}
+
+            {% if unisexCount > maxCount %}
+                {% assign mostUsedGender = 'unisex' %}
+                {% assign maxCount = unisexCount %}
+            {% endif %}
+
+            {% if girlsCount > maxCount %}
+                {% assign mostUsedGender = 'girls' %}
+                {% assign maxCount = girlsCount %}
+            {% endif %}
+
+            {% if boysCount > maxCount %}
+                {% assign mostUsedGender = 'boys' %}
+                {% assign maxCount = boysCount %}
+            {% endif %}
+
+            {% if menCount == womenCount %}
+                {% assign mostUsedGender = 'unisex' %}
+            {% endif %}
+        {% endfor %} 
+
+        {% if mostUsedGender == 'men' %}
+            {% assign upsellprodList = upsellprodListMen %}
+        {% elsif mostUsedGender == 'woman' %}
+            {% assign upsellprodList = upsellprodListWoman %}
+        {% else %}
+            {% assign upsellprodList = upsellprodListUni %}
+        {% endif %}
+
+        {% for prod in upsellprodList.value %}
+            {% unless prod.available %}
+                {% continue %}
+            {% endunless %}
+            {% assign upsellprod = all_products[prod.handle] %}
+
+            {% if upsellprod %}
+                {% break %}
+            {% endif %}
+        {% endfor  %}
+
+        <div class=" flex flex-col justify-between pt-5 pb-6 border-b-1 bg-primary-bg w-full select-none gap-y-2"> 
+            <div class="flex justify-between">
+            <h3 class="flex items-center gap-2 uppercase text-xl text-primary-black font-semibold">{{ 'cart.general.title' | t }} <span class="text-sm font-normal">(<span class="text-sm font-normal" data-ajax-cart-bind-state="cart.item_count">{{ cart.item_count }}</span>)</span></h3> 
+                <button class="cart_close_btn text-2xl flex items-center gap-2 text-primary-black cursor-pointer">
+                    <span onclick="closeCart()" class="text-sm flex items-center gap-2">{{ 'cart.general.close' | t }} {% render 'icon', icon: 'close', size: 15, fill: 'black' %}</span> 
+                </button>
+            </div>
+            {% render 'cart-upsell-prod', upsellprod: upsellprod, freeshipping: freeshipping, gender: mostUsedGender %}
+        </div> 
+
+        <div class="empty-cart bg-white flex flex-col items-center justify-center h-[300px] w-full">
+            <p class="text-center">{{ 'cart.general.empty' | t }}</p>
+            <a href="/collections/all" class="mt-3 flex items-center text-center justify-center gap-x-2 rounded-full bg-primary-black px-5 min-h-[54px] text-lg font-semibold text-white w-fit shadow hover:bg-medium-green">{{ 'cart.general.continue_browsing_html' | t }}</a>
+        </div>
+
+        <div class="cart__items bg-white h-full w-full overflow-y-scroll rounded" data-ajax-cart-section-scroll>
+
+        <!-- Loop through cart items -->
+        {% for line_item in cart.items %}
+            {% assign line_item_index = forloop.index %}
+            {% assign lazyload = true %}
+        
+            <div class="cart_item flex items-center justify-between border-b-[0.2] gap-x-8 py-4 md:min-h-[130px] h-fit">
+            
+            <div class="rounded-md pl-2 py-2">
+                <div class="w-fit h-full ">
+                    <div class="h-[150px] overflow-hidden">
+                        <img src="{{ line_item.image | image_url: width: 250 }}" lazyload class="w-full h-full object-cover overflow-hidden" alt="{{ line_item.title }}">
+                        
+                    </div>
+                </div> 
+            </div> 
+     
+            <div class="flex relative flex-col w-full py-4">
+                <a href="{{ line_item.url }}" class="Heading text-sm sm:text-base font-semibold">{{ line_item.title | escape }}</a>
+
+                {%- if line_item.properties != empty -%}
+                    <ul class="CartItem__PropertyList">
+                        {%- for property in line_item.properties -%}
+                            {%- assign first_character_in_key = property.first | truncate: 1, '' -%}
+                            {% if property.first == '_upsellProdId' %}<input id="upsell-prodId" type="hidden" data-upsell-prod-id="{{ property.last }}"/>{% endif %}
+                            
+                            {%- if property.last == blank or first_character_in_key == '_' -%}
+                                {%- continue -%}
+                            {%- endif -%}   
+
+                            {% unless property.first == '_Bundle' or property.first == '_BundleCollection'  %}
+                                <li class="CartItem__Property text-sm Heading mt-2 rounded-xs bg-primary-black text-white w-fit px-2 py-2 {% if line_item.properties.Giftwrap %}hidden{% endif %}">{{ property.first }}: {{ property.last }}</li>
+                            {% endunless %}
+
+             
+                            {% if property.first == 'Discount' and property.last == 'Freeshipping' %}
+                                {% assign freeshipping = true %}
+                            {% endif %}
+                        {%- endfor -%}
+                    </ul>
+                {%- endif -%}
+    
+                <div class="flex flex-col justify-between md:flex-col md:justify-start items-start gap-2 mt-1">
+
+                    {% assign original_price = line_item.original_price | times: 1.0 %}
+                    {% assign final_price = line_item.final_price | times: 1.0 %}
+                    {% assign percentage_saved_per_item = original_price | minus: final_price | times: 100.0 | divided_by: original_price %}
+
+                      <div class="pt-2 text-sm">
+                          <span class="text-red-500 text-base font-semibold Heading">{{ line_item.final_price | money }} </span>
+                          {% unless line_item.final_price >= line_item.original_price and line_item.product.template_suffix != 'multipack_bundle'%}
+                            <span class="font-semibold line-through">{{ line_item.original_price | money }}</span>
+                            {% if percentage_saved_per_item %}
+                                <span class="font-semibold w-full">({{ percentage_saved_per_item | round }}% {{ 'cart.general.off_per_item' | t }})</span>
+                            {% endif %}
+                            {% else %}
+                            <span class="font-semibold line-through">{{ line_item.product.compare_at_price | money }}</span> 
+                        {% endunless %}
+
+
+                          {% if line_item.compare_at_price %}
+                              <span class="font-semibold">{{ line_item.compare_at_price | money }}</span>
+                          {% endif %}
+
+
+                      </div>
+                    
+                    <div class="flex items-center gap-2">
+                        <ajax-cart-quantity>
+                            <div class="flex justify-start items-center gap-2 mt-1 mb-1">
+                                <div class="qty flex items-center relative h-6 overflow-hidden rounded-sm border bg-primary-bg border-border w-[100px]">
+                                    <!-- "Minus one" button -->
+                                    <a name="minus" class="absolute z-[1] bg-primary-bg border-r border-border left-0 h-6 w-6 flex items-center justify-center hover:text-white hover:bg-primary-black" data-ajax-cart-quantity-minus
+                                    href="{{ routes.cart_change_url }}?line={{ line_item_index }}&quantity={{ line_item.quantity | minus: 1 }}"> 
+                                    -
+                                    </a>
+                            
+                                    <!-- Item quantity input -->
+                                    <input class="relative text-sm h-6 w-full bg-white z-[0] text-center appearance-none border border-border" data-ajax-cart-quantity-input="{{ line_item_index }}"
+                                    name="updates[]" 
+                                    value="{{ line_item.quantity }}"  
+                                    type="number" 
+                                    label="Quantity"
+                                    form="my-ajax-cart-form"/>
+                            
+                                    <!-- "Plus one" button -->
+                                    <a name="plus" class="absolute z-[1] bg-primary-bg right-0 mt-[1px] border-l border-border h-6 w-6 flex items-center justify-center hover:text-white hover:bg-primary-black" data-ajax-cart-quantity-plus
+                                    href="{{ routes.cart_change_url }}?line={{ line_item_index }}&quantity={{ line_item.quantity | plus: 1 }}"> 
+                                    +
+                                    </a>
+                                </div>
+                            </div>
+                        </ajax-cart-quantity>
+            
+                        <a class="text-sm mt-2" data-ajax-cart-request-button href="{{ line_item.url_to_remove }}">
+                            {{ 'cart.general.remove' | t }}
+                        </a> 
+                    </div>
+
+           
+                 
+                </div>
+                <!-- Display discount allocations if they exist -->
+                {% if line_item.line_level_discount_allocations.size > 0 %}
+                    <div class="discount pt-2 relative w-full">
+                        <ul class="w-fit">
+                            {% for allocation in line_item.line_level_discount_allocations %}
+                                <li class="flex flex-col">
+                                    <span class="bg-primary-black rounded-sm text-white w-fit px-2 py-1 text-xs">{{ allocation.discount_application.title }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <div class="w-full mt-2">
+                    {% render 'line-item-components' components: line_item.item_components %}
+                </div>
+    
+                <!-- Item error messages -->
+                <div data-ajax-cart-errors="{{ line_item.key }}"></div>
+
+            </div>
+        </div>
+    
+            <hr/>
+        {% endfor %}
+
+
+        </div>
+
+        <div class="Cart_Footer w-full mx-auto relative bottom-0 pt-3 pb-3 sm:pb-6 bg-primary-bg">
+            {%- for item in cart.items -%}
+                {% if item.product.compare_at_price > 0 %}
+                    {% assign total_compare_price = item.product.compare_at_price | times: item.quantity %}
+                    {% assign actual-total = actual-total | plus: total_compare_price %}
+                {% else %}
+                    {% assign actual-total = actual-total | plus:item.original_line_price %}
+                {% endif %}
+            {% endfor %}
+
+            {% render 'giftwrapping' %}
+
+            <div class="flex flex-col pt-6 pb-2">
+                <div class="flex justify-between items-center py-1"><span class="text-sm md:text-base font-semibold">{{ 'cart.general.shipping' | t }}</span><span class="text-sm md:text-base font-semibold">{% if freeshipping == true %}{{ 'cart.general.shipping_free' | t }}{% else %}{{ 'cart.general.shipping_min' | t }}{% endif %}</span></div>
+                {% if cart.general.subtotal > actual-total %}
+                    <div class="flex justify-between items-center py-1"><span class="text-sm md:text-base font-semibold">{{ 'cart.general.saved' | t }}</span> 
+                        <span class="line-through">{{ actual-total | money }}</span>
+                    </div>
+                {% endif %}
+                <div class="flex justify-between items-center py-2"><span class="text-sm md:text-lg font-semibold" >{{ 'cart.general.subtotal' | t }}</span> <span class="text-base  md:text-lg font-semibold " data-ajax-cart-bind="total_price | money_with_currency">{{ cart.total_price | money }}</span></div>
+            </div>
+            {% assign actual-total = 0 %}
+
+
+
+            {% comment %} {% if settings.cart_notes_enable %}
+                <div id="cartInstructionButton" class="hidden md:block relative flex text-sm justify-between items-center border-b border-border py-2 cursor-pointer" onclick="toggleCartInstructions()">{{ 'cart.general.note' | t }} <span id="arrow" class="arrow-down"></span></div>
+                <div id="cartInstructionDropdown" class="hidden">
+                <label class="hidden" for="CartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
+                <textarea class="w-full pb-8 px-2 bg-white" name="note" placeholder="{{ 'cart.general.note_placeholder' | t }}" id="CartSpecialInstructions">{{ cart.note }}</textarea>
+                </div>
+            {% endif %} {% endcomment %}
+
+            <div id="contribe"></div>
+
+      
+            {% form 'cart', cart, id: 'my-ajax-cart-form' %}
+                <button id="cart-checkhout" class="flex items-center mt-4 text-center justify-center gap-x-2 rounded-full bg-primary-black px-5 min-h-[54px] text-lg font-semibold text-white w-full shadow hover:bg-medium-green" type="submit" name="checkout">
+                    {{ 'cart.general.checkout' | t }}
+                </button> 
+            {% endform %}
+ 
+
+            <div class="terms text-base flex justify-start gap-2 pt-4 pb-0 sm:pb-4"> 
+                <input type="checkbox" id="agree" class="custom-checkbox hidden" />
+                <label for="agree" class="flex gap-x-1 items-center cursor-pointer">
+                  <span class=" w-5 h-5 inline-block mr-2 border-2 border-primary-black-500 rounded-sm bg-white flex-shrink-0 custom-checkbox-span"></span>
+                  {{ 'cart.general.terms_html' | t }}
+                </label>
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-3 py-2 mt- max-w-full px-0">
+                {% render 'payment-icons' %}
+                {% comment %} <div class="flex items-center gap-x-1">
+                    <span class="Heading text-xs">+20.000 anmeldelser</span> {% render 'trust-stars', class: 'w-[90px]' %}
+                </div> {% endcomment %}
+            </div>  
+        </div>
+    </div>
+</div>
+ 
+<style>
+    .custom-checkbox:checked + label .custom-checkbox-span {
+        background-color: #fff;  
+        border-color: var(--primary-black); 
+        background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"%3E%3Cpolyline points="20 6 9 17 4 12"%3E%3C/polyline%3E%3C/svg%3E');background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"%3E%3Cpolyline points="20 6 9 17 4 12"%3E%3C/polyline%3E%3C/svg%3E');
+        background-size: 14px;
+        background-position: center;
+        background-repeat: no-repeat;
+    }   
+</style>
+  
+{% schema %} 
+    { 
+        "name": "Ajax cart" 
+    } 
+{% endschema %}

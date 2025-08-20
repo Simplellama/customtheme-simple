@@ -1,0 +1,252 @@
+{% if product_collections != blank %}
+  {%  for col in product_collections %}
+    {% if col.metafields.custom.sale_collection.value != blank and collection.handle == col.handle %}
+      {% assign col = col %}
+    {% endif %}
+  
+  {% endfor %}
+  {% else %}
+    {%  for col in product.collections %}
+      {% if col.metafields.custom.sale_collection.value != blank and collection.handle == col.handle %}
+        {% assign col = col %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+  
+  {% assign colorList = product.metafields.custom.product_colors.value.product_color_list.value %}
+  {% assign collection_id = collection.id %}
+  
+  
+  <div class="product_card bg-secondary-bg border border-border flex flex-col h-fit {% if byb != 'true' %}cursor-pointer{% endif %} relative justify-start">
+   
+
+    {%- render 'wishlist-button', product_handle: product.handle, variant_id: product.selected_or_first_available_variant.id -%}
+    <div class="{%- unless product.available -%}{% unless product.metafields.custom.product_title contains 'Elda' %}opacity-60{% endunless %}{% endunless %} image_container bg-secondary-bg relative group overflow-hidden ">
+  
+      <a class="{% if byb == 'true' or xy == true %} pointer-events-none cursor-default {% endif %} flex items-center justify-center w-full bg-secondary-bg-400 {% if template.name == 'collection' %}h-[400px]{% else %}h-[300px]{% endif %} pb-2" 
+        {% if nolink != true %}href="{% if byb != 'true' %}{% unless zakeke == true or col_url == true or sale_collection == true and product.template_suffix != 'multipack-bundle' %} {{ product.url }}{% else %}{{ product.url | within: collection }}{% endunless%}{% endif %}"{% else %}role="link" aria-disabled="true"{% endif %} >
+        {% if product.featured_image %}
+          <div class="h-fit w-full"> 
+        {% render 'media', media: product.featured_image, lazyload: lazyload, class: "w-full h-fit", alt: product.featured_image.alt, width: 832, focus: center %}
+          </div>
+        {% else %}
+          {{ 'image' | placeholder_svg_tag }}  
+        {% endif %} 
+        {% unless xy == true  %}
+          {% assign hoverclass = 'group-hover:bottom-20 sm:group-hover:right-6 transition-all ease duration-300' %}
+        {% endunless %}
+
+        {% render 'labels', product: product, class: 'top-2 right-2' %}
+        {% render 'bundle-info', product: product, class: 'bottom-2 left-2'  %}
+     
+      </a>
+  
+      <!-- Second image (hidden by default) --> 
+      {% comment %} {% if product.images.size > 1 %} 
+        {%- assign lazyload = true -%}
+        <a
+          class="{% if byb == 'true' or xy == true %} pointer-events-none cursor-default {% endif %} h-[550px]  absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          {% if nolink != true %}href="{% if byb != 'true' %}{% unless zakeke == true or col_url == true or sale_collection == true %} {{ product.url }}{% else %}{{ product.url | within: collection }}{% endunless%}{% endif %}"{% else %}role="link" aria-disabled="true"{% endif %}>
+        
+          {% if byb == 'true' %}
+            {% assign width = 300 %} 
+            {% else %}
+            {% assign width = 500 %}
+          {% endif %}
+  
+          {% render 'media', media: product.images[1], lazyload: lazyload, class: "w-full h-full", alt: product.featured_image.alt, width: 832, focus: center %}
+    
+        </a>
+      {% endif %} {% endcomment %}
+ 
+      {% comment %} {% if current_variant.available %}
+        <div class="quick-add-to-cart-col block md:hidden absolute bottom-2 right-2 ">
+          <div class="w-[35px] h-[35px] border flex items-center justify-center border-primary-black rounded-full">
+            {% render 'icon', icon: 'cart', stroke: 'black', size: 19 %}
+          </div>
+        </div> 
+      {% endif %} {% endcomment %}
+    </div>
+
+  
+  
+    {% if timeoffer == true %}
+      <a href="{{ product.url | within: collection }}" class="time-btn relative Button_primary opacity-[0.7] bg-primary-green border-primary-green flex rounded-none text-base sm:text-xl sm:py-4 Button w-full">   
+        {% comment %} <span class="text-xl">&#x2193;</span> {% endcomment %}
+        <span class="active-btn">{{ 'timeoffer.click_here_offer' | t }}</span>
+        <span class="upcoming-btn flex text-base opacity-[0.8] gap-x-1"><span>{{ 'timeoffer.active_in' | t }}</span> <div class="starts-in" data-hours-2 data-minutes-2 data-seconds-2></div> </span>
+        <span class="disabled-btn text-base">{{ 'timeoffer.run_out' | t }}<span class=""></span></span>
+      </a>
+    {% endif %} 
+    {% if timeoffer != true  %}
+    <div class="Product-info border-t border-border  {% if simple == true %} mb-4 md:mb-0 pt-2 {% else %} pt-4 {% endif %} mb-4   z-[2] flex flex-col pl-2 md:pl-4 pt-4 pb-2 gap-0 {% if xy == true %} md-gap-2 {% else %} md:gap-1 {% endif %} text-left justify-between {% if collection.template_suffix == "build-your-bundle" %}self-end w-full{% endif %} {{ class }}">
+      {%- if settings.show_product_rating -%}
+        {%- unless use_horizontal -%}
+          <div class="ProductItem__Rating Heading Text--subdued u-h7">
+            {%- render 'product-rating', product: product -%}
+          </div>
+        {%- endunless -%} 
+      {%- endif -%}
+      <div class="flex flex-col md:pt-2 pb- md:gap-y-1">
+        
+        <div class="flex flex-col pt-2 pb-2">
+        <div class="flex flex-row  gap-2 w-full">
+          {% unless simple == true %}
+            <a class="{% if byb == 'true' or xy == true %} pointer-events-none cursor-default{% endif %} text-base md:text-xl Heading font-bold  text-primary-black w-full" href="{% if byb != 'true' %}{% unless zakeke == true or col_url == true or sale_collection == true and product.template_suffix != 'multipack-bundle' %} {{ product.url }}{% else %}{{ product.url | within: collection }}{% endunless%}{% endif %}">
+              {{- product.title | replace: ' ™', '™' | truncate: 65 -}}
+            </a>
+            
+
+          {% endunless %}
+        </div>
+        <div class="pricing w-full mb-2 md:mb-2 flex gap-2 md:pt-2">
+  
+            <div class="Price text-primary-black w-full flex flex-wrap gap-x-3 flex-row justify-between ">
+  
+              <div class="flex items-center gap-2 w-fit">
+                {% if product.compare_at_price > product.price and sale_collection != true and global_discount_live != true %}
+                  <span class="text-base md:text-lg font-bold Heading {% if product.compare_at_price > product.price %} text-red-500{% endif %}">
+                    {% if product.price_varies %}
+                      {%- assign sale_price = product.price | money -%}
+                        {{ sale_price }}
+                    {% elsif product.available %}
+                      {{ product.price | money }}
+                    {% else %}
+                      
+                    {% endif %}
+                  </span>
+  
+                {% elsif sale_collection == true and product.template_suffix != 'multipack-bundle' and xy != true %} 
+                  {%  if sale_collection_fixed_price == true %}
+                    <span data-variant-price class="text-base lg:text-lg Heading font-bold text-red-500">
+                      {{ fixed_price | money }}
+                    </span>
+                  {% else %}
+  
+                    <span data-variant-price class="text-base lg:text-lg Heading font-bold text-red-500">
+                        {% assign final_price_money = final_price | times: 100 %}
+                        {% if sale_product.compare_at_price > 0 and product.metafields.custom.sale_collection__product_discount != blank or product.price <= final_price_money %}
+                          {{ product.price | money }}
+  
+                        {% elsif product.compare_at_price > 0 and product.metafields.custom.sale_collection__product_discount == blank %}
+                          {% if actual_price <= final_price %}
+                            {{ product.price | money }}
+                          {% else %}
+                            {% assign discount = compare_price | times: sale_discount_label | divided_by: 100 %}
+                            {% assign discounted_price = compare_price | minus: discount %}
+                            {{ discounted_price | times: 100 | money }}
+                          {% endif %}
+                        {% else %}
+                    
+                          {% assign discount = product.price | times: sale_discount | divided_by: 100 %}
+                          {% assign discounted_price = product.price | minus: discount %}
+                          {{ discounted_price | money }}
+                        {% endif %}
+              
+                    </span>
+                  {% endif %}
+                  
+                  <span class="line-through text-base">
+                      {% if product.compare_at_price > product.price %}
+                          {{ product.compare_at_price | money }}
+                      {%  else  %}
+                          {{ product.price | money }}
+                      {% endif %}
+                  </span>
+  
+   
+  
+                {% elsif global_discount_live == true and sale_collection != true and product.template_suffix != 'multipack-bundle' and byb != 'true' and xy != true %} 
+          
+  
+                  <span data-variant-price class="text-base lg:text-lg Heading font-bold text-red-500">
+                      {% assign final_price_money = final_price | times: 100 %}
+                      {% if product.compare_at_price > 0 and product.metafields.custom.global_product_discount_ != blank or product.price <= final_price_money %}
+                        {{ product.price | money }}
+  
+                      {% elsif product.compare_at_price > 0 and product.metafields.custom.global_product_discount_ == blank %}
+                        {% if actual_price <= final_price %}
+                          {{ product.price | money }}
+                        {% else %}
+                          {% assign discount = compare_price | times: sale_discount | divided_by: 100 %}
+                          {% assign discounted_price = compare_price | minus: discount %}
+                          {{ discounted_price | times: 100 | money }}
+                        {% endif %}
+                      {% else %}
+                  
+                        {% assign discount = product.price | times: sale_discount | divided_by: 100 %}
+                        {% assign discounted_price = product.price | minus: discount %}
+                        {{ discounted_price | money }}
+                      {% endif %}
+            
+                  </span>
+    
+                  
+                  <span class="line-through text-base">
+                      {% if product.compare_at_price > product.price %}
+                          {{ product.compare_at_price | money }}
+                      {%  else  %}
+                          {{ product.price | money }}
+                      {% endif %}
+                  </span>
+    
+              {% elsif byb == 'true' or xy == true %}
+                <p class="text-base md:text-lg font-bold Heading">{% if product.compare_at_price > product.price %}{{ product.compare_at_price | money }}{% else %}{{ product.price | money }}{% endif %}</p>
+                    
+  
+              {% else %}
+                  {% if product.price_varies %}
+                    {%- assign price = product.price | money -%}
+                      {{ price }}
+                  {% else %}
+                    <b class="text-base md:text-lg font-bold Heading {% if product.compare_at_price > product.price %} text-red-500{% endif %}">{{ product.price | money }}</b>
+                  {% endif %}
+                {% endif %}
+                {% if product.compare_at_price > product.price and sale_collection != true and global_discount_live != true or product.template_suffix == 'multipack-bundle' %}
+                  <p class="Price text-base line-through">{{ product.compare_at_price | money }}</p>
+  
+               
+                {% endif %} 
+              </div>
+    
+              {% assign package_deal_count = product.metafields.custom.package_deal %}
+              {% if product.metafields.custom.package_deal != blank %}
+                <span class="package-item-price text-sm md:text-base w-fit pt-2 sm:pt-0">
+                  {{ 'products.product.only' | t }} {{ product.price | divided_by: package_deal_count | money }} {{ 'products.product.per_piece' | t }}
+                </span>
+              {% endif %}
+            </div>
+  
+        </div>
+           
+        <a href="{{ product.url }}" class="{% if byb == 'true' %} hidden {% else %} flex {% endif %} items-center mt-1 mb-4 text-center justify-center gap-x-2 rounded-full  px-4 min-h-[35px] text-base font-semibold text-white w-fit min-w-[150px] bg-primary-black hover:bg-medium-green ">
+          {% comment %} {% if product.metafields.custom.product_title contains 'Elda' %}
+            Forudbestil
+          {% else %} {% endcomment %}
+            Køb her
+          {% comment %} {% endif %} {% endcomment %}
+        </a>
+
+      </div>
+
+      {% render 'bundle_content', product: product, product_nr: product_nr %}
+  
+      {% unless collection.template_suffix == "build-your-bundle" or xy == true or sale_collection == true %}
+        {{ colorListSection }}
+      {% endunless %}
+
+ 
+  
+      {% if xy == true %} 
+        {% render 'buy-x-get-y-quick-add', product: product %}
+      {% endif %}
+  
+      {% if collection.template_suffix == "build-your-bundle" %}
+        {% render 'build-your-bundle-quick-add', collection_id: collection_id, product: product %}
+      {% endif %}
+  
+    </div>
+    {% endif %}
+  </div>
+  
+  

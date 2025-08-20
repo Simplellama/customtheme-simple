@@ -1,0 +1,543 @@
+<ajax-cart-product-form class="product_form">
+  {% form 'product', product %}        
+  
+
+    {% capture sizeContainer %}
+      {% for option in product.options_with_values %}
+
+        <div class="flex justify-between hidden"> 
+          <span class="text-base pb-2">{{ 'products.product.size.select_size' | t }}</span>
+          {% comment %} <span class="findSizeButton border-b border-transparent hover:border-black text-sm">{{ 'products.product.size.need_help_to_find_the_right_size' | t }}</span>  {% endcomment %}
+          <div class="size_info flex gap-1 w-fit">
+            
+            {% comment %} <div  class="findSizeButton text-base flex items-center gap-1 pl-2">{% render 'icon', icon: 'sizefinder', size: 18, fill: '#000' %}<span>{{ 'products.product.size.find_my_size' | t }}</span></div> {% endcomment %}
+            {% comment %} <div id="sizeInfoButton" class="flex text-base items-center gap-1 cursor-pointer border-border pr-2">{% render 'icon', icon: 'ruler', size: 18, fill: '#000' %}<span>{{ 'products.product.size.sizeinfo' | t }}</span></div>  {% endcomment %}
+          </div>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex-1 hidden w-full">
+            <div id="size-selector-button" class="hidden cursor-pointer hover:border-primary-black  flex justify-between w-full max-w-[300px]  border border-primary-black-500  px-4 py-2">
+              <div class="flex justify-between items-center gap-x-2 w-full">
+                
+                <div class="flex flex-row items-center gap-x-2">
+                  <label for="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}" class="text-lg  Heading leading-tight">
+                      {{ option.name }}:
+                  </label>
+                  <span class="flex items-center gap-1 pr-3" data-option="">
+                    <span class="selected-option flex flex-row gap-2 items-center">
+                      <span class="text-lg underline">
+                        {{ product.selected_or_first_available_variant.title }}
+                      </span> 
+                      
+                      <span class="text-sm">
+                        {% if product.selected_or_first_available_variant.available == false %}
+                           -  {{ 'products.product.size.select_available_size' | t }}
+                        {% elsif product.available == false %}
+                          -  {{ 'products.product.sold_out' | t }}
+                        {% endif %}
+                      </span>
+                    </span>
+                  </span>
+                </div>
+
+              </div>
+            </div>
+            
+            <div class="size-select w-full flex flex-col appearance-none py-4 leading-tight focus:outline-none focus:shadow-outline" data-popup-id="{{ forloop.index }}" name="{{ option.name }}" data-product-select size="{{ number_of_visible_options }}">
+
+              <div class="selector-section w-full box-borders">
+                <fieldset id="product-select" name="id" class="options-list gap-[1px] m-[1px] !grid grid-cols-12 w-full" data-option="option{{ forloop.index}}">
+                
+                  {% for variant in product.variants %}
+                    
+                    <div value="{{ variant.title }}" class="size-option selected-size whitespace-nowrap col-span-3 md:col-span-2 relative overflow-hidden shadow-[0_0_0_1px_#000] {% if variant.available == false %}out-of-stock  text-grey-text{% endif %} flex items-center justify-center text-center text-base px-1 py-2 cursor-pointer w-full"
+              
+                      {% unless variant.available %}
+                        data-disabled="disabled" 
+                      {% endunless %} 
+                      data-variant-id="{{ variant.id }}" 
+                      data-value="{{ variant.id }}" 
+                      data-variant-default-price="{{ variant.price | money_without_trailing_zeros }}" 
+                      data-variant-price="{{ variant.price | money_without_trailing_zeros }}" 
+                      data-product-id="{{ product.id }}"
+                      data-variant-compare_at_price="{{ variant.compare_at_price | money_without_trailing_zeros }}">
+                      {{ variant.title }}
+                    </div>
+                  {% endfor %} 
+                </fieldset>
+
+
+
+              </div> 
+            </div>
+          </div>
+          
+          <div class="flex flex-wrap w-full justify-between hidden">
+            <div class="container_header w-full sm:gap-x-4 flex items-end sm:items-center justify-between py-4 border-b border-border mb-4 ">
+              <div class="flex flex-col sm:flex-row gap-2 items-end sm:items-center justify-between">
+                  <div class="flex gap-2 w-full">
+                      <h3 class="Heading text-base sm:text-lg ">{{ 'products.product.bundle.quantity' | t }}</h3>
+                  </div>
+                  
+                    <div class="quantity-wrapper relative flex justify-center ">
+                        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                        <div id="decrement-btn" class="qty-picker flex justify-center items-center cursor-pointer w-[45px] h-[30px] text-center">-</div>
+                        <input type="number" id="Quantity-{{ section.id }}" name="quantity" class="quantity-count w-[20px] text-center text-lg bg-transparent" value="1" min="1">
+                        <div id="increment-btn" class="qty-picker flex justify-center items-center cursor-pointer w-[45px] h-[30px] text-center">+</div>
+                
+                    </div>
+                  
+              </div>
+   
+  
+            </div>
+      
+          </div>
+
+        </div>
+      {% endfor %}
+    {% endcapture %}
+
+  
+  
+    <div id="add_to_cart_container" class="submit_wrapper w-full flex flex-col items-center gap-2"> 
+      
+
+      
+      <div class="quantity-wrapper w-full relative flex flex-col sm:flex-row gap-2 sm:flex-wrap select-none">
+        <div class="text-sm" data-ajax-cart-messages="form"></div>
+  
+
+          {% render 'bundlesave', product: product, sizeContainer: sizeContainer, sale_collection: sale_collection %}
+
+
+
+        {% if sale_collection == true %}
+          {% assign saleUrl = '/collections/' | append: collection.handle %}
+        {% endif %}
+        
+        <div class="flex flex-col justify-between items-start gap-x-4 w-full">
+          <div class="product-action-buttons flex flex-col gap-x-1 w-full">
+
+            {% if product.metafields.custom.coming_soon == blank  %}
+              {% comment %} {% if  product.metafields.custom.product_title contains 'Elda' %}
+                <input type="hidden" name="properties[Forudbestilling]" value="Forventes afsendt start august">
+              {% endif %} {% endcomment %}
+              <button id="addToCartButton" class="flex items-center text-center justify-center gap-x-2 rounded-full  bg-primary-black px-5 min-h-[65px] text-lg font-semibold text-white w-full shadow hover:bg-medium-green"
+                type="submit" name="add"
+                >
+                  {% comment %} {% if product.metafields.custom.product_title contains 'Elda' %}
+                    Forudbestil her
+                  {% else %} {% endcomment %}
+                    {{ 'products.product.add_to_cart' | t }}
+                  {% comment %} {% endif %} {% endcomment %}
+                  
+              </button>
+
+
+              <button id="soldOutButton" class="flex hidden gap-x-2 items-center Button_primary Button_disabled Button w-full relative sm:mx-auto md:mx-0"
+                type="submit" name="add"
+                disabled="disabled">
+                {{ 'products.product.sold_out' | t }}
+              </button>
+
+            {% elsif product.metafields.custom.coming_soon != blank  %}
+                {% assign coming_soon = product.metafields.custom.coming_soon.value %}
+                <a id="notifyButton" class="Back_in_stock_button flex group klaviyo-bis-trigger Button Button_secondary w-full relative sm:mx-auto md:mx-0  {% if product.selected_or_first_available_variant.available %}!hidden{% endif %}" href="#">{{ coming_soon.button_title }}</a> 
+                <p class="mt-4">{{ coming_soon.title }}: {{ coming_soon.date | date: "%d-%m-%Y" }}</p>
+
+            {% else %}  
+                {% comment %} <div class="klaviyo-bis-trigger !hidden"></div> {% endcomment %}
+            {% endif %}
+
+            {% comment %} <div class="wishlist-prod-btn flex items-center justify-center w-[50px]"></div> {% endcomment %}
+          </div>
+
+          <div class="flex mt-4 gap-x-2 gap-y-1 justify-start w-fit items-center">
+            {% if product.selected_or_first_available_variant.inventory_quantity >= 1 %}
+              
+              <div class="flex items-center justify-center w-fit gap-x-2">
+                
+                {% comment %} {% if product.metafields.custom.product_title contains 'Elda' %}
+                  <div class="bg-yellow-400 rounded-full w-2 h-2 block"></div>
+                  <span class="whitespace-nowrap font-semibold text-base">Forudbestilling</span>
+                {% else %} {% endcomment %}
+                  <div class="bg-green-500 rounded-full w-2 h-2 block"></div>
+                  <span class="whitespace-nowrap font-semibold text-base">På lager:</span>
+                {% comment %} {% endif %} {% endcomment %}
+              </div>
+              {% comment %} {% if product.metafields.custom.product_title contains 'Elda' %}
+                <span class="text-sm font-light whitespace-nowrap">Bemærk: Forventes afsendt start august</span>
+              {% else %} {% endcomment %}
+                <span class="text-sm font-light whitespace-nowrap">Leveringstid 1-4 Hverdage</span>
+              {% comment %} {% endif %} {% endcomment %}
+            {% else %}
+                <div class="flex items-center justify-center w-fit gap-x-2">
+                  
+                    <div class="bg-red-500 rounded-full w-2 h-2 block"></div>
+                    {% comment %} {% if product.metafields.custom.product_title contains 'Elda' %}
+                      <span class="text-sm font-light whitespace-nowrap">Bemærk: Forventes afsendt start august</span>
+                    {% else %} {% endcomment %}
+                      <span class="whitespace-nowrap">Ikke på lager</span>
+                    {% comment %} {% endif %} {% endcomment %}
+                </div>
+            {% endif %}
+
+              
+     
+          </div> 
+        </div>
+
+  
+        <div class="text-base" data-ajax-cart-errors="form"></div>
+  
+      </div>
+      
+    </div>
+  {% endform %}
+</ajax-cart-product-form>
+
+
+{% if product.type == 'Bukser' %}
+  {% render 'size-info-popup-pants' %}
+{% else %}
+ {% render 'size-info-popup' %}
+{% endif %}
+
+        
+    
+<div id="findSizePopup" class="findSizePopup popup fixed h-fit rounded-sm mx-auto right-0 left-0 top-1/2 translate-y-[-50%] z-[100] hidden w-fit  px-12 pt-4 pb-8 border-l duration-300 ease">
+
+    <div class="flex">
+      <span class="close-icon cursor-pointer" onclick="closePopup('findSizePopup')">X</span>
+      <h3 class="heading font-semibold text-xl text-center w-full">{{ 'products.product.size.find_my_size' | t }}</h3>
+    </div>
+</div>
+
+<style>
+
+  {% comment %} .options-list .out-of-stock:hover::after {
+    animation: rotateAnimation 0.3s linear infinite;
+  }
+
+  .options-list .out-of-stock::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 15px;
+    height: 15px;
+    background: url({{ 'bell.svg' | asset_url }}) no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+{% endcomment %}
+  .options-list .out-of-stock::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: #adadad;
+    transform: rotate(-45deg);
+  }
+
+  .options-list .out-of-stock:hover::before {
+    background: #000;
+  } 
+
+  .size-select {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .size-select:not(.hidden) {
+    opacity: 1;
+  }
+
+  #zakeke-product-button {
+    display: none;
+  }
+</style>
+
+
+{{ 'option_selection.js' | shopify_asset_url | script_tag }}
+  
+<script defer>
+  document.addEventListener('DOMContentLoaded', function () {
+
+    let productJson = document.querySelector("[data-product-json]").innerHTML;
+    let product = JSON.parse(productJson || '{}');
+    {% comment %} console.log(product); {% endcomment %}
+    
+    updateButtonBasedOnSizeOption();
+
+    let variantId;
+
+
+    let selectCallback = function(variant, selector) {
+      {% comment %} console.log('Variant selected:', variant);
+      console.log('Selector:', selector); {% endcomment %}
+    };
+    
+    
+    new Shopify.OptionSelectors('product-select', {
+      product: {{ product | json }},
+      onVariantSelected: selectCallback,
+      enableHistoryState: true
+    });
+
+
+    const customOptionsList = document.querySelector('.options-list[data-option="option1"]');
+    const shopifySingleOptionSelector = document.querySelector('.single-option-selector[data-option="option1"]');
+
+
+
+// Function to update the selected variant and labels
+function updateSelectedVariantId(selectedVariantId, selectedVariantPrice, selectedVariantCompareAtPrice) {
+  const hiddenIdInput = document.querySelector('input[name="id"]');
+  const priceElement = document.querySelector('[data-product-price]');
+  const compareAtPriceElement = document.querySelector('.compare_at_price');
+  const discountLabel = document.querySelector('#product-section.discount_label');
+
+  hiddenIdInput.value = selectedVariantId;
+
+  if (priceElement) { 
+    priceElement.innerText = selectedVariantPrice;
+  }
+
+  if (compareAtPriceElement) {
+    if (selectedVariantCompareAtPrice !== selectedVariantPrice) {
+      compareAtPriceElement.innerText = selectedVariantCompareAtPrice;
+    } else {
+      compareAtPriceElement.innerText = '';
+    }
+  }
+
+  if (selectedVariantPrice.trim() !== '') {
+    updateDiscountLabel(selectedVariantPrice, selectedVariantCompareAtPrice);
+  }
+}
+
+// Function to update the discount label
+function updateDiscountLabel(selectedVariantPrice, selectedVariantCompareAtPrice) {
+  const discountLabel = document.querySelector('#product-section .discount_label');
+
+  const priceNumeric = parseFloat(selectedVariantPrice.replace(/[^0-9.-]+/g, ''));
+  const compareAtPriceNumeric = parseFloat(selectedVariantCompareAtPrice.replace(/[^0-9.-]+/g, ''));
+
+  if (!isNaN(priceNumeric) && !isNaN(compareAtPriceNumeric)) {
+    if (compareAtPriceNumeric > priceNumeric) {
+      const discountPercentage = ((compareAtPriceNumeric - priceNumeric) / compareAtPriceNumeric) * 100;
+      discountLabel.innerText = discountPercentage.toFixed(0) + '% OFF';
+      discountLabel.classList.remove('hidden');
+    } else {
+      if (discountLabel) {
+        discountLabel.innerText = '';
+      }
+      discountLabel.classList.add('hidden');
+    }
+  } else {
+    if (discountLabel) {
+      discountLabel.innerText = '';
+      discountLabel.classList.add('hidden');
+    }
+  }
+}
+
+// Event listener for increment and decrement buttons
+const incrementBtn = document.getElementById('increment-btn');
+const decrementBtn = document.getElementById('decrement-btn');
+const quantityInput = document.getElementById('Quantity-{{ section.id }}');
+
+if (incrementBtn && decrementBtn && quantityInput) {
+  incrementBtn.addEventListener('click', function () {
+    let currentValue = parseInt(quantityInput.value);
+    quantityInput.value = currentValue + 1;
+  });
+
+  decrementBtn.addEventListener('click', function () {
+    let currentValue = parseInt(quantityInput.value);
+    if (currentValue > 1) {
+      quantityInput.value = currentValue - 1;
+    }
+  });
+}
+
+// Function to update the button based on the selected size option
+function updateButtonBasedOnSizeOption() {
+  const sizeOptions = document.querySelectorAll('.size-option');
+  const addToCartButton = document.getElementById('addToCartButton');
+  
+  if (sizeOptions && addToCartButton) {
+    sizeOptions.forEach((sizeOption) => {
+      sizeOption.addEventListener('click', function (e) {
+        const isDisabled = sizeOption.hasAttribute('data-disabled');
+        
+        if (isDisabled) {
+          // Size option is disabled, show the "Notify Me When Available" button
+          addToCartButton.classList.add('hidden');
+          document.getElementById('notifyButton').classList.remove('!hidden');
+          document.getElementById('notifyButton').classList.add('!flex');
+        } else {
+          // Size option is not disabled, show the "Add to Cart" button
+          addToCartButton.classList.remove('hidden');
+          document.getElementById('notifyButton').classList.add('!hidden');
+          document.getElementById('notifyButton').classList.remove('!flex');
+        }
+      });
+    });
+  }
+}
+
+// Additional code for handling selector-wrapper, variant selection, and pricing
+const selectorWrapper = document.querySelector('.selector-wrapper');
+if (selectorWrapper) {
+  const hiddenIdInput = document.querySelector('input[name="id"]');
+  const optionsList = document.querySelector('.options-list');
+  const sizeSelectorButton = document.getElementById('size-selector-button');
+  const selectedOptionLabel = document.querySelector('.selected-option');
+
+  if (hiddenIdInput && optionsList && sizeSelectorButton && selectedOptionLabel) {
+    const sizeOptions = optionsList.querySelectorAll('.size-option');
+    const sizeSelect = document.querySelector('.size-select');
+
+    sizeOptions.forEach((sizeOption, index) => {
+      sizeOption.addEventListener('click', function (e) {
+        const selectedOption = e.target;
+
+        const selectedVariantId = selectedOption.getAttribute('data-value');
+        const selectedVariantPrice = selectedOption.getAttribute('data-variant-price');
+        const selectedVariantCompareAtPrice = selectedOption.getAttribute('data-variant-compare_at_price');
+
+        // Update the hidden input value
+        hiddenIdInput.value = selectedVariantId;
+
+        // Update the URL
+        updateURL(selectedVariantId);
+
+        // Update the selected option label
+        selectedOptionLabel.innerText = selectedOption.innerText.trim();
+
+        // Update the selected variant and pricing information
+        updateSelectedVariant(selectedVariantPrice, selectedVariantCompareAtPrice);
+      });
+    });
+
+    sizeSelectorButton.addEventListener('click', function() {
+      // Toggle the visibility of the size select
+      sizeSelect.classList.toggle('hidden');
+    });
+
+    const initialSelectedOption = optionsList.querySelector('[data-selected="selected"]');
+    if (initialSelectedOption) {
+      const selectedVariantPrice = initialSelectedOption.getAttribute('data-variant-price');
+      const selectedVariantCompareAtPrice = initialSelectedOption.getAttribute('data-variant-compare_at_price');
+
+      // Update the selected variant and pricing information
+      updateSelectedVariant(selectedVariantPrice, selectedVariantCompareAtPrice);
+
+      // Show the selected option label
+      selectedOptionLabel.classList.remove('hidden');
+    }
+  }
+}
+
+// Function to update the URL
+function updateURL(selectedVariantId) {
+  const newUrl = new URL(window.location.href);
+  newUrl.searchParams.set('variant', selectedVariantId);
+  window.history.pushState({}, '', newUrl);
+}
+
+// Function to update the selected variant and labels
+function updateSelectedVariant(selectedVariantPrice, selectedVariantCompareAtPrice) {
+  const priceElement = document.querySelector('[data-product-price]');
+  const compareAtPriceElement = document.querySelector('.compare_at_price');
+  const discountLabel = document.querySelector('#product-section .discount_label');
+
+  if (priceElement) { 
+    priceElement.innerText = selectedVariantPrice;
+  }
+
+  if (compareAtPriceElement) {
+    if (selectedVariantCompareAtPrice !== selectedVariantPrice) {
+      compareAtPriceElement.innerText = selectedVariantCompareAtPrice;
+    } else {
+      compareAtPriceElement.innerText = '';
+    }
+  }
+
+  if (discountLabel) {
+    const priceNumeric = parseFloat(selectedVariantPrice.replace(/[^0-9.-]+/g, ''));
+    const compareAtPriceNumeric = parseFloat(selectedVariantCompareAtPrice.replace(/[^0-9.-]+/g, ''));
+
+    if (!isNaN(priceNumeric) && !isNaN(compareAtPriceNumeric)) {
+      if (compareAtPriceNumeric > priceNumeric) {
+        const discountPercentage = ((compareAtPriceNumeric - priceNumeric) / compareAtPriceNumeric) * 100;
+        discountLabel.innerText = discountPercentage.toFixed(0) + '% {{ 'products.product.off' | t }}';
+        discountLabel.classList.remove('hidden');
+      } else {
+        discountLabel.innerText = '';
+        discountLabel.classList.add('hidden');
+      }
+    } else {
+      discountLabel.innerText = '';
+      discountLabel.classList.add('hidden');
+    }
+  }
+}
+
+{% comment %} function updateButtonBasedOnSizeOption() {
+  const sizeOptions = document.querySelectorAll('.size-option');
+  const addToCartButton = document.getElementById('addToCartButton');
+  const soldOutButton = document.getElementById('soldOutButton');
+
+  sizeOptions.forEach((sizeOption) => {
+    sizeOption.addEventListener('click', function (e) {
+      // Remove .selected-size class from all size options
+      sizeOptions.forEach((option) => {
+        option.classList.remove('selected-size');
+      });
+
+      // Add .selected-size class to the clicked size option
+      sizeOption.classList.add('selected-size');
+
+      const isDisabled = sizeOption.hasAttribute('data-disabled');
+
+      if (isDisabled) {
+        // Size option is disabled, hide the "Add to Cart" button and show the "Sold Out" button
+        addToCartButton.classList.add('hidden');
+        soldOutButton.classList.remove('hidden');
+        soldOutButton.classList.add('block');
+      } else {
+        // Size option is enabled, show the "Add to Cart" button and hide the "Sold Out" button
+        addToCartButton.removeAttribute('disabled');
+        addToCartButton.classList.remove('hidden');
+        addToCartButton.classList.remove('Button_disabled'); // Remove Button_disabled class
+        addToCartButton.innerText = "{{ 'products.product.add_to_cart' | t }}"; // Reset button text to "Add to Cart"
+        soldOutButton.classList.add('hidden');
+        soldOutButton.classList.remove('block');
+      }
+    });
+  });
+}
+
+// Call the function to initialize the button states
+updateButtonBasedOnSizeOption(); {% endcomment %}
+  }); 
+</script>
+    
+
+<style>
+  .selected-size {
+    background-color: #000;
+    color: #fff;
+  }
+
+  .out-of-stock.selected-size {
+    background-color: #e5e4e2; 
+    color: #000;
+  }
+</style>

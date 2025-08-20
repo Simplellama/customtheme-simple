@@ -1,0 +1,112 @@
+{% assign bundle_items = product.metafields.custom.bundle_items.value %}
+{% assign totalItems = 0 %}
+{% if bundle_items != blank %}
+<section class="flex flex-col gap-y-4 mt-10 mb-4">
+    <div class="flex flex-row justify-start items-baseline gap-x-3">
+        <h3 class="font-bold text-xl">Hvad medfølger:</h3>
+        <div class="flex gap-[2px] text-xs text-primary-black"><span class="text-sm bundle-count"></span><span class="text-sm">Produkter</span></div>
+    </div>
+    <div class="flex flex-col gap-y-2">
+        <ul class="flex flex-wrap gap-x-1 gap-y-2 w-full justify-start  overflow-hidden" id="bundle-list">
+            {% unless product.tags contains 'bundle_basic' %}
+                {% for item in product.metafields.custom.bundle_basic_items.value.bundle_basic.value %}
+                  {% assign totalItems = totalItems | plus: 1 %}
+                  <li class="inline-flex items-center rounded-full bg-primary-bg px-3 py-1 text-sm font-medium text-primary-text ring-1 ring-600/20 ring-border hover:bg-primary-black hover:text-white group ring-inset {% if totalItems > 9 %}hidden{% endif %}">
+                    <button class="panel-item-trigger-basic-{{ forloop.index }} flex w-full justify-between items-center">
+                      <div class="flex items-center gap-x-1 [&>*]group-hover:fill-white "> 
+                        <p class="text-sm/5">{{ item.title }}</p> 
+                      </div>
+                    </button> 
+                  </li>
+                {% endfor %} 
+            {% endunless %}
+            {% for bundle_item in bundle_items %}
+                {% assign totalItems = totalItems | plus: 1 %}
+                {% assign second_last_item = forloop.length | minus: 1 %}
+                {% assign is_even = forloop.index0 | modulo: 2 %}
+       
+                <li class="inline-flex items-center rounded-full bg-primary-bg px-3 py-1 text-sm font-medium text-primary-text ring-1 ring-600/20 ring-border hover:bg-primary-black hover:text-white group ring-inset {% if totalItems > 9 %}hidden{% endif %}">
+                    <button class="panel-item-trigger-{{ forloop.index }} flex w-full justify-between items-center">
+                            <div class="flex items-center gap-x-1 [&>*]group-hover:fill-white "> 
+                            <p class="text-sm/5">{{ bundle_item.title }}</p> 
+                            </div>
+                        </button> 
+                    </li>
+           
+            {% endfor %}
+        </ul>
+        {% assign moreItemsCount = totalItems | minus: 9 %}
+        {% if moreItemsCount > 0 %}
+            <button class="bundle-read-more-btn flex items-center justify-between gap-x-2 text-sm/4 py-2 font-semibold w-fit text-center relative z-2 text-primary-text hover:border-border">
+                <div class="flex items-center gap-x-3">
+                    <div class="flex items-center">
+                        <span>Se hele pakkens indhold +</span>
+                        <span class="bundle-extraItemsCount flex gap-x-1 items-center pr-3 border-r h-fit border-border">{{ moreItemsCount }}</span>
+                    </div>
+                    {% render 'icon', icon: 'arrow-down', size: 10, class: 'bundle-arrow-icon -mt-[0px] bg-primary-black rounded-full w-[14px] h-[14px] py-1', fill: 'var(--primary-bg)' %}
+                </div>
+            </button>
+        {% endif %}
+    </div>
+</section>
+
+<style>
+
+    .bundle-rotate-180 {
+        transform: rotate(180deg);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const bundleCount = document.querySelector('.bundle-count');
+        const bundleItems = document.querySelectorAll('#bundle-list li');
+        bundleCount.textContent = bundleItems.length;
+
+        const bundleReadMoreBtn = document.querySelector('.bundle-read-more-btn');
+        
+        if (bundleReadMoreBtn) {
+            bundleReadMoreBtn.addEventListener('click', function () {
+                const hiddenItems = document.querySelectorAll('#bundle-list li.hidden');
+                
+                if (this.classList.contains('bundle-read-more-btn')) {
+                    // Show all items
+                    hiddenItems.forEach(item => item.classList.remove('hidden'));
+                    this.innerHTML = `
+                        <div class="flex items-center gap-x-3">
+                            <div class="flex items-center">
+                                <span class="flex gap-x-1 items-center pr-3 border-r h-fit border-border">Vis mindre</span>
+                            </div>
+                            {% render 'icon', icon: 'arrow-down', size: 14, class: 'bundle-arrow-icon -mt-[0px] bg-primary-black rounded-full w-5 h-5 py-1 bundle-rotate-180', fill: 'var(--primary-bg)' %}
+                        </div>
+                    `;
+                    this.classList.remove('bundle-read-more-btn');
+                    this.classList.add('bundle-show-less-btn');
+                } else {
+                    // Hide items beyond the first 9
+                    const allItems = document.querySelectorAll('#bundle-list li');
+                    allItems.forEach((item, index) => {
+                        if (index >= 9) {
+                            item.classList.add('hidden');
+                        }
+                    });
+                    
+                    const moreItemsCount = allItems.length - 9;
+                    this.innerHTML = `
+                        <div class="flex items-center gap-x-3">
+                            <div class="flex items-center">
+                                <span>Se hele pakkens indhold +</span>
+                                <span class="bundle-extraItemsCount flex gap-x-1 items-center pr-3 border-r h-fit border-border">${moreItemsCount}</span>
+                            </div>
+                            {% render 'icon', icon: 'arrow-down', size: 10, class: 'bundle-arrow-icon -mt-[0px] bg-primary-black rounded-full w-[14px] h-[14px] py-1', fill: 'var(--primary-bg)' %}
+                        </div>
+                    `;
+                    this.classList.remove('bundle-show-less-btn');
+                    this.classList.add('bundle-read-more-btn');
+                }
+            });
+        }
+    });
+</script>
+
+{% endif %}

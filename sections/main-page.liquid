@@ -1,0 +1,60 @@
+{% assign current_title = page.title | downcase %}
+
+<div class="default-page min-h-screen flex gap-x-4 gap-y-8 pb-24 flex-wrap md:flex-nowrap flex-row px-6">
+  <nav class="min-w-[150px] relative md:sticky pt-4 md:pt-0 md:top-[140px] h-fit pb-8 whitespace-nowrap" role="navigation">
+    <ul class="flex flex-col pl-0 gap-y-4">
+      {% for link in linklists.page-navigation.links %}
+        {% assign page_nav_title = link.title | downcase %}
+        <li class="relative w-full group list-none">
+          <a href="{{ link.url }}" class="text-grey-text text-lg {% if current_title == page_nav_title %}!text-primary-black{% endif %}" data-menu-id="{{ link.title | downcase }}">{{ link.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+  <div class="page-content flex items-center justify-center w-full md:px-8 pb-20 md:pb-0 md:pt-12 ">
+    <div class="flex-col max-w-[870px] min-h-[900px] gap-y-4 w-fit">
+      {% if section.settings.hide_title == false %}
+        <div class="hidden md:block">
+          <h1 class="Heading font-bold text-left text-primary-black text-5xl mb-6">{{ page.title }}</h1>
+        </div>
+      {% endif %}
+
+    
+      <div class="text-primary-black text-base tracking-tight [&>*]:text-lg [&>*]:tracking-tight 
+        [&>ul]:pl-8 [&>ul]:list-disc [&>ul]:list-outside [&>ul>li]:mb-2
+        [&>ol]:pl-8 [&>ol]:list-decimal [&>ol]:list-outside [&>ol>li]:mb-2
+        [&>ul>li>ul]:mt-2 [&>ol>li>ol]:mt-2 [&>ul>li>ul]:ml-4 [&>ol>li>ol]:ml-4
+        [&>p]:pb-6
+        [&>h1]:text-4xl [&>h1]:font-bold [&>h1]:mt-8 [&>h1]:mb-4
+        [&>h2]:text-3xl [&>h2]:font-bold [&>h2]:mt-6 [&>h2]:mb-3
+        [&>h3]:text-2xl [&>h3]:font-bold [&>h3]:mt-5 [&>h3]:mb-2
+        [&>h4]:text-xl [&>h4]:font-bold [&>h4]:mt-4 [&>h4]:mb-2
+        [&>h5]:text-lg [&>h5]:font-bold [&>h5]:mt-3 [&>h5]:mb-1
+        [&>h6]:font-bold [&>h6]:mt-2 [&>h6]:mb-1
+        [&>p>b]:font-bold [&>p>strong]:font-bold [&>b]:font-bold [&>strong]:font-bold
+        [&>table]:w-full [&>table]:mb-8 [&>table]:border-collapse [&>table]:overflow-auto
+        [&>table>tbody>tr]:border-b [&>table>tbody>tr]:border-gray-200
+        [&>table>tbody>tr>th]:bg-gray-100 [&>table>tbody>tr>th]:font-bold [&>table>tbody>tr>th]:p-3 [&>table>tbody>tr>th]:text-left
+        [&>table>tbody>tr>td]:p-3 [&>table>tbody>tr:nth-child(even)>td]:bg-gray-50 
+        [&>hr]:my-6 [&>hr]:border-gray-200">
+        {{ page.content  }}
+      </div>
+    </div>
+  </div>
+</div> 
+
+  
+{% schema %} 
+{
+  "name": "Page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "hide_title",
+      "label": "Hide page title",
+      "default": false,
+      "info": "When checked, the page title will be hidden"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,156 @@
+<div id="sizeInfoPopup" class="popup flex fixed h-fit rounded-md overflow-hidden min-h-[500px] mx-auto items-center right-0 left-0 top-1/2 translate-y-[-50%] z-[100] hidden w-fit bg-white px-12 pt-8 pb-12 border-l duration-300 ease ">
+
+    <div class="flex flex-col gap-4">
+        <div class="flex">
+            
+            <a href="#" class="close-icon absolute top-5 right-5 text-2xl flex items-center gap-2 text-primary-black cursor-pointer">
+                <span class="text-sm flex items-center gap-2">{{ 'cart.general.close' | t }} {% render 'icon', icon: 'close', size: 15, fill: 'black' %}</span> 
+            </a>
+        </div>
+
+        <div class="flex justify-center items-center">
+            <div class="flex w-full gap-12 items-center">
+                
+                    <div class=""> 
+                        <div class="pb-1">
+                            {% comment %} <h3 class="heading font-semibold text-xl text-left w-full">Sizeinfo</h3> {% endcomment %}
+                            <div class="grid grid-cols-2 border-b border-black">
+                                <div class="w-full cursor-pointer active-table-button border border-black hover:border-black text-center py-2" id="sizeWidthButton" onclick="toggleTable('sizeWidthTable')">{{ 'products.product.size.size_width' | t }}</div>
+                                <div class="w-full cursor-pointer border border-border hover:border-black text-center py-2" id="sizeLengthButton" onclick="toggleTable('sizeLengthTable')">{{ 'products.product.size.size_length' | t }}</div>
+                            </div>
+                        
+                        <div id="sizeWidthTable" class="w-full max-[510px]">
+                          <table class="table-auto border border-border w-full px-4"> 
+                            <thead>
+                              <tr class="text-center bg-primary-bg">
+                                <th class="p-2 text-sm min-w-[170px]">{{ 'products.product.size.size' | t }}</th>
+                                <th class="p-2 text-sm min-w-[170px]">{{ 'products.product.size.waist' | t }}</th>
+                                <th class="p-2 text-sm min-w-[170px]">{{ 'products.product.size.hips' | t }}</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                {% for variant in product.variants %}
+                                    <tr class="border-b hover:bg-primary-bg border-border text-center even:bg-[#fafaf8] ">
+                                        <td class="p-2 hover:bg-primary-bg text-sm min-w-[200px]">{{ variant.title | split: "/" | first }}</td>
+                                        <td class="p-2 hover:bg-primary-bg text-sm min-w-[200px]">
+                                            {% if variant.metafields.custom.waist.value != blank %}
+                                                {{ variant.metafields.custom.waist.value | split: " " | first }}<span class="unit text-sm">cm</span>
+                                            {% else %}
+                                                -
+                                            {% endif %} 
+                                        </td>
+                                        <td class="p-2 text-sm hover:bg-primary-bg min-w-[200px]">
+                                            {% if variant.metafields.custom.hips.value != blank %}
+                                                {{ variant.metafields.custom.hips.value | split: " " | first }}<span class="unit text-sm">cm</span>
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                      </tr>
+                                {% endfor %}             
+                            </tbody>
+                          </table> 
+                        </div>
+                        <div id="sizeLengthTable" class="hidden w-full max-[510px]">
+                          <table class="table-auto border border-border w-full px-4"> 
+                          <thead>
+                            <tr class="text-center bg-primary-bg">
+                              <th class="p-2 text-sm min-w-[255px]">{{ 'products.product.size.size' | t }}</th>
+                              <th class="p-2 text-sm min-w-[255px]">{{ 'products.product.size.length' | t }}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              {% for variant in product.variants %}
+                                  <tr class="border-b hover:bg-primary-bg border-border text-center even:bg-[#fafaf8] ">
+                                      <td class="p-2 text-sm min-w-[300px]">{{ variant.title | split: "/" | first }}</td>
+                                      <td class="p-2 text-sm min-w-[300px]">
+                                          {% if variant.metafields.custom.length.value != blank %}
+                                              {{ variant.metafields.custom.length.value | split: " " | first }}<span class="unit text-sm">cm</span>
+                                          {% else %}
+                                              -
+                                          {% endif %}
+                                      </td>
+                           
+                                    </tr>
+                              {% endfor %}             
+                          </tbody>
+                        </table>
+                    </div>
+                        </div>
+                      </div>
+                      
+            
+                {% if product.type == 'Pants' %}
+                    <div class="w-full p-8 mt-6 bg-primary-bg rounded-md max-w-">
+                        {% render 'size-guide-icon', size: '600' %}
+                        {% render 'true-to-size-bar', class: 'flex-col items-center gap-4 pt-12 text-center' %}
+                    </div>
+                {%  endif %}
+            </div>
+        </div>
+    </div>
+    
+</div> 
+
+<style>
+    .active-table-button {
+        border: 1px solid black;
+        background: black;
+        color: white;
+    }
+</style>
+
+
+<script>
+    
+    function toggleTable(id) {
+        let widthTable = document.getElementById('sizeWidthTable');
+        let lengthTable = document.getElementById('sizeLengthTable');
+        let widthButton = document.getElementById('sizeWidthButton');
+        let lengthButton = document.getElementById('sizeLengthButton');
+
+        if (id == 'sizeWidthTable') {
+            // use the active-table-button class to style the active button
+            widthTable.classList.remove('hidden');
+            lengthTable.classList.add('hidden');
+            widthButton.classList.add('active-table-button');
+            lengthButton.classList.remove('active-table-button');
+            document.querySelectorAll('.size-illu-length').forEach(function(el) {
+                el.setAttribute('style', 'fill: #B9B9B3 !important; stroke: #B9B9B3 !important;');
+            });
+            document.querySelectorAll('.size-illu-waist').forEach(function(el) {
+                el.setAttribute('style', 'fill: #000 !important; stroke: #000 !important;');
+            });
+            document.querySelectorAll('.size-illu-hips').forEach(function(el) {
+                el.setAttribute('style', 'fill: #000 !important; stroke: #000 !important;');
+            });
+        } else {   
+            widthTable.classList.add('hidden');
+            lengthTable.classList.remove('hidden');
+            widthButton.classList.remove('active-table-button');
+            lengthButton.classList.add('active-table-button');
+            document.querySelectorAll('.size-illu-length').forEach(function(el) {
+                el.setAttribute('style', 'fill: #000 !important; stroke: #000 !important;');
+            });
+            document.querySelectorAll('.size-illu-waist').forEach(function(el) {
+                el.setAttribute('style', 'fill: #B9B9B3 !important; stroke: #B9B9B3 !important;');
+            });
+            document.querySelectorAll('.size-illu-hips').forEach(function(el) {
+                el.setAttribute('style', 'fill: #B9B9B3 !important; stroke: #B9B9B3 !important;');
+            });
+        }
+    }
+
+    window.onload = function() {
+        toggleTable('sizeWidthTable');
+    };
+
+    document.getElementById('sizeWidthButton').addEventListener('click', function() {
+        checkActiveButton();
+    });
+
+    document.getElementById('sizeLengthButton').addEventListener('click', function() {
+        checkActiveButton();
+    });
+
+</script>

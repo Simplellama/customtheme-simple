@@ -1,0 +1,103 @@
+<section class="featured-collection-grid py-12 md:py-20">
+  <div class="container px-2 sm:px-8">
+    <div class="Section_header pb-6 md:pb-8 px-8">
+      <div class="Section_header__inner flex  flex-col gap-4 pb-0">
+        <h3 class="Heading font-bold text-4xl md:text-6xl lg:text-8xl">{{ section.settings.title }}</h3>
+        <h3 class="text-base">{{ section.settings.subtitle }}</h3>
+      </div>
+    </div> 
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="col-products flex flex-col gap-4">
+          <div class="grid grid-cols-2 ">
+            {% for block in section.blocks %}    
+              {% render 'card-product', product: block.settings.products, lazyload: true %}
+            {% endfor %}
+          </div>
+          <a href="{{ section.settings.link }}" class="Button Button_secondary w-full">{{ section.settings.btn_text }}</a>
+      </div>
+      <div class="col-image h-full overflow-hidden rounded-md {% if section.settings.layout == 'left' %}order-[-1]{% else %}order-[-1] md:order-1{% endif %}">
+        {% render 'media', media: section.settings.col-image, loading: 'lazy', class: "w-full h-full", alt: section.settings.title, width: 1024 %}
+      </div>
+    </div>
+  </div>
+</section>
+  
+{% schema %}
+{
+  "name": "Featured collection grid",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading"
+    },
+    {
+        "type": "text",
+        "id": "btn_text",
+        "label": "Button text"
+    },
+    {
+        "type": "url",
+        "id": "link",
+        "label": "Button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "col-image",
+      "label": "Collection image"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "default": "right",
+      "options": [
+        {
+          "value": "left",
+          "label": "Image left"
+        },
+        {
+          "value": "right",
+          "label": "Image right"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "list",
+      "name": "Products",
+      "settings": [
+        {
+          "type": "product",
+          "id": "products",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection grid",
+      "category": "section",
+      "blocks": [
+        {
+          "type": "list",
+          "settings": {}
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

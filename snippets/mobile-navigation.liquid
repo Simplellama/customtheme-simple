@@ -1,0 +1,27 @@
+<nav role="mobile-navigation">
+    <ul class='navigation flex flex-col gap-8'>
+      {% for link in linklists.mobile-menu.links %}
+        {% assign child_list_handle = link.title | handleize %}
+   
+        {% comment %}For sub-menus{% endcomment %}
+        {% if menus[child_list_handle].links != blank %}
+          <li class="has-submenu{% if link.active %} active{% endif %} ">
+            <a href="{{ link.url }}" class="site-nav__link text-xl hover:text-primary-orange">
+              {{ link.title }}
+            </a>
+            <ul class="site-nav__submenu">
+              {% for childlink in menus[child_list_handle].links %}
+                <li {% if childlink.active %}class="site-nav--active"{% endif %}>
+                  <a href="{{ childlink.url }}" class="site-nav__link hover:text-primary-orange">{{ childlink.title | escape }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </li>
+        {% else %}
+          <li class=" {% if link.active %}active{% endif %}">
+            <a href="{{ link.url }}" class="text-2xl hover:text-primary-orange">{{ link.title }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </nav>

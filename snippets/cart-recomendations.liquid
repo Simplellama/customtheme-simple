@@ -1,0 +1,179 @@
+<div class="flex flex-col justify-center cart-recomendations relative z-[999] h-fit mt-8">
+  <h3 class="text-base pb-4">{{ 'cart.cart_recomendations.Style_it_with' | t }}</h3>
+  <div class="cart-recomendations-container overflow-y-scroll flex flex-col justify-between ">
+  <div id="cart-recommendations-slider" class="splide">
+    <div class="splide__track">
+      <div class="splide__list cart-recommendations-container overflow-y-scroll flex flex-row justify-between max-w-[90%]">
+        <!-- Your recommendation items here -->
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script defer>
+document.addEventListener('DOMContentLoaded', function () {
+
+    let latestProduct = {{ cart.items.first.product_id | json }};
+    let latestVariant = {{ cart.items.first.variant_id | json }};
+    let shopCurrency = "DKK"; // Currency code for Danish Krone
+    let displayedProductIds = [];
+
+    function updateLatestProductAndVariant(productId, variantId) {
+      latestProduct = productId;
+      latestVariant = variantId;
+    }
+
+    function updateCartProducts() {
+      if (latestProduct === undefined || latestProduct === null) {
+        return;
+      }
+
+      const complementaryUrl = `/recommendations/products.json?product_id=${latestProduct}&variant_id=${latestVariant}&limit=3&intent=complementary`;
+
+      fetch(complementaryUrl)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Failed to fetch complementary products: ${response.status} - ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then(({ products: complementaryProducts }) => {
+          if (complementaryProducts) {
+            const productsToDisplay = [];
+
+            complementaryProducts.forEach(product => {
+              if (!product.tags.includes('multipack-bundle') && !displayedProductIds.includes(product.id)) {
+                productsToDisplay.push(product);
+                displayedProductIds.push(product.id);
+              }
+            });
+
+            if (productsToDisplay.length > 0) {
+              const productTilvalg = document.querySelector("#cart-recommendations-slider");
+              
+              // Create a currency formatter with no decimal places for DKK
+              const formatter = new Intl.NumberFormat('da-DK', {
+                style: 'currency',
+                currency: shopCurrency,
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+              });
+
+              productTilvalg.innerHTML = productsToDisplay.map(product => {
+                const formId = `product_form_${product.id}`;
+
+                return `
+                  <ajax-cart-product-form class="mb-3 block splide__slide">
+                    <div class="overflow-hidden pb-2">
+                      <form id="${formId}" class="product-form" method="post" action="/cart/add" accept-charset="UTF-8" enctype="multipart/form-data">
+                        <input type="hidden" name="form_type" value="product">
+                        <input type="hidden" name="utf8" value="✓">
+                        <input type="hidden" name="return_to" value="${product.url}">
+                        <div class="product-recom__item flex">
+                          <a href="${product.url}" class="product-recom__link flex items-center text-center gap-2">
+                            <div class="w-auto w-[120px] h-[130px] ">
+                              <img src="${product.featured_image}" width="80" alt="${product.title}" loading="lazy" class="product-recom__image mx-auto block object-contain h-full w-full">
+                            </div> 
+                          </a> 
+                          <div class="flex px-3 items-start flex-col justify-start">
+                            <div class="relative w-full">
+                              <div class="w-full py-1 flex flex-col ">
+                                <h3 class="product-recom__title Heading text-sm sm:text-base mt-2">${product.title.substring(0, 30)}</h3>
+                                <p class="product-recom__price text-sm text-left py-2">${formatter.format(product.price / 100).replace('kr.', 'DKK')}</p>
+                              </div>
+                              <div class="relative flex gap-1 items-center">
+                                <span class="font-regular text-sm">Size: </span>
+                                <select aria-label="size select" name="id" class="border-b border-primary-black size-select no-js font-regular text-right text-sm w-fit bg-primary-bg py-[2px]" data-product-select>
+                                  ${product.variants.map(variant => `
+                                   <option value="${variant.id}" ${variant.available ? '' : 'disabled'}>${variant.title}${variant.available ? '' : ' {{ 'products.product.sold_out' | t }}'}</option>
+                                  `).join("")}
+                                </select>
+                
+                              </div>
+                            </div>
+                            <input class="ProductForm__AddToCart text-base min-w-[0] mt-2 mb-2" type="submit" value="{{ 'products.product.add_to_cart' | t }}">
+                            <input type="hidden" name="product_id" value="${product.id}">
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </ajax-cart-product-form>
+                `;
+              }).join("");
+
+              // Add event listener for form submission
+              const forms = document.querySelectorAll(".product-form");
+              forms.forEach(form => {
+                form.addEventListener("submit", (event) => {
+                  if (document.documentElement.classList.contains("js-ajax-cart-empty")) {
+                    event.preventDefault();
+                  } else {
+                    event.preventDefault();
+                    const formData = new FormData(form);
+                    const variantId = formData.get("variant_id");
+                    const productId = formData.get("product_id");
+                  }
+                });
+              });
+
+              // Hide select elements with only one option
+              const sizeSelects = document.querySelectorAll(".size-select");
+              sizeSelects.forEach(select => {
+                if (select.options.length <= 1) {
+                  select.style.display = "none";
+                  // Optionally hide the label as well
+                  select.previousElementSibling.style.display = "none";
+                }
+              });
+
+              // Initialize Splide after products are added
+              initializeSplide();
+            }
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+
+    updateCartProducts();
+
+    document.addEventListener("liquid-ajax-cart:request-end", function(event) {
+      const { cart } = event.detail;
+      if (cart.items && cart.items.length > 0) {
+        const firstCartItem = cart.items[0];
+        const eventProductId = firstCartItem.product_id;
+        const eventVariantId = firstCartItem.variant_id;
+        updateLatestProductAndVariant(eventProductId, eventVariantId);
+        displayedProductIds = [];
+        updateCartProducts();
+      }
+    });
+
+    document.documentElement.addEventListener('cart:refresh', () => {
+      updateCartProducts();
+    });
+
+    {% comment %} function initializeSplide() {
+      const splide = new Splide('#cart-recommendations-slider', {
+        type: 'slide',
+        fixedWidth: '10rem',
+        arrows: true,
+        pagination: false,
+        gap: '1rem',
+        breakpoints: {
+          640: {
+            fixedWidth: '8rem',
+            gap: '0.5rem',
+          },
+        },
+      });
+
+      splide.mount();
+    }
+
+    window.addEventListener('resize', initializeSplide); {% endcomment %}
+  
+});
+</script>

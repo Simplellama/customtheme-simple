@@ -1,0 +1,32 @@
+<div class="flex flex-col sm:justify-center md:justify-normal {{ class }}">
+
+  <div class="payment_icons ">
+    <ul class="flex flex-row flex-wrap {{ class }} items-start justify-start gap-x-5 max-w-fit grayscale-[0.4] ">
+      <li class="w-[25px]">{% render 'icon', icon: 'visa' %}</li>
+      <li class="w-[25px]">{% render 'icon', icon: 'mastercard' %}</li>
+      <li class="w-[25px]">{% render 'icon', icon: 'maestro' %}</li>
+      <li class="w-[25px]">{% render 'icon', icon: 'g-pay', size: '25px' %}</li>
+      <li class="w-[25px]">{% render 'icon', icon: 'apple-pay', size: '25px' %}</li> 
+      <li class="w-[25px]">{% render 'icon', icon: 'shop-pay', size: '25px' %}</li>
+
+      {% comment %} <li class="w-[25px]">{% render 'icon', icon: 'paypal', size: '25px' %}</li> {% endcomment %}
+      <li class="w-[25px]">{% render 'icon', icon: 'amex', size: '25px' %}</li>
+  
+        <li class="w-[25px]">{% render 'icon', icon: 'mobilepay', size: '25px' %}</li>
+      {% comment %}
+        <li class="w-[40px]">{% render 'icon', icon: 'viabill' %}</li>
+           {% endcomment %}
+        <li class="w-[25px]">{% render 'icon', icon: 'dankort' %}</li>
+   
+      {% comment %}
+        {%- for type in shop.enabled_payment_types -%}
+
+          <li>
+            {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+          </li>
+
+        {%- endfor -%}
+      {% endcomment %} 
+    </ul>
+  </div>
+</div>

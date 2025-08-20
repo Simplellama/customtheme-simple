@@ -1,0 +1,121 @@
+{% assign acc_items = product.metafields.custom.acc_items.value %}
+{% assign product_info = product.metafields.custom.product_information.value %}
+
+<section class="flex flex-col gap-y-4 mt-4 mb-8">
+
+    {% if acc_items != blank %}
+    <div class="flex">
+        <div class="grid grid-cols-12 w-full justify-between selection:bg-transparent" >
+            {% for acc_item in acc_items %}
+                <div class="col-span-12 {% unless forloop.last %} border-b border-border {% endunless %}">
+                    <div class="accordion-header flex items-center gap-x-4 pr-2 cursor-pointer" onclick="toggleAcc(this)">
+                        <div class="bg-primary-bg h-full w-10 flex items-center justify-center">
+                            <img class="w-6" src="{{ acc_item.img | image_url: width: 100  }}">
+                        </div>
+                        <div class="flex flex-col gap-y-1 py-4 w-fit">
+                            <span class="text-base font-semibold">{{ acc_item.title }}</span>
+                            <span class="text-sm font-light">{{ acc_item.subtitle }}</span>
+                        </div>
+                        <div class="ml-auto transition-transform transform">
+                            <svg class="w-4 h-4 arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-content hidden pt-2 pb-6 transition-max-height px-2 duration-300 ease-in-out overflow-hidden max-h-0">
+                        <p class="font-light text-base/5">{{ acc_item.richtext | metafield_tag }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div> 
+    </div>
+    {% endif %}
+
+    {% if product_info != blank %}
+        <h3 class="font-bold mt-6 text-xl">Produkt information</h3>
+        <div class="flex">
+            <div class="grid grid-cols-12 w-full justify-between selection:bg-transparent">
+                {% for item in product_info %}
+                    <div class="col-span-12 {% unless forloop.last %} border-b border-border {% endunless %}">
+                        <div class="accordion-header flex items-center gap-x-4 pr-2 cursor-pointer" onclick="toggleAcc(this)">
+                            {% if item.icon != blank %}
+                                <div class="bg-primary-bg h-full w-10 flex items-center justify-center">
+                                    <img class="w-6" src="{{ item.img | image_url: width: 100 }}">
+                                </div>
+                            {% endif %}
+                            <div class="flex flex-row items-center gap-x-2 py-4 w-fit">
+                                <span class="text-base font-semibold">{{ item.title }}</span>
+                                {% if item.subtitle != blank %}
+                                    <span class="text-sm font-light">-</span>
+                                {% endif %}
+                                <span class="text-sm font-light">{{ item.subtitle }}</span>
+                            </div>
+                            
+                            <div class="ml-auto transition-transform transform">
+                                <svg class="w-4 h-4 arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="accordion-content hidden pt-2 pb-6 transition-max-height px-2 duration-300 ease-in-out overflow-hidden max-h-0">
+                            {% if item.img != blank %}
+                                <div class="bg-primary-bg h-full w-full flex items-center justify-center">
+                                    <img class="w-full" src="{{ item.img | image_url: width: 1000 }}">
+                                </div>
+                            {% endif %}
+                            <div class="font-light text-base/5">
+                                {{ item.richtext | metafield_tag | newline_to_br }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    
+</section>
+
+<style>
+    /* Unified styling for all accordions */
+    .accordion-content h3 {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        position: relative;
+        font-weight: 500;
+    }
+
+    .accordion-content h4 {
+        margin-top: 1rem;
+        margin-bottom: 0.3rem;
+        position: relative;
+        font-weight: 400;
+    }
+  
+    .rotate-180 {
+        transform: rotate(180deg);
+        transition: transform 0.3s ease;
+    }
+    
+    .arrow-icon {
+        transition: transform 0.3s ease;
+    }
+    
+    .transition-max-height {
+        transition: max-height 0.3s ease-in-out;
+    }
+</style>
+
+<script>
+function toggleAcc(element) {
+    const content = element.nextElementSibling;
+    content.classList.toggle('hidden');
+    const arrowIcon = element.querySelector('.arrow-icon'); 
+    arrowIcon.classList.toggle('rotate-180');
+    
+    if (content.classList.contains('hidden')) {
+        content.style.maxHeight = null;
+    } else {
+        content.style.maxHeight = content.scrollHeight + "px";
+    }
+}
+</script>
