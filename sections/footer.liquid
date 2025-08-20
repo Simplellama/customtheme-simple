@@ -8,12 +8,18 @@
       <div class="col-span-2 px-4 pt-6 bg-secondary-bg flex flex-col items-center justify-center">
     
       <div class="flex flex-col gap-y-2 pb-4 w-full">
-        <p class="text-lg/7 font-bold uppercase text-primary-orange">Nyheder, anbefalinger og guides</p>
-        <h3 class="Heading tracking-tight text-5xl/tight sm:text-7xl/tight font-bold text-primary-text">Bliv en del af Smelt familien</h3>
+  <p class="text-lg/7 font-bold uppercase text-primary-orange">{{ section.settings.newsletter_subtitle }}</p>
+  <h3 class="Heading tracking-tight text-5xl/tight sm:text-7xl/tight font-bold text-primary-text">{{ section.settings.newsletter_title }}</h3>
         <ul class="flex flex-col gap-y-2 py-4">
-          <li class="font-semibold flex gap-x-2">{% render 'icon', icon: 'check', size: 20, fill: 'black' %} Pro-tips og guides om sauna og sunhed</li>
-          <li class="font-semibold flex gap-x-2">{% render 'icon', icon: 'check', size: 20, fill: 'black' %}Invitationer til events i hele landet</li>
-          <li class="font-semibold flex gap-x-2">{% render 'icon', icon: 'check', size: 20, fill: 'black' %}Eksklusive tilbud og nyheder</li>
+          {% if section.settings.newsletter_bullet_1 != blank %}
+            <li class="font-semibold flex gap-x-2">{% render 'icon', icon: 'check', size: 20, fill: 'black' %}{{ section.settings.newsletter_bullet_1 }}</li>
+          {% endif %}
+          {% if section.settings.newsletter_bullet_2 != blank %}
+            <li class="font-semibold flex gap-x-2">{% render 'icon', icon: 'check', size: 20, fill: 'black' %}{{ section.settings.newsletter_bullet_2 }}</li>
+          {% endif %}
+          {% if section.settings.newsletter_bullet_3 != blank %}
+            <li class="font-semibold flex gap-x-2">{% render 'icon', icon: 'check', size: 20, fill: 'black' %}{{ section.settings.newsletter_bullet_3 }}</li>
+          {% endif %}
         </ul>
         <div class="klaviyo-form-RPkinZ"></div>
       </div>
@@ -22,7 +28,7 @@
       <div class="relative mt-16 grid grid-cols-2 gap-8 xl:col-span-3 xl:mt-0 bg-primary-black px-6 md:px-14  pt-12 md:pt-20 pb-56">
         <div class="grid grid-cols-1 md:gap-12 lg:pl-20">
           <div>
-            <h3 class="text-xl/6 Heading font-bold text-white">Shop</h3>
+            <h3 class="text-xl/6 Heading font-bold text-white">{{ section.settings.shop_title }}</h3>
             <ul role="list" class="mt-6 space-y-4">
               {% for link in linklists.footer_shop.links %} 
                 <li>
@@ -32,7 +38,7 @@
             </ul>
           </div>
           <div class="mt-10">
-            <h3 class="text-xl/6 Heading font-bold text-white">Support</h3>
+            <h3 class="text-xl/6 Heading font-bold text-white">{{ section.settings.support_title }}</h3>
             <ul role="list" class="mt-6 space-y-4">
               {% for link in linklists.footer_support.links %} 
                 <li>
@@ -44,7 +50,7 @@
         </div>
         <div class="grid grid-cols-1 md:gap-12">
           <div>
-            <h3 class="text-xl/6 Heading font-bold text-white">Information</h3>
+            <h3 class="text-xl/6 Heading font-bold text-white">{{ section.settings.information_title }}</h3>
             <ul role="list" class="mt-6 space-y-4">
               {% for link in linklists.footer_information.links %} 
                 <li>
@@ -55,22 +61,22 @@
           </div>
         <div class="mt-10">
 
-          <h3 class="text-xl/6 Heading font-bold text-white">Kontakt os</h3>
+          <h3 class="text-xl/6 Heading font-bold text-white">{{ section.settings.contact_title }}</h3>
           <ul role="list" class="mt-6 space-y-4">
             <li>
-              <a href="tel:+4571905836" class="text-base/6 text-white hover:text-primary-orange">+45 71 90 58 36</a>
+              <a href="tel:{{ section.settings.contact_phone }}" class="text-base/6 text-white hover:text-primary-orange">{{ section.settings.contact_phone }}</a>
             </li>
             <li>
-              <a href="mailto:info@smeltsauna.dk" class="text-base/6 text-white hover:text-primary-orange">info@smeltsauna.dk</a>
+              <a href="mailto:{{ section.settings.contact_email }}" class="text-base/6 text-white hover:text-primary-orange">{{ section.settings.contact_email }}</a>
             </li>
             <li>
-              <span class="text-base/6 text-white hover:text-primary-orange">Man - Fre: 08:00 - 22:00</span>
+              <span class="text-base/6 text-white hover:text-primary-orange">{{ section.settings.contact_hours_weekdays }}</span>
             </li>
             <li>
-              <span class="text-base/6 text-white hover:text-primary-orange">Lør - Søn: 09:00 - 16:00</span>
+              <span class="text-base/6 text-white hover:text-primary-orange">{{ section.settings.contact_hours_weekend }}</span>
             </li>
             <li>
-              <span class="text-base/6 text-white hover:text-primary-orange">Helligdage: Lukket</span>
+              <span class="text-base/6 text-white hover:text-primary-orange">{{ section.settings.contact_hours_holidays }}</span>
             </li>
           </ul>
     
@@ -88,7 +94,7 @@
   </div>
   <div class="mx-auto h-[1px] bg-border w-full"></div>
   <div class="px-4 py-3 flex flex-col sm:flex-row gap-y-3 bg-primary-black justify-between sm:items-center w-full relative z-[9999999999999]">
-    <div class="text-sm/6 text-white  md:mt-0">&copy; 2025 Smelt ApS. - CVR: 38955810 - Strædet 4 - 3770 Allinge - Denmark</div>
+  <div class="text-sm/6 text-white  md:mt-0">{{ section.settings.copyright }}</div>
     <ul>
       {% for link in linklists.footer-bottom.links %} 
         <li class="inline-block sm:ml-4">
@@ -106,11 +112,22 @@
   {
     "name": "Footer",
     "settings": [
-      {
-        "type": "image_picker",
-        "id": "logo_image",
-        "label": "Logo"
-      }
+      { "type": "image_picker", "id": "logo_image", "label": "Logo" },
+      { "type": "text", "id": "newsletter_subtitle", "label": "Newsletter subtitle" },
+      { "type": "text", "id": "newsletter_title", "label": "Newsletter title" },
+      { "type": "text", "id": "newsletter_bullet_1", "label": "Newsletter bullet 1" },
+      { "type": "text", "id": "newsletter_bullet_2", "label": "Newsletter bullet 2" },
+      { "type": "text", "id": "newsletter_bullet_3", "label": "Newsletter bullet 3" },
+      { "type": "text", "id": "shop_title", "label": "Shop title" },
+      { "type": "text", "id": "support_title", "label": "Support title" },
+      { "type": "text", "id": "information_title", "label": "Information title" },
+      { "type": "text", "id": "contact_title", "label": "Contact title" },
+      { "type": "text", "id": "contact_phone", "label": "Contact phone" },
+      { "type": "text", "id": "contact_email", "label": "Contact email" },
+      { "type": "text", "id": "contact_hours_weekdays", "label": "Contact hours (weekdays)" },
+      { "type": "text", "id": "contact_hours_weekend", "label": "Contact hours (weekend)" },
+      { "type": "text", "id": "contact_hours_holidays", "label": "Contact hours (holidays)" },
+      { "type": "text", "id": "copyright", "label": "Copyright text" }
     ],
     "blocks": [
       {
