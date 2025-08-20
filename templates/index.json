@@ -302,46 +302,34 @@
         "text": ""
       }
     },
-    "image_with_text_pxJyDJ": {
-      "type": "image-with-text",
-      "settings": {
-        "title": "Saunaens gavnlige effekt på din sundhed",
-        "subtitle": "En investering i dit helbred",
-        "content": "<p>Forskning fra Finland viser, at regelmæssige saunature kan gøre en stor forskel for dit helbred. De, der gik i sauna to til tre gange om ugen, reducerede risikoen for <strong>hjertekarsygdomme med 27%</strong>, mens fire til fem ugentlige ture sænkede risikoen med hele <strong>50%</strong>.</p><p><br/></p><p></p><p>Varigheden spiller også en vigtig rolle – et ophold på over </p><p><strong>19 minutter</strong> gav markant bedre resultater end kortere tid i saunaen.</p><p>Med en sauna skaber du ikke bare ro og velvære, men gør samtidig noget godt for dit hjerte og din generelle sundhed.</p>",
-        "bg_textbox": true,
-        "button": "Læs Stanford artiklen her",
-        "button_link": "https://longevity.stanford.edu/lifestyle/2023/03/27/sauna-use-as-a-lifestyle-practice/",
-        "layout": "image-right"
-      }
-    },
     "information_section_hXpVYR": {
       "type": "information-section",
       "blocks": {
         "feature_9MhKzF": {
           "type": "feature",
           "settings": {
-            "title": "Chat med os",
+            "title": "",
             "richtext": "",
-            "button_text": "Åben chat",
-            "link": "#"
+            "button_text": "",
+            "link": ""
           }
         },
         "feature_VQhkbk": {
           "type": "feature",
           "settings": {
-            "title": "Skriv til os",
+            "title": "",
             "richtext": "",
-            "button_text": "info@smeltsauna.dk",
-            "link": "mailto:info@smeltsauna.dk"
+            "button_text": "",
+            "link": ""
           }
         },
         "feature_3WPwc9": {
           "type": "feature",
           "settings": {
-            "title": "Ring til os",
+            "title": "",
             "richtext": "",
-            "button_text": "+45 71 90 58 36",
-            "link": "tel:+4571905836"
+            "button_text": "",
+            "link": ""
           }
         }
       },
@@ -351,10 +339,10 @@
         "feature_3WPwc9"
       ],
       "settings": {
-        "title": "Har du nogle spørgsmål?",
-        "subtitle": "Kundeservice & information",
+        "title": "",
+        "subtitle": "",
         "url": "shopify://pages/faq-ofte-stillede-sporgsmal",
-        "link_text": "Ofte stillede spørgsmål"
+        "link_text": ""
       }
     }
   },
@@ -371,7 +359,6 @@
     "our_customers_TQJAAR",
     "faq_nmbMhb",
     "newsletter_section_8jAKPn",
-    "image_with_text_pxJyDJ",
     "information_section_hXpVYR"
   ]
 }
