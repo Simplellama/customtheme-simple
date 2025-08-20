@@ -1,1 +1,32 @@
-{"sections":{"hero_NWqK3b":{"type":"hero","settings":{"title":"Guides og pleje","subtitle":"Bliv guidet godt i gang","text":"","link":"","background":"shopify:\/\/shop_images\/DSC00012.jpg","height":"40"}},"info_panel_section_qyUDRd":{"type":"info-panel-section","settings":{"metaobj":"glod-og-elda"}},"main":{"type":"main-blog","settings":{}}},"order":["hero_NWqK3b","info_panel_section_qyUDRd","main"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero_NWqK3b": {
+      "type": "hero",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "text": "",
+        "button_link": "",
+        "button": "",
+        "height": "40"
+      }
+    },
+    "main": {
+      "type": "main-blog",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero_NWqK3b",
+    "main"
+  ]
+}
