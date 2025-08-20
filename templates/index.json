@@ -26,28 +26,28 @@
         "feature_RFzXB3": {
           "type": "feature",
           "settings": {
-            "title": "See your gut biodiversity",
+            "title": "",
             "richtext": ""
           }
         },
         "feature_wBcYnb": {
           "type": "feature",
           "settings": {
-            "title": "Analysis of your gut bacteria",
+            "title": "",
             "richtext": ""
           }
         },
         "feature_ezqqLN": {
           "type": "feature",
           "settings": {
-            "title": "Insight in beneficial and non-beneficial bacteria",
+            "title": "",
             "richtext": ""
           }
         },
         "feature_zeeTpf": {
           "type": "feature",
           "settings": {
-            "title": "Personal recommendations",
+            "title": "",
             "richtext": ""
           }
         }
@@ -60,164 +60,26 @@
       ],
       "settings": {}
     },
-    "testimonials_grid_d4GcCf": {
-      "type": "testimonials-grid",
-      "blocks": {
-        "tab_6Yk9Bp": {
-          "type": "tab",
-          "settings": {
-            "title": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "tab_6Yk9Bp"
-      ],
-      "disabled": true,
-      "settings": {
-        "title": "",
-        "subtitle": ""
-      }
-    },
-    "collection_nav_section_zGPadX": {
-      "type": "collection-nav-section",
-      "blocks": {
-        "tab_dmGNHc": {
-          "type": "tab",
-          "settings": {
-            "title": "Sauna startpakker",
-            "link": ""
-          }
-        },
-        "tab_CrCg3G": {
-          "type": "tab",
-          "settings": {
-            "title": "Sauna",
-            "link": ""
-          }
-        },
-        "tab_ydDLqt": {
-          "type": "tab",
-          "settings": {
-            "title": "Alle produkter",
-            "link": ""
-          }
-        },
-        "tab_JBWC9P": {
-          "type": "tab",
-          "settings": {
-            "title": "Isbade",
-            "link": ""
-          }
-        },
-        "tab_mNfG8p": {
-          "type": "tab",
-          "settings": {
-            "title": "Tilbehør",
-            "link": ""
-          }
-        },
-        "tab_MLjkYX": {
-          "type": "tab",
-          "settings": {
-            "title": "Lej en sauna",
-            "link": ""
-          }
-        },
-        "tab_B68tUJ": {
-          "type": "tab",
-          "settings": {
-            "title": "Hvad er et saunatelt?",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "tab_dmGNHc",
-        "tab_CrCg3G",
-        "tab_ydDLqt",
-        "tab_JBWC9P",
-        "tab_mNfG8p",
-        "tab_MLjkYX",
-        "tab_B68tUJ"
-      ],
-      "disabled": true,
-      "settings": {
-        "title": "",
-        "subtitle": ""
-      }
-    },
     "featured_collection_zya3Jx": {
       "type": "featured-collection",
       "settings": {
-        "title": "Sauna startpakker",
-        "subtitle": "Vi har gjort det nemt",
-        "tab1_title": "Kube - Udsalg",
-        "tab1_subtitle": "8-10 Pers.",
+        "title": "",
+        "subtitle": "",
+        "tab1_title": "",
+        "tab1_subtitle": "",
         "collection1": "",
-        "product_list1": [
-          "kube-basic",
-          "kube-premium-pakke",
-          "kube-deluxe-pakke"
-        ],
+        "product_list1": [],
         "tab2_title": "Glöd",
         "tab2_subtitle": "4-6 Pers.",
         "collection2": "",
-        "product_list2": [
-          "glod-basis",
-          "glod-premium-pakke",
-          "glod-deluxe-pakke"
-        ],
-        "tab3_title": "Elda",
-        "tab3_subtitle": "8-10 Pers.",
+        "product_list2": [],
+        "tab3_title": "",
+        "tab3_subtitle": "",
         "collection3": "",
-        "product_list3": [
-          "elda-basic-pakke",
-          "elda-premium-pakke",
-          "elda-deluxe-pakke"
-        ],
+        "product_list3": [],
         "button_text": "",
         "button_link": "",
         "limit": "4"
-      }
-    },
-    "text_slider_waeeLT": {
-      "type": "text-slider",
-      "blocks": {
-        "slide_y7UezU": {
-          "type": "slide",
-          "settings": {
-            "content": "Kraftfuld Brændeovn"
-          }
-        },
-        "slide_BhUfAX": {
-          "type": "slide",
-          "settings": {
-            "content": "Transportabel"
-          }
-        },
-        "slide_CxFdHh": {
-          "type": "slide",
-          "settings": {
-            "content": "Kræver ikke byggetilladelse"
-          }
-        },
-        "slide_QpJ3nJ": {
-          "type": "slide",
-          "settings": {
-            "content": "Opsætning på 5 min"
-          }
-        }
-      },
-      "block_order": [
-        "slide_y7UezU",
-        "slide_BhUfAX",
-        "slide_CxFdHh",
-        "slide_QpJ3nJ"
-      ],
-      "settings": {
-        "link": ""
       }
     },
     "collection_cols_ftpLqr": {
@@ -733,10 +595,7 @@
   "order": [
     "hero_TCAaex",
     "hero_annocument_banner_CEUMiY",
-    "testimonials_grid_d4GcCf",
-    "collection_nav_section_zGPadX",
     "featured_collection_zya3Jx",
-    "text_slider_waeeLT",
     "collection_cols_ftpLqr",
     "richtext_KQHcCz",
     "video_image_section_Dwhbik",

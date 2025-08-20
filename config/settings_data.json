@@ -61,102 +61,6 @@
       },
       "megamenu": {
         "type": "megamenu",
-        "blocks": {
-          "link_list_T3KRdH": {
-            "type": "link_list",
-            "settings": {
-              "fourCols": false,
-              "menu_id": "Sauna",
-              "image_text": "Kube",
-              "person_count": "8-10 Personer",
-              "price_text": "Fra 8.495,-",
-              "image_button_text": "Fra 9495,-",
-              "link": "shopify://collections/kube-pakkeloesninger",
-              "image_text_2": "Glöd",
-              "person_count_2": "4-6 Personer",
-              "price_text_2": "Fra 13.495,-",
-              "image_button_text_2": "Fra 13.495,-",
-              "link_2": "shopify://collections/glod-pakke-loesninger",
-              "image_text_3": "Elda",
-              "person_count_3": "8-10 Personer",
-              "price_text_3": "Fra 15.495,-",
-              "image_button_text_3": "Fra 15.495,-",
-              "link_3": "shopify://collections/elda-pakkeloesninger"
-            }
-          },
-          "link_list_DjRydF": {
-            "type": "link_list",
-            "settings": {
-              "fourCols": false,
-              "menu_id": "Accessories",
-              "image_text": "Spand og Øse",
-              "person_count": "",
-              "price_text": "",
-              "image_button_text": "",
-              "link": "shopify://products/sauna-spa-ske",
-              "image_text_2": "Bænk",
-              "person_count_2": "",
-              "price_text_2": "",
-              "image_button_text_2": "",
-              "link_2": "shopify://products/baenk-seng",
-              "image_text_3": "Termo-/hygrometer",
-              "person_count_3": "",
-              "price_text_3": "",
-              "image_button_text_3": "",
-              "link_3": "shopify://products/termometer"
-            }
-          },
-          "link_list_zG8HMD": {
-            "type": "link_list",
-            "settings": {
-              "fourCols": false,
-              "menu_id": "Isbade",
-              "image_text": "Hammersøen",
-              "person_count": "",
-              "price_text": "",
-              "image_button_text": "",
-              "link": "shopify://products/hammersoen-isbad",
-              "image_text_2": "Opalsøen",
-              "person_count_2": "",
-              "price_text_2": "",
-              "image_button_text_2": "",
-              "link_2": "shopify://products/opalsoen",
-              "image_text_3": "",
-              "person_count_3": "8-10 Personer",
-              "price_text_3": "Fra 15.495,-",
-              "image_button_text_3": "Learn more",
-              "link_3": ""
-            }
-          },
-          "link_list_CAenJE": {
-            "type": "link_list",
-            "settings": {
-              "fourCols": false,
-              "menu_id": "Leje & events",
-              "image_text": "Book saunagus",
-              "person_count": "8-10 Personer",
-              "price_text": "Fra 8.495,-",
-              "image_button_text": "Læs mere",
-              "link": "",
-              "image_text_2": "Lej et saunatelt",
-              "person_count_2": "6-8 Personer",
-              "price_text_2": "Fra 13.495,-",
-              "image_button_text_2": "Læs mere",
-              "link_2": "",
-              "image_text_3": "",
-              "person_count_3": "8-10 Personer",
-              "price_text_3": "Fra 15.495,-",
-              "image_button_text_3": "Learn more",
-              "link_3": ""
-            }
-          }
-        },
-        "block_order": [
-          "link_list_T3KRdH",
-          "link_list_DjRydF",
-          "link_list_zG8HMD",
-          "link_list_CAenJE"
-        ],
         "settings": {}
       },
       "megamenu-right": {
@@ -214,7 +118,7 @@
       "announcment-countdown": {
         "type": "announcment-countdown",
         "settings": {
-          "show_section": true,
+          "show_section": false,
           "bg_color": "#000000",
           "timer_color": "#000000",
           "color": "#ffffff",
@@ -235,7 +139,7 @@
           "news_nEXc74": {
             "type": "news",
             "settings": {
-              "title": "<p>Fri fragt ved køb af sauna | 30 dages fuld retur</p><p></p>",
+              "title": "<p>Gain insight into your gut health</p>",
               "link": ""
             }
           }
