@@ -133,10 +133,7 @@
                       {% render 'price-snippet' variant: current_variant, product: product %}
                       {% render 'labels' class: 'relative' %}
                     </div>
-                    <!-- Anyday PriceWidget  -->
-<script src="https://my.anyday.io/price-widget/anyday-price-widget.js" type="module" async></script>
-<anyday-price-widget style="display: flex;margin: 0px 0 10px 0px;color:#000;" currency="DKK" price-selector=".price span[data-product-price]" token="e604dff4bc9a4b47ac80e411d5f709f4" price-format-locale="da-DK" locale="da-DK" theme="light" shop-name="smeltsauna.dk" custom-css=""></anyday-price-widget>
-<!-- Anyday PriceWidget, End  -->
+
 
                     {% if product.description != blank %}
                       <div class="text-base font-light font-regular [&>*]:text-base/5   pb-2">
@@ -169,7 +166,7 @@
                       {% render 'product-faq' %}
     
                     {% when 'video-thumbs' %}
-                      {% render 'video-thumbs' %}
+                      {% render 'video-thumbs', title: block.settings.title %}
 
                     {% when 'acc-items' %}
                       {% render 'acc-items' %}
@@ -386,7 +383,9 @@
       {
         "type": "video-thumbs",
         "name": "Video Thumbs",
-        "settings": []
+        "settings": [
+          { "type": "text", "id": "title", "label": "Title" }
+        ]
       },
       {
         "type": "payment-icons",

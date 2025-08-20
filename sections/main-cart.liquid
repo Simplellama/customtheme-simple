@@ -229,10 +229,7 @@
                 <div class="flex justify-between items-center py-1 border-b border-border"><span class="text-sm md:text-base font-bold">{{ 'cart.general.saved' | t }}</span> <span data-ajax-cart-bind="total_discount | money_with_currency">{{ cart.total_discounts | money_without_trailing_zeros }}</span></div>
                 <div class="flex justify-between items-center py-1 border-b border-border"><span class="text-sm md:text-base font-bold" >{{ 'cart.general.subtotal' | t }}</span> <span data-ajax-cart-bind="total_price | money_with_currency">{{ cart.total_price | money_without_trailing_zeros }}</span></div>
             </div>
-<!-- Anyday PriceWidget  -->
-<script src="https://my.anyday.io/price-widget/anyday-price-widget.js" type="module" async></script>
-<anyday-price-widget style="display: flex;margin: 0px 0 10px 0px;color:#000;justify-content:flex-end;" currency="DKK" price="{{ cart.total_price | divided_by:100 }}" token="e604dff4bc9a4b47ac80e411d5f709f4" price-format-locale="en-UK" locale="da-DK" theme="light" shop-name="smeltsauna.dk" custom-css=""></anyday-price-widget>
-<!-- Anyday PriceWidget, End  -->
+            
             {% if settings.cart_notes_enable %}
                 <div id="cartInstructionButton" class="hidden md:block relative flex text-sm justify-between items-center border-b border-border py-2 cursor-pointer" onclick="toggleCartInstructions()">{{ 'cart.general.note' | t }} <span id="arrow" class="arrow-down"></span></div>
                 <div id="cartInstructionDropdown" class="hidden">

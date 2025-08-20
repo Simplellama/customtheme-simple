@@ -69,8 +69,8 @@
         "tab1_subtitle": "",
         "collection1": "",
         "product_list1": [],
-        "tab2_title": "Glöd",
-        "tab2_subtitle": "4-6 Pers.",
+        "tab2_title": "",
+        "tab2_subtitle": "",
         "collection2": "",
         "product_list2": [],
         "tab3_title": "",
@@ -288,7 +288,7 @@
       "settings": {
         "title": "",
         "subtitle": "",
-        "link": "shopify://pages/faq-ofte-stillede-sporgsmal",
+        "link": "",
         "link-text": "",
         "background": true,
         "margin": true
@@ -341,7 +341,7 @@
       "settings": {
         "title": "",
         "subtitle": "",
-        "url": "shopify://pages/faq-ofte-stillede-sporgsmal",
+        "url": "",
         "link_text": ""
       }
     }

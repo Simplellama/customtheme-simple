@@ -21,7 +21,7 @@
    
 
     {%- render 'wishlist-button', product_handle: product.handle, variant_id: product.selected_or_first_available_variant.id -%}
-    <div class="{%- unless product.available -%}{% unless product.metafields.custom.product_title contains 'Elda' %}opacity-60{% endunless %}{% endunless %} image_container bg-secondary-bg relative group overflow-hidden ">
+    <div class="{%- unless product.available -%}{% endunless %} image_container bg-secondary-bg relative group overflow-hidden ">
   
       <a class="{% if byb == 'true' or xy == true %} pointer-events-none cursor-default {% endif %} flex items-center justify-center w-full bg-secondary-bg-400 {% if template.name == 'collection' %}h-[400px]{% else %}h-[300px]{% endif %} pb-2" 
         {% if nolink != true %}href="{% if byb != 'true' %}{% unless zakeke == true or col_url == true or sale_collection == true and product.template_suffix != 'multipack-bundle' %} {{ product.url }}{% else %}{{ product.url | within: collection }}{% endunless%}{% endif %}"{% else %}role="link" aria-disabled="true"{% endif %} >
@@ -41,31 +41,6 @@
      
       </a>
   
-      <!-- Second image (hidden by default) --> 
-      {% comment %} {% if product.images.size > 1 %} 
-        {%- assign lazyload = true -%}
-        <a
-          class="{% if byb == 'true' or xy == true %} pointer-events-none cursor-default {% endif %} h-[550px]  absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          {% if nolink != true %}href="{% if byb != 'true' %}{% unless zakeke == true or col_url == true or sale_collection == true %} {{ product.url }}{% else %}{{ product.url | within: collection }}{% endunless%}{% endif %}"{% else %}role="link" aria-disabled="true"{% endif %}>
-        
-          {% if byb == 'true' %}
-            {% assign width = 300 %} 
-            {% else %}
-            {% assign width = 500 %}
-          {% endif %}
-  
-          {% render 'media', media: product.images[1], lazyload: lazyload, class: "w-full h-full", alt: product.featured_image.alt, width: 832, focus: center %}
-    
-        </a>
-      {% endif %} {% endcomment %}
- 
-      {% comment %} {% if current_variant.available %}
-        <div class="quick-add-to-cart-col block md:hidden absolute bottom-2 right-2 ">
-          <div class="w-[35px] h-[35px] border flex items-center justify-center border-primary-black rounded-full">
-            {% render 'icon', icon: 'cart', stroke: 'black', size: 19 %}
-          </div>
-        </div> 
-      {% endif %} {% endcomment %}
     </div>
 
   
@@ -220,11 +195,7 @@
         </div>
            
         <a href="{{ product.url }}" class="{% if byb == 'true' %} hidden {% else %} flex {% endif %} items-center mt-1 mb-4 text-center justify-center gap-x-2 rounded-full  px-4 min-h-[35px] text-base font-semibold text-white w-fit min-w-[150px] bg-primary-black hover:bg-medium-green ">
-          {% comment %} {% if product.metafields.custom.product_title contains 'Elda' %}
-            Forudbestil
-          {% else %} {% endcomment %}
             Køb her
-          {% comment %} {% endif %} {% endcomment %}
         </a>
 
       </div>

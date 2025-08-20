@@ -9,20 +9,20 @@
  */
 {
   "current": {
-    "logo_image": "shopify://shop_images/smelt_logo.svg",
+    "logo_image": "",
     "paypal": false,
     "klarna": false,
     "viabill": false,
     "dankort": true,
     "cart_notes_enable": true,
-    "giftwrap_product": "baerepose-stor",
-    "favicon": "shopify://shop_images/chat-icon.png",
+    "giftwrap_product": "",
+    "favicon": "",
     "social_facebook_link": "",
     "social_instagram_link": "",
     "social_youtube_link": "",
-    "checkout_sidebar_background_color": "#fdf8f2",
-    "checkout_accent_color": "#feaa7c",
-    "checkout_button_color": "#feaa7c",
+    "checkout_sidebar_background_color": "",
+    "checkout_accent_color": "",
+    "checkout_button_color": "",
     "social_sharing_blog": false,
     "share_facebook": false,
     "share_twitter": false,
@@ -38,7 +38,7 @@
           "news_43r3iM": {
             "type": "news",
             "settings": {
-              "title": "<p>Fri fragt ved køb af sauna  |  30 dages returret</p><p></p>",
+              "title": "",
               "link": ""
             }
           }
@@ -48,8 +48,8 @@
         ],
         "settings": {
           "hide": false,
-          "bg_color": "#5d2b86",
-          "color": "#ffffff"
+          "bg_color": "",
+          "color": ""
         }
       },
       "main-header": {
@@ -71,7 +71,7 @@
             "settings": {
               "fourCols": false,
               "menu_id": "Home",
-              "image_text": "sdfsdfsdf",
+              "image_text": "",
               "image_button_text": "Learn more",
               "link": "",
               "image_text_2": "",

@@ -737,7 +737,7 @@
         "risky": "Der opstod et problem under behandlingen af ​​din betaling. Prøv igen, eller brug en anden betalingsmetode."
       },
       "marketing": {
-        "accept_marketing_checkbox_label": "Hvis du ikke ønsker at modtage markedsføring eller nyheder om lignende produkter fra Smelt via e-mail og sms, kan du sige nej ved at fjerne fluebenet i feltet."
+        "accept_marketing_checkbox_label": "Hvis du ikke ønsker at modtage markedsføring eller nyheder om lignende produkter via e-mail og sms, kan du sige nej ved at fjerne fluebenet i feltet."
       }
     }
   },

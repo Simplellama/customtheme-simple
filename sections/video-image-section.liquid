@@ -144,7 +144,7 @@
             video.classList.remove('hidden', 'pointer-events-none'); // Enable visibility and interactions
             const sources = video.querySelectorAll('source');
             sources.forEach(source => {
-              source.setAttribute('src', 'https://smeltsauna.myshopify.com/cdn/shop/videos/c/vp/d01a8bb0bf4547a986b9ec3d275a642e/d01a8bb0bf4547a986b9ec3d275a642e.HD-1080p-7.2Mbps-39730883.mp4?v=0');
+              source.setAttribute('src', '{{ section.settings.video_play | escape }}');
             });
             video.load();
             video.play();
@@ -197,6 +197,11 @@
         "type": "video",
         "id": "video_mobile",
         "label": "Video Mobile"
+      },
+      {
+        "type": "url",
+        "id": "video_play",
+        "label": "Play Button Video Source"
       },
     ],
     "blocks": [

@@ -120,18 +120,11 @@
           <div class="product-action-buttons flex flex-col gap-x-1 w-full">
 
             {% if product.metafields.custom.coming_soon == blank  %}
-              {% comment %} {% if  product.metafields.custom.product_title contains 'Elda' %}
-                <input type="hidden" name="properties[Forudbestilling]" value="Forventes afsendt start august">
-              {% endif %} {% endcomment %}
+
               <button id="addToCartButton" class="flex items-center text-center justify-center gap-x-2 rounded-full  bg-primary-black px-5 min-h-[65px] text-lg font-semibold text-white w-full shadow hover:bg-medium-green"
                 type="submit" name="add"
                 >
-                  {% comment %} {% if product.metafields.custom.product_title contains 'Elda' %}
-                    Forudbestil her
-                  {% else %} {% endcomment %}
-                    {{ 'products.product.add_to_cart' | t }}
-                  {% comment %} {% endif %} {% endcomment %}
-                  
+                  {{ 'products.product.add_to_cart' | t }}
               </button>
 
 
@@ -157,29 +150,15 @@
             {% if product.selected_or_first_available_variant.inventory_quantity >= 1 %}
               
               <div class="flex items-center justify-center w-fit gap-x-2">
-                
-                {% comment %} {% if product.metafields.custom.product_title contains 'Elda' %}
-                  <div class="bg-yellow-400 rounded-full w-2 h-2 block"></div>
-                  <span class="whitespace-nowrap font-semibold text-base">Forudbestilling</span>
-                {% else %} {% endcomment %}
                   <div class="bg-green-500 rounded-full w-2 h-2 block"></div>
                   <span class="whitespace-nowrap font-semibold text-base">På lager:</span>
-                {% comment %} {% endif %} {% endcomment %}
               </div>
-              {% comment %} {% if product.metafields.custom.product_title contains 'Elda' %}
-                <span class="text-sm font-light whitespace-nowrap">Bemærk: Forventes afsendt start august</span>
-              {% else %} {% endcomment %}
-                <span class="text-sm font-light whitespace-nowrap">Leveringstid 1-4 Hverdage</span>
-              {% comment %} {% endif %} {% endcomment %}
+                <span class="text-sm font-light whitespace-nowrap">Leveringstid 1-3 Hverdage</span>
             {% else %}
                 <div class="flex items-center justify-center w-fit gap-x-2">
                   
                     <div class="bg-red-500 rounded-full w-2 h-2 block"></div>
-                    {% comment %} {% if product.metafields.custom.product_title contains 'Elda' %}
-                      <span class="text-sm font-light whitespace-nowrap">Bemærk: Forventes afsendt start august</span>
-                    {% else %} {% endcomment %}
                       <span class="whitespace-nowrap">Ikke på lager</span>
-                    {% comment %} {% endif %} {% endcomment %}
                 </div>
             {% endif %}
 
