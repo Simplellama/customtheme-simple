@@ -12,26 +12,12 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "usp_list_EFq9ch": {
-          "type": "usp-list",
-          "settings": {}
-        },
         "add_to_cart_form_LyR9Kn": {
           "type": "add-to-cart-form",
           "settings": {}
         },
         "payment_icons_3Kijdk": {
           "type": "payment-icons",
-          "settings": {}
-        },
-        "bundle_contains_WdDBt7": {
-          "type": "bundle-contains",
-          "disabled": true,
-          "settings": {}
-        },
-        "video_thumbs_gG8nQF": {
-          "type": "video-thumbs",
-          "disabled": true,
           "settings": {}
         },
         "product_information_kV8XkE": {
@@ -44,11 +30,8 @@
         }
       },
       "block_order": [
-        "usp_list_EFq9ch",
         "add_to_cart_form_LyR9Kn",
         "payment_icons_3Kijdk",
-        "bundle_contains_WdDBt7",
-        "video_thumbs_gG8nQF",
         "product_information_kV8XkE",
         "acc_items_dpaGC6"
       ],
