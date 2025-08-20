@@ -18,27 +18,24 @@ module.exports = {
         pageMaxWidth: '1440px',
       },
       colors: {
-        'primary-bg': '#fcfbf6',
-        'secondary-bg': '#f1efe9',
-        'secondary-bg-400': '#e6e4db',
-        "tertiary-bg": '#423A0D',
-        "white": '#fffcfc',
-        "light-green": '#D3C996',
-        "medium-green": '#586052',
-        "dark-green": '#352F0A',
-        "primary-red": '#EA6B41',
-        "primary-orange": '#EA6B41',
-        "button-primary": '#EA6B41',
-        "btn-secondary-bg": '#F7F4EC',
-        "btn-secondary": '#423A0D',
-        "primary-text": '#423A0D',
-        'primary-black': '#252521',
-        'secondary-text': '#444444',
-        'link': '#242424',  
-        'sale-price': '#ed0000',
-        'border': '#D9D9D9',
+        'primary-bg': '#fff',
+        'secondary-bg': '#f5f5f5',
+        'secondary-bg-400': '#e5e5e5',
+        "tertiary-bg": '#cccccc',
+        "white": '#ffffff',
+        "light-gray": '#f0f0f0',
+        "medium-gray": '#b0b0b0',
+        "dark-gray": '#444444',
+        "primary-black": '#252521',
+        "secondary-text": '#444444',
+        "primary-text": '#252521',
+        "border": '#D9D9D9',
+        "link": '#242424',
+        "sale-price": '#111111',
+        "button-primary": '#252521',
+        "btn-secondary-bg": '#f5f5f5',
+        "btn-secondary": '#444444',
       }, 
-
       fontSize: {
         'xs': ['0.625rem', '0.75rem'],
         'sm': ['0.8rem', '0.75rem'],
@@ -55,7 +52,5 @@ module.exports = {
         '9xl': ['6rem', '5rem']
       },      
     }, 
-  
   }
- 
 };
