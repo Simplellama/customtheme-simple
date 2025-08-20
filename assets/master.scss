@@ -1,28 +1,28 @@
 :root {
-  --primary-button: #FD4102;
-  --secondary-button: #352F0A;
-  --tertiary-button: #352F0A; 
-  --primary-orange: #EA6B41;
-  --primary-red: #FD4102;
-  --primary-text: #423A0D;
-  --primary-border: #D9D9D9;
-  --primary-bg: #F7F4EC;
+  --primary-button: #000000;
+  --secondary-button: #808080;
+  --tertiary-button: #808080;
+  --primary-orange: #808080;
+  --primary-red: #000000;
+  --primary-text: #000000;
+  --primary-border: #808080;
+  --primary-bg: #ffffff;
   --color-background: 255,255,255;
   --gradient-background: #ffffff;
-  --color-foreground: 18,18,18;
-  --color-shadow: 18,18,18;
-  --color-button: 18,18,18;
+  --color-foreground: 0,0,0;
+  --color-shadow: 0,0,0;
+  --color-button: 0,0,0;
   --color-button-text: 255,255,255;
   --color-secondary-button: 255,255,255;
-  --color-secondary-button-text: 18,18,18;
-  --color-link: #948169;
-  --color-badge-foreground: 18,18,18;
+  --color-secondary-button-text: 0,0,0;
+  --color-link: #808080;
+  --color-badge-foreground: 0,0,0;
   --color-badge-background: 255,255,255;
-  --color-badge-border: 18,18,18;
+  --color-badge-border: 0,0,0;
   --payment-terms-background-color: rgb(255 255 255);
   --aspect-ratio: 1;
   --aspect-ratio-desktop: 1;
-  --heading-font: "Sharp_Sans", sans-serif;
+  --heading-font: "";
 }
 
 input[type=search]::-ms-clear { display: none; width : 0; height: 0; }
