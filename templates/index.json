@@ -9,6 +9,80 @@
  */
 {
   "sections": {
+    "collection_nav_section_bgDdtK": {
+      "type": "collection-nav-section",
+      "blocks": {
+        "tab_tFP8MN": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/NOX-AT10-Genius-18K-by-Agustin-Tapia-2025-1.jpg",
+            "title": "Padelbat",
+            "link": ""
+          }
+        },
+        "tab_Emiecp": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/NOX-AT10-Genius-18K-by-Agustin-Tapia-2025-1.jpg",
+            "title": "Padelbat",
+            "link": ""
+          }
+        },
+        "tab_fNe9H4": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/NOX-AT10-Genius-18K-by-Agustin-Tapia-2025-1.jpg",
+            "title": "Padelbat",
+            "link": ""
+          }
+        },
+        "tab_h7n7DU": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/NOX-AT10-Genius-18K-by-Agustin-Tapia-2025-1.jpg",
+            "title": "Padelbat",
+            "link": ""
+          }
+        },
+        "tab_zEQyhb": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/NOX-AT10-Genius-18K-by-Agustin-Tapia-2025-1.jpg",
+            "title": "Padelbat",
+            "link": ""
+          }
+        },
+        "tab_rA3kdz": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/NOX-AT10-Genius-18K-by-Agustin-Tapia-2025-1.jpg",
+            "title": "Padelbat",
+            "link": ""
+          }
+        },
+        "tab_XbxCT3": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/NOX-AT10-Genius-18K-by-Agustin-Tapia-2025-1.jpg",
+            "title": "Padelbat",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_tFP8MN",
+        "tab_Emiecp",
+        "tab_fNe9H4",
+        "tab_h7n7DU",
+        "tab_zEQyhb",
+        "tab_rA3kdz",
+        "tab_XbxCT3"
+      ],
+      "name": "Collection nav section",
+      "settings": {
+        "title": ""
+      }
+    },
     "hero_TCAaex": {
       "type": "hero",
       "settings": {
@@ -344,26 +418,6 @@
         "subtitle": "",
         "url": "",
         "link_text": ""
-      }
-    },
-    "collection_nav_section_bgDdtK": {
-      "type": "collection-nav-section",
-      "blocks": {
-        "tab_tFP8MN": {
-          "type": "tab",
-          "settings": {
-            "title": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "tab_tFP8MN"
-      ],
-      "name": "Collection nav section",
-      "settings": {
-        "title": "",
-        "subtitle": ""
       }
     }
   },
