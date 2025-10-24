@@ -372,14 +372,6 @@
         "margin": true
       }
     },
-    "newsletter_section_8jAKPn": {
-      "type": "newsletter-section",
-      "settings": {
-        "title": "",
-        "subtitle": "",
-        "text": ""
-      }
-    },
     "information_section_hXpVYR": {
       "type": "information-section",
       "blocks": {
@@ -437,7 +429,6 @@
     "image_with_text_jV7KKx",
     "our_customers_TQJAAR",
     "faq_nmbMhb",
-    "newsletter_section_8jAKPn",
     "information_section_hXpVYR"
   ]
 }
