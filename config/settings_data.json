@@ -9,7 +9,7 @@
  */
 {
   "current": {
-    "logo_image": "",
+    "logo_image": "shopify://shop_images/logo-padel-specialist_4842e634-5d8e-47be-a4f8-bb5c9ce20ca3.png",
     "paypal": false,
     "klarna": false,
     "viabill": false,
@@ -105,7 +105,23 @@
       },
       "footer": {
         "type": "footer",
-        "settings": {}
+        "settings": {
+          "newsletter_subtitle": "",
+          "newsletter_title": "",
+          "newsletter_bullet_1": "",
+          "newsletter_bullet_2": "",
+          "newsletter_bullet_3": "",
+          "shop_title": "",
+          "support_title": "",
+          "information_title": "",
+          "contact_title": "",
+          "contact_phone": "",
+          "contact_email": "",
+          "contact_hours_weekdays": "",
+          "contact_hours_weekend": "",
+          "contact_hours_holidays": "",
+          "copyright": ""
+        }
       },
       "cart-recomendations": {
         "type": "cart-recomendations",
@@ -139,7 +155,7 @@
           "news_nEXc74": {
             "type": "news",
             "settings": {
-              "title": "",
+              "title": "<p>Prisgaranti | 30 dages returret</p><ul><li></li></ul>",
               "link": ""
             }
           }

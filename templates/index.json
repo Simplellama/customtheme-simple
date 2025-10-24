@@ -163,38 +163,41 @@
         "item_N3Kp4q": {
           "type": "item",
           "settings": {
-            "title": "",
+            "title": "Padelbat",
             "link": "",
+            "image": "shopify://shop_images/Sommer-Padelbat.jpg",
             "subtitle": "",
-            "btn_text": "",
+            "btn_text": "Se alle her",
             "label": ""
           }
         },
-        "item_znQbUf": {
+        "item_66YyCW": {
           "type": "item",
           "settings": {
-            "title": "",
+            "title": "Padelbat",
             "link": "",
+            "image": "shopify://shop_images/Sommer-Padelbat.jpg",
             "subtitle": "",
-            "btn_text": "",
+            "btn_text": "Se alle her",
             "label": ""
           }
         },
-        "item_VFXXG3": {
+        "item_UYhxkT": {
           "type": "item",
           "settings": {
-            "title": "",
+            "title": "Padelbat",
             "link": "",
+            "image": "shopify://shop_images/Sommer-Padelbat.jpg",
             "subtitle": "",
-            "btn_text": "",
+            "btn_text": "Se alle her",
             "label": ""
           }
         }
       },
       "block_order": [
         "item_N3Kp4q",
-        "item_znQbUf",
-        "item_VFXXG3"
+        "item_66YyCW",
+        "item_UYhxkT"
       ],
       "settings": {
         "title": "",
@@ -246,12 +249,12 @@
     "image_with_text_BgpcnY": {
       "type": "image-with-text",
       "settings": {
-        "title": "",
+        "title": "Hvem er Padel Specialist?",
         "subtitle": "",
-        "content": "",
+        "content": "<p>Vi elsker padel og driver Padel Specialist med vores største passion og vi er meget glade for dit besøg.</p>",
         "bg_textbox": true,
-        "button": "",
-        "button_link": "",
+        "button": "Læs mere",
+        "button_link": "shopify://pages/om-os",
         "layout": "image-left"
       }
     },
