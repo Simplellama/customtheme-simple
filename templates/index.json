@@ -16,9 +16,9 @@
         "subtitle": "",
         "text": "",
         "button_link": "",
-        "button": "",
-        "background": "shopify://shop_images/padel-bat.jpg",
-        "height": "800"
+        "button": "Se alle tilbud her",
+        "background": "shopify://shop_images/Efterarsudsalg-28.jpg",
+        "height": "60"
       }
     },
     "hero_annocument_banner_CEUMiY": {
@@ -345,9 +345,30 @@
         "url": "",
         "link_text": ""
       }
+    },
+    "collection_nav_section_bgDdtK": {
+      "type": "collection-nav-section",
+      "blocks": {
+        "tab_tFP8MN": {
+          "type": "tab",
+          "settings": {
+            "title": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_tFP8MN"
+      ],
+      "name": "Collection nav section",
+      "settings": {
+        "title": "",
+        "subtitle": ""
+      }
     }
   },
   "order": [
+    "collection_nav_section_bgDdtK",
     "hero_TCAaex",
     "hero_annocument_banner_CEUMiY",
     "featured_collection_zya3Jx",
