@@ -1,1 +1,34 @@
-{"sections":{"main":{"type":"main-article","settings":{}},"featured_blog_posts_HfPQ6G":{"type":"featured-blog-posts","disabled":true,"settings":{"title":"Blog posts","blog":"manualer","post_limit":3,"blog_show_author":false,"blog_show_date":true,"show_view_all":true,"view_all_text":"View all"}}},"order":["main","featured_blog_posts_HfPQ6G"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "settings": {}
+    },
+    "featured_blog_posts_HfPQ6G": {
+      "type": "featured-blog-posts",
+      "disabled": true,
+      "settings": {
+        "title": "Blog posts",
+        "blog": "manualer",
+        "post_limit": 3,
+        "blog_show_author": false,
+        "blog_show_date": true,
+        "show_view_all": true,
+        "view_all_text": "View all"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "featured_blog_posts_HfPQ6G"
+  ]
+}
