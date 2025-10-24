@@ -9,6 +9,80 @@
  */
 {
   "sections": {
+    "collection_nav_section_bgDdtK": {
+      "type": "collection-nav-section",
+      "blocks": {
+        "tab_tFP8MN": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/NOX-AT10-Genius-18K-by-Agustin-Tapia-2025-1.jpg",
+            "title": "Padelbat",
+            "link": ""
+          }
+        },
+        "tab_Emiecp": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/NOX-AT10-Genius-18K-by-Agustin-Tapia-2025-1.jpg",
+            "title": "Padelbat",
+            "link": ""
+          }
+        },
+        "tab_fNe9H4": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/NOX-AT10-Genius-18K-by-Agustin-Tapia-2025-1.jpg",
+            "title": "Padelbat",
+            "link": ""
+          }
+        },
+        "tab_h7n7DU": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/NOX-AT10-Genius-18K-by-Agustin-Tapia-2025-1.jpg",
+            "title": "Padelbat",
+            "link": ""
+          }
+        },
+        "tab_zEQyhb": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/NOX-AT10-Genius-18K-by-Agustin-Tapia-2025-1.jpg",
+            "title": "Padelbat",
+            "link": ""
+          }
+        },
+        "tab_rA3kdz": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/NOX-AT10-Genius-18K-by-Agustin-Tapia-2025-1.jpg",
+            "title": "Padelbat",
+            "link": ""
+          }
+        },
+        "tab_XbxCT3": {
+          "type": "tab",
+          "settings": {
+            "image": "shopify://shop_images/NOX-AT10-Genius-18K-by-Agustin-Tapia-2025-1.jpg",
+            "title": "Padelbat",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_tFP8MN",
+        "tab_Emiecp",
+        "tab_fNe9H4",
+        "tab_h7n7DU",
+        "tab_zEQyhb",
+        "tab_rA3kdz",
+        "tab_XbxCT3"
+      ],
+      "name": "Collection nav section",
+      "settings": {
+        "title": ""
+      }
+    },
     "hero_TCAaex": {
       "type": "hero",
       "settings": {
@@ -16,9 +90,9 @@
         "subtitle": "",
         "text": "",
         "button_link": "",
-        "button": "",
-        "background": "shopify://shop_images/padel-bat.jpg",
-        "height": "800"
+        "button": "Se alle tilbud her",
+        "background": "shopify://shop_images/Efterarsudsalg-28.jpg",
+        "height": "60"
       }
     },
     "hero_annocument_banner_CEUMiY": {
@@ -89,38 +163,41 @@
         "item_N3Kp4q": {
           "type": "item",
           "settings": {
-            "title": "",
+            "title": "Padelbat",
             "link": "",
+            "image": "shopify://shop_images/Sommer-Padelbat.jpg",
             "subtitle": "",
-            "btn_text": "",
+            "btn_text": "Se alle her",
             "label": ""
           }
         },
-        "item_znQbUf": {
+        "item_66YyCW": {
           "type": "item",
           "settings": {
-            "title": "",
+            "title": "Padelbat",
             "link": "",
+            "image": "shopify://shop_images/Sommer-Padelbat.jpg",
             "subtitle": "",
-            "btn_text": "",
+            "btn_text": "Se alle her",
             "label": ""
           }
         },
-        "item_VFXXG3": {
+        "item_UYhxkT": {
           "type": "item",
           "settings": {
-            "title": "",
+            "title": "Padelbat",
             "link": "",
+            "image": "shopify://shop_images/Sommer-Padelbat.jpg",
             "subtitle": "",
-            "btn_text": "",
+            "btn_text": "Se alle her",
             "label": ""
           }
         }
       },
       "block_order": [
         "item_N3Kp4q",
-        "item_znQbUf",
-        "item_VFXXG3"
+        "item_66YyCW",
+        "item_UYhxkT"
       ],
       "settings": {
         "title": "",
@@ -172,12 +249,12 @@
     "image_with_text_BgpcnY": {
       "type": "image-with-text",
       "settings": {
-        "title": "",
+        "title": "Hvem er Padel Specialist?",
         "subtitle": "",
-        "content": "",
+        "content": "<p>Vi elsker padel og driver Padel Specialist med vores største passion og vi er meget glade for dit besøg.</p>",
         "bg_textbox": true,
-        "button": "",
-        "button_link": "",
+        "button": "Læs mere",
+        "button_link": "shopify://pages/om-os",
         "layout": "image-left"
       }
     },
@@ -295,14 +372,6 @@
         "margin": true
       }
     },
-    "newsletter_section_8jAKPn": {
-      "type": "newsletter-section",
-      "settings": {
-        "title": "",
-        "subtitle": "",
-        "text": ""
-      }
-    },
     "information_section_hXpVYR": {
       "type": "information-section",
       "blocks": {
@@ -348,6 +417,7 @@
     }
   },
   "order": [
+    "collection_nav_section_bgDdtK",
     "hero_TCAaex",
     "hero_annocument_banner_CEUMiY",
     "featured_collection_zya3Jx",
@@ -359,7 +429,6 @@
     "image_with_text_jV7KKx",
     "our_customers_TQJAAR",
     "faq_nmbMhb",
-    "newsletter_section_8jAKPn",
     "information_section_hXpVYR"
   ]
 }
