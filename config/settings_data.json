@@ -61,6 +61,36 @@
       },
       "megamenu": {
         "type": "megamenu",
+        "blocks": {
+          "link_list_RTUGCx": {
+            "type": "link_list",
+            "settings": {
+              "fourCols": false,
+              "menu_id": "Padel bat",
+              "image_link": "shopify://shop_images/Adidas-Metalbone-Team-3.4-2025-1.jpg",
+              "image_text": "Padel bat",
+              "person_count": "Til begyndere",
+              "price_text": "",
+              "image_button_text": "Se alle her",
+              "link": "",
+              "image_link_2": "shopify://shop_images/Starvie-Kenta-Speed-2024-3.jpg",
+              "image_text_2": "Padel bat",
+              "person_count_2": "Til Profesionelle",
+              "price_text_2": "",
+              "image_button_text_2": "Se alle her",
+              "link_2": "",
+              "image_link_3": "shopify://shop_images/Adidas-Metalbone-Team-3.4-2025-1.jpg",
+              "image_text_3": "Padel bat",
+              "person_count_3": "Bedst i test",
+              "price_text_3": "",
+              "image_button_text_3": "Se alle her",
+              "link_3": ""
+            }
+          }
+        },
+        "block_order": [
+          "link_list_RTUGCx"
+        ],
         "settings": {}
       },
       "megamenu-right": {
