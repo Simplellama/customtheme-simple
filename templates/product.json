@@ -27,13 +27,18 @@
         "acc_items_dpaGC6": {
           "type": "acc-items",
           "settings": {}
+        },
+        "usp_list_QmK3Jg": {
+          "type": "usp-list",
+          "settings": {}
         }
       },
       "block_order": [
         "add_to_cart_form_LyR9Kn",
         "payment_icons_3Kijdk",
         "product_information_kV8XkE",
-        "acc_items_dpaGC6"
+        "acc_items_dpaGC6",
+        "usp_list_QmK3Jg"
       ],
       "settings": {
         "show_share_buttons": false
