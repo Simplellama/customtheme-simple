@@ -12,12 +12,13 @@
     "hero_TCAaex": {
       "type": "hero",
       "settings": {
-        "title": "",
+        "title": "Efterårsudsalg",
         "subtitle": "",
         "text": "",
         "button_link": "",
         "button": "",
-        "height": ""
+        "background": "shopify://shop_images/padel-bat.jpg",
+        "height": "800"
       }
     },
     "hero_annocument_banner_CEUMiY": {
