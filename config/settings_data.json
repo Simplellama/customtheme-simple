@@ -134,18 +134,18 @@
       "announcment-countdown": {
         "type": "announcment-countdown",
         "settings": {
-          "show_section": false,
-          "bg_color": "#000000",
+          "show_section": true,
+          "bg_color": "#fab321",
           "timer_color": "#000000",
-          "color": "#ffffff",
-          "title": "",
+          "color": "#000",
+          "title": "GRATIS GAVE",
           "expired": "",
-          "subtitle": "",
+          "subtitle": "Tilføj ved alle ordrer over 899,-",
           "start_date": "",
           "start_time": "",
           "end_date": "",
           "end_time": "",
-          "button_text": "",
+          "button_text": "Klik og tilføj",
           "button_link": ""
         }
       },
