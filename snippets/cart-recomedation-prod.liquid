@@ -1,6 +1,6 @@
 <div class="product-recom__item">
     <a href="{{ product.url }}" class="product-recom__link">
-    {{ product.featured_image.src | image_url: width: 125 | image_tag: widths: "125,75,50", alt: product.title | escape, class: 'product-recom__image', loading: 'lazy' }}
+    {{ product.featured_image.src | image_url: width: 125 | image_tag: widths: "125,75,50", alt: product.title | escape: class: 'product-recom__image', loading: 'lazy' }}
       <h3 class="product-recom__title text-left">{{ product.title | escape }}</h3>
       <p class="product-recom__price">
         {{ product.price | divided_by: 100 | money_without_trailing_zeros }}
@@ -47,3 +47,17 @@
   </div>
   
 
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: '{{ product.featured_image.src | image_url: width: 125 | image_tag: widths:
+    "125,75,50", alt: product.title | escape, class: ''product-recom__image'', loading:
+    ''lazy'' }}'
+  to: '{{ product.featured_image.src | image_url: width: 125 | image_tag: widths:
+    "125,75,50", alt: product.title | escape: class: ''product-recom__image'', loading:
+    ''lazy'' }}'
+  position: 99..265
+{% endcomment %}

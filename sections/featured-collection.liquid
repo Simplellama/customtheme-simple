@@ -85,9 +85,9 @@
 
                       <li class="splide__slide w-full max-w-[380px] relative "> 
                         {%- if forloop.index <= 4 -%}
-                          {% render 'card-product', product: product, lazy_load: 'eager', height: 'small', col_count: section.settings.limit, product_nr: 'tab1-' | append: forloop.index %}
+                          {% render 'card-product', product: product, lazy_load: 'eager', height: 'small', col_count: section.settings.limit, product_nr: 'tab1-', append: forloop.index %}
                         {% else %}
-                          {% render 'card-product', product: product, lazy_load: 'lazy', height: 'small', col_count: section.settings.limit, product_nr: 'tab1-' | append: forloop.index %}
+                          {% render 'card-product', product: product, lazy_load: 'lazy', height: 'small', col_count: section.settings.limit, product_nr: 'tab1-', append: forloop.index %}
                         {% endif %}
                       </li>
 
@@ -122,9 +122,9 @@
               
                       <li class="splide__slide w-full relative max-w-[380px]"> 
                         {%- if  forloop.index <= 4 -%}
-                          {% render 'card-product', product: product, lazy_load: 'lazy', height: 'small', col_count: section.settings.limit, product_nr: 'tab2-' | append: forloop.index %}
+                          {% render 'card-product', product: product, lazy_load: 'lazy', height: 'small', col_count: section.settings.limit, product_nr: 'tab2-', append: forloop.index %}
                         {% else %}
-                          {% render 'card-product', product: product, lazy_load: 'lazy', height: 'small', col_count: section.settings.limit, product_nr: 'tab2-' | append: forloop.index %}
+                          {% render 'card-product', product: product, lazy_load: 'lazy', height: 'small', col_count: section.settings.limit, product_nr: 'tab2-', append: forloop.index %}
                         {% endif %}
                       </li>
         
@@ -157,9 +157,9 @@
                   
                       <li class="splide__slide w-full relative max-w-[380px]"> 
                         {%- if forloop.index <= 4 -%}
-                          {% render 'card-product', product: product, lazy_load: 'lazy', height: 'small', col_count: section.settings.limit, product_nr: 'tab3-' | append: forloop.index %}
+                          {% render 'card-product', product: product, lazy_load: 'lazy', height: 'small', col_count: section.settings.limit, product_nr: 'tab3-', append: forloop.index %}
                         {% else %}
-                          {% render 'card-product', product: product, lazy_load: 'lazy', height: 'small', col_count: section.settings.limit, product_nr: 'tab3-' | append: forloop.index %}
+                          {% render 'card-product', product: product, lazy_load: 'lazy', height: 'small', col_count: section.settings.limit, product_nr: 'tab3-', append: forloop.index %}
                         {% endif %}
                       </li>
          
@@ -843,3 +843,52 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'card-product', product: product, lazy_load: 'eager', height: 'small',
+    col_count: section.settings.limit, product_nr: 'tab1-' | append: forloop.index
+    %}"
+  to: "{% render 'card-product', product: product, lazy_load: 'eager', height: 'small',
+    col_count: section.settings.limit, product_nr: 'tab1-', append: forloop.index
+    %}"
+  position: 4506..4667
+- from: "{% render 'card-product', product: product, lazy_load: 'lazy', height: 'small',
+    col_count: section.settings.limit, product_nr: 'tab1-' | append: forloop.index
+    %}"
+  to: "{% render 'card-product', product: product, lazy_load: 'lazy', height: 'small',
+    col_count: section.settings.limit, product_nr: 'tab1-', append: forloop.index
+    %}"
+  position: 4729..4889
+- from: "{% render 'card-product', product: product, lazy_load: 'lazy', height: 'small',
+    col_count: section.settings.limit, product_nr: 'tab2-' | append: forloop.index
+    %}"
+  to: "{% render 'card-product', product: product, lazy_load: 'lazy', height: 'small',
+    col_count: section.settings.limit, product_nr: 'tab2-', append: forloop.index
+    %}"
+  position: 6286..6446
+- from: "{% render 'card-product', product: product, lazy_load: 'lazy', height: 'small',
+    col_count: section.settings.limit, product_nr: 'tab2-' | append: forloop.index
+    %}"
+  to: "{% render 'card-product', product: product, lazy_load: 'lazy', height: 'small',
+    col_count: section.settings.limit, product_nr: 'tab2-', append: forloop.index
+    %}"
+  position: 6508..6668
+- from: "{% render 'card-product', product: product, lazy_load: 'lazy', height: 'small',
+    col_count: section.settings.limit, product_nr: 'tab3-' | append: forloop.index
+    %}"
+  to: "{% render 'card-product', product: product, lazy_load: 'lazy', height: 'small',
+    col_count: section.settings.limit, product_nr: 'tab3-', append: forloop.index
+    %}"
+  position: 8053..8213
+- from: "{% render 'card-product', product: product, lazy_load: 'lazy', height: 'small',
+    col_count: section.settings.limit, product_nr: 'tab3-' | append: forloop.index
+    %}"
+  to: "{% render 'card-product', product: product, lazy_load: 'lazy', height: 'small',
+    col_count: section.settings.limit, product_nr: 'tab3-', append: forloop.index
+    %}"
+  position: 8275..8435
+{% endcomment %}
